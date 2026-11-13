@@ -241,9 +241,9 @@
             </nav>
         </div>
         
-        <!-- Right Section -->
-        <div class="hidden lg:block w-1/3 text-right current-date-display">
-            <!-- Date will be injected here -->
+        <!-- Right Section (Hidden link to Admin Panel) -->
+        <div class="hidden lg:flex w-1/3 justify-end items-center gap-2 current-date-display">
+            <!-- Date & Admin shortcut -->
         </div>
     </header>
 
@@ -266,63 +266,27 @@
             </h1>
         </main>
 
-        <!-- JAJAN CATALOG VIEW -->
+        <!-- JAJAN CATALOG VIEW (Dynamic from LocalStorage / Admin Panel) -->
         <div id="jajan-view" class="view-section hidden w-full max-w-4xl mx-auto font-mono">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 justify-center">
-                
-                <!-- Card 1: Netflix -->
-                <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[2rem] p-6 shadow-xl relative flex flex-col justify-between border border-white/50 dark:border-slate-800 transition-all duration-300 hover:-translate-y-1">
-                    <div class="absolute top-4 right-5 text-amber-400 text-lg">★</div>
-                    
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-16 h-16 shrink-0 bg-white dark:bg-slate-800 rounded-2xl shadow-md flex items-center justify-center p-2 border border-slate-100 dark:border-slate-700">
-                            <span class="font-futuristic font-black text-red-600 text-3xl tracking-tighter">N</span>
-                        </div>
-                        <div>
-                            <h3 class="font-mono font-bold text-lg text-slate-900 dark:text-white tracking-tight">Netflix</h3>
-                            <span class="inline-block bg-sky-100 dark:bg-sky-950 text-sky-600 dark:text-sky-300 text-[10px] font-mono uppercase px-2 py-0.5 rounded-full my-1 tracking-wider">Hiburan</span>
-                            <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 tracking-wider">Mulai <span class="font-bold text-slate-900 dark:text-white">Rp3.000</span></div>
-                        </div>
-                    </div>
-
-                    <button onclick="openProductModal('Netflix', 'Hiburan', 'Streaming film & series favorit dengan kualitas HD/4K.')" class="w-full py-3.5 bg-sky-200 hover:bg-sky-300 dark:bg-sky-950/70 dark:hover:bg-sky-900 text-sky-900 dark:text-sky-200 font-mono font-bold text-xs uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 transition-colors">
-                        Pilih Varian 
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                    </button>
-                </div>
-
-                <!-- Card 2: Disney+ -->
-                <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[2rem] p-6 shadow-xl relative flex flex-col justify-between border border-white/50 dark:border-slate-800 transition-all duration-300 hover:-translate-y-1">
-                    <div class="absolute top-4 right-5 text-amber-400 text-lg">★</div>
-                    
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-16 h-16 shrink-0 bg-slate-900 rounded-2xl shadow-md flex items-center justify-center p-2 text-white">
-                            <span class="font-serif font-bold text-xs tracking-tight text-center">Disney+</span>
-                        </div>
-                        <div>
-                            <h3 class="font-mono font-bold text-lg text-slate-900 dark:text-white tracking-tight">Disney+</h3>
-                            <span class="inline-block bg-sky-100 dark:bg-sky-950 text-sky-600 dark:text-sky-300 text-[10px] font-mono uppercase px-2 py-0.5 rounded-full my-1 tracking-wider">Hiburan</span>
-                            <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 tracking-wider">Mulai <span class="font-bold text-slate-900 dark:text-white">Rp3.000</span></div>
-                        </div>
-                    </div>
-
-                    <button onclick="openProductModal('Disney+', 'Hiburan', 'Nonton ribuan film Disney, Pixar, Marvel, & Star Wars sepuasnya.')" class="w-full py-3.5 bg-sky-200 hover:bg-sky-300 dark:bg-sky-950/70 dark:hover:bg-sky-900 text-sky-900 dark:text-sky-200 font-mono font-bold text-xs uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 transition-colors">
-                        Pilih Varian 
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                    </button>
-                </div>
-
+            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 justify-center">
+                <!-- Produk dirender secara dinamis melalui JavaScript -->
             </div>
         </div>
 
-        <!-- CONTACT VIEW (Daftar Sosial Media / Toko dengan Ikon Asli) -->
+        <!-- CONTACT VIEW (Daftar Sosial Media / Toko) -->
         <div id="contact-view" class="view-section hidden w-full max-w-xl mx-auto font-mono text-center">
-            <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[2.5rem] p-6 sm:p-8 shadow-2xl border border-white/50 dark:border-slate-800">
+            <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[2.5rem] p-6 sm:p-8 shadow-2xl border border-white/50 dark:border-slate-800 relative">
+                
+                <!-- Tombol Kecil Akses Admin di Pojok Kanan Atas Box Contact -->
+                <a href="admin.html" class="absolute top-6 right-6 text-[10px] text-sky-500 hover:text-sky-600 font-bold uppercase tracking-wider bg-sky-50 dark:bg-slate-800 px-3 py-1 rounded-full border border-sky-200 dark:border-slate-700 transition-all">
+                    ⚙️ Admin Panel
+                </a>
+
                 <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2 uppercase tracking-tight">Hubungi Kami</h2>
                 <p class="text-xs text-slate-500 dark:text-slate-400 mb-6">Pilih salah satu platform di bawah untuk terhubung langsung dengan admin Deepa Store.</p>
                 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                    <!-- WhatsApp (Ikon Asli Resmi) -->
+                    <!-- WhatsApp -->
                     <a href="https://wa.me/6281234567890" target="_blank" class="flex items-center gap-3.5 p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/50 hover:border-emerald-400 transition-all text-left group">
                         <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-md">
                             <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
@@ -333,7 +297,7 @@
                         </div>
                     </a>
 
-                    <!-- Instagram (Ikon Asli Resmi) -->
+                    <!-- Instagram -->
                     <a href="https://instagram.com/deepastore" target="_blank" class="flex items-center gap-3.5 p-4 rounded-2xl bg-pink-50 dark:bg-pink-950/30 border border-pink-200 dark:border-pink-900/50 hover:border-pink-400 transition-all text-left group">
                         <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white flex items-center justify-center shrink-0 shadow-md">
                             <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
@@ -344,7 +308,7 @@
                         </div>
                     </a>
 
-                    <!-- X / Twitter (Ganti Telegram, Ikon Asli Resmi) -->
+                    <!-- X / Twitter -->
                     <a href="https://x.com/deepastore" target="_blank" class="flex items-center gap-3.5 p-4 rounded-2xl bg-slate-100 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-600 transition-all text-left group">
                         <div class="w-10 h-10 rounded-xl bg-black dark:bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-md border border-slate-800">
                             <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -355,7 +319,7 @@
                         </div>
                     </a>
 
-                    <!-- Website Utama (Ikon Asli Resmi) -->
+                    <!-- Website Utama -->
                     <a href="https://deepastore.top" target="_blank" class="flex items-center gap-3.5 p-4 rounded-2xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-900/50 hover:border-indigo-400 transition-all text-left group">
                         <div class="w-10 h-10 rounded-xl bg-indigo-500 text-white flex items-center justify-center shrink-0 shadow-md">
                             <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zM4 12c0-.968.182-1.895.512-2.75h3.045c-.195.856-.307 1.765-.307 2.75s.112 1.894.307 2.75H4.512C4.182 13.895 4 12.968 4 12zm2.072 4.75h3.195c.571 1.253 1.343 2.373 2.269 3.298C7.94 19.349 6.368 18.283 6.072 16.75zm3.195-9.5H6.072c.296-1.533 1.868-2.599 5.464-3.298-.926.925-1.698 2.045-2.269 3.298zm2.733 9.75c-.88-.946-1.611-2.072-2.135-3.25h4.27c-.524 1.178-1.255 2.304-2.135 3.25zm0-10c.88.946 1.611 2.072 2.135 3.25H9.805c.524-1.178 1.255-2.304 2.135-3.25zm3.928 6.75c0-.985-.112-1.894-.307-2.75h3.045c.33.855.512 1.782.512 2.75s-.182 1.895-.512 2.75h-3.045c.195-.856.307-1.765.307-2.75zm.307-4.75h3.195c-.296-1.533-1.868-2.599-5.464-3.298.926.925 1.698 2.045 2.269 3.298zm2.269 6.75h-3.195c.571 1.253 1.343 2.373 2.269 3.298 1.596-.599 3.168-1.665 3.464-3.198z"/></svg>
@@ -439,7 +403,7 @@
         </div>
     </div>
 
-    <!-- Time Logic & Page Switcher Script -->
+    <!-- Time Logic, Dynamic Catalog Loader & Page Switcher Script -->
     <script>
         function updateThemeBasedOnTime() {
             const options = { timeZone: 'Asia/Jakarta', hour: 'numeric', hour12: false };
@@ -471,6 +435,7 @@
 
         // Loading Curtain Effect
         window.addEventListener('load', () => {
+            loadDynamicProducts(); // Load produk dari LocalStorage / Admin
             setTimeout(() => {
                 document.getElementById('loader-top').classList.add('curtain-up');
                 document.getElementById('loader-bottom').classList.add('curtain-down');
@@ -483,6 +448,67 @@
                 setTimeout(typeWriter, 600);
             }, 1500);
         });
+
+        // Load Produk Dinamis & Arsip Produk Stok Kosong
+        function loadDynamicProducts() {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+
+            // Ambil data produk dari LocalStorage (tersinkronisasi dengan admin.html)
+            let products = JSON.parse(localStorage.getItem('deepa_products'));
+            
+            // Jika belum ada data di storage, gunakan default awal
+            if (!products) {
+                products = [
+                    { id: 1, name: 'Netflix', category: 'Hiburan', price: 3000, stock: 15, desc: 'Streaming film & series favorit dengan kualitas HD/4K.' },
+                    { id: 2, name: 'Disney+', category: 'Hiburan', price: 3000, stock: 15, desc: 'Nonton ribuan film Disney, Pixar, Marvel, & Star Wars sepuasnya.' }
+                ];
+                localStorage.setItem('deepa_products', JSON.stringify(products));
+            }
+
+            // Filter produk: Hanya tampilkan produk dengan stok > 0 (Produk dengan stok 0 otomatis diarsipkan/disembunyikan)
+            const activeProducts = products.filter(p => p.stock > 0);
+
+            if (activeProducts.length === 0) {
+                grid.innerHTML = `<div class="col-span-2 text-center text-xs text-slate-400 py-12">Semua produk sedang kosong / diarsipkan. Silakan cek kembali nanti atau kunjungi Admin Panel.</div>`;
+                return;
+            }
+
+            activeProducts.forEach(p => {
+                const card = document.createElement('div');
+                card.className = "bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[2rem] p-6 shadow-xl relative flex flex-col justify-between border border-white/50 dark:border-slate-800 transition-all duration-300 hover:-translate-y-1";
+                
+                // Cek inisial ikon atau nama brand
+                let iconHTML = `<span class="font-futuristic font-black text-red-600 text-3xl tracking-tighter">${p.name.charAt(0)}</span>`;
+                let iconContainerClass = "w-16 h-16 shrink-0 bg-white dark:bg-slate-800 rounded-2xl shadow-md flex items-center justify-center p-2 border border-slate-100 dark:border-slate-700";
+                
+                if(p.name.toLowerCase().includes('disney')) {
+                    iconContainerClass = "w-16 h-16 shrink-0 bg-slate-900 rounded-2xl shadow-md flex items-center justify-center p-2 text-white";
+                    iconHTML = `<span class="font-serif font-bold text-xs tracking-tight text-center">Disney+</span>`;
+                }
+
+                card.innerHTML = `
+                    <div class="absolute top-4 right-5 text-amber-400 text-lg">★</div>
+                    
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="${iconContainerClass}">
+                            ${iconHTML}
+                        </div>
+                        <div>
+                            <h3 class="font-mono font-bold text-lg text-slate-900 dark:text-white tracking-tight">${p.name}</h3>
+                            <span class="inline-block bg-sky-100 dark:bg-sky-950 text-sky-600 dark:text-sky-300 text-[10px] font-mono uppercase px-2 py-0.5 rounded-full my-1 tracking-wider">${p.category}</span>
+                            <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 tracking-wider">Mulai <span class="font-bold text-slate-900 dark:text-white">Rp${p.price.toLocaleString('id-ID')}</span></div>
+                        </div>
+                    </div>
+
+                    <button onclick="openProductModal('${p.name}', '${p.category}', '${p.desc}', ${p.price})" class="w-full py-3.5 bg-sky-200 hover:bg-sky-300 dark:bg-sky-950/70 dark:hover:bg-sky-900 text-sky-900 dark:text-sky-200 font-mono font-bold text-xs uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 transition-colors">
+                        Pilih Varian 
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+        }
 
         // Typing Effect Logic
         const textToType = "HELLO, CUSTOMER";
@@ -499,6 +525,10 @@
 
         // Smooth Page Switcher Logic (Home, Jajan, Contact)
         function switchView(viewName) {
+            if (viewName === 'jajan') {
+                loadDynamicProducts(); // Refresh data produk terbaru dari admin saat menu Jajan dibuka
+            }
+
             const homeView = document.getElementById('home-view');
             const jajanView = document.getElementById('jajan-view');
             const contactView = document.getElementById('contact-view');
@@ -507,7 +537,6 @@
 
             navLinks.forEach(link => link.classList.remove('text-sky-400', 'font-semibold'));
 
-            // Fade out current active view
             let activeView = homeView;
             if (!jajanView.classList.contains('hidden')) activeView = jajanView;
             if (!contactView.classList.contains('hidden')) activeView = contactView;
@@ -559,36 +588,41 @@
             rawPrice: 3000
         };
 
-        function openProductModal(name, category, desc) {
+        function openProductModal(name, category, desc, basePrice) {
             selectedProductData.name = name;
             document.getElementById('modal-title').textContent = name;
             document.getElementById('modal-category').textContent = category;
             document.getElementById('modal-desc').textContent = desc;
 
+            // Set harga dasar dari admin
+            const initialPrice = basePrice || 3000;
             selectedProductData.duration = '1 Hari';
-            selectedProductData.price = 'Rp3.000';
-            selectedProductData.rawPrice = 3000;
-            document.getElementById('modal-price').textContent = 'Rp3.000';
+            selectedProductData.rawPrice = initialPrice;
+            selectedProductData.price = "Rp" + initialPrice.toLocaleString('id-ID');
+            document.getElementById('modal-price').textContent = selectedProductData.price;
 
-            const durationButtons = document.querySelectorAll('.duration-btn');
-            durationButtons.forEach((btn, index) => {
-                if(index === 0) {
-                    btn.className = "duration-btn px-4 py-2 text-xs font-bold rounded-full border border-pink-400 bg-pink-400 text-white shadow-md transition-all";
-                } else {
-                    btn.className = "duration-btn px-4 py-2 text-xs font-bold rounded-full border border-sky-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-sky-400 transition-all";
-                }
-            });
+            // Render tombol durasi dinamis berdasarkan harga dasar
+            const durationContainer = document.getElementById('duration-options');
+            durationContainer.innerHTML = `
+                <button onclick="selectDuration('1 Hari', ${initialPrice}, this)" class="duration-btn px-4 py-2 text-xs font-bold rounded-full border border-pink-400 bg-pink-400 text-white shadow-md transition-all">1 Hari</button>
+                <button onclick="selectDuration('3 Hari', ${initialPrice * 2}, this)" class="duration-btn px-4 py-2 text-xs font-bold rounded-full border border-sky-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-sky-400 transition-all">3 Hari</button>
+                <button onclick="selectDuration('7 Hari', ${initialPrice * 4}, this)" class="duration-btn px-4 py-2 text-xs font-bold rounded-full border border-sky-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-sky-400 transition-all">7 Hari</button>
+            `;
 
             const iconText = document.getElementById('modal-icon-text');
             const iconContainer = document.getElementById('modal-icon-container');
-            if(name === 'Netflix') {
+            if(name.toLowerCase().includes('netflix')) {
                 iconContainer.className = "w-16 h-16 shrink-0 bg-white dark:bg-slate-800 rounded-2xl shadow-md flex items-center justify-center p-2 border border-sky-100 dark:border-slate-700";
                 iconText.className = "font-futuristic font-black text-red-600 text-3xl tracking-tighter";
                 iconText.textContent = "N";
-            } else if(name === 'Disney+') {
+            } else if(name.toLowerCase().includes('disney')) {
                 iconContainer.className = "w-16 h-16 shrink-0 bg-slate-900 rounded-2xl shadow-md flex items-center justify-center p-2 text-white";
                 iconText.className = "font-serif font-bold text-xs tracking-tight text-center";
                 iconText.textContent = "Disney+";
+            } else {
+                iconContainer.className = "w-16 h-16 shrink-0 bg-sky-500 rounded-2xl shadow-md flex items-center justify-center p-2 text-white";
+                iconText.className = "font-bold text-lg";
+                iconText.textContent = name.charAt(0);
             }
 
             const modal = document.getElementById('product-modal');
@@ -625,7 +659,6 @@
             closeProductModal();
         }
 
-        // Close modal when clicking outside box
         window.onclick = function(event) {
             const modal = document.getElementById('product-modal');
             if (event.target === modal) {
