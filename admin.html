@@ -41,12 +41,33 @@
     <div id="bg-day" class="bg-layer fixed inset-0 bg-gradient-to-b from-blue-400 to-blue-200 opacity-100 dark:opacity-0 -z-30"></div>
     <div id="bg-night" class="bg-layer fixed inset-0 bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 opacity-0 dark:opacity-100 -z-30"></div>
 
+    <!-- MODAL LOGIN ADMIN -->
+    <div id="login-modal" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/70 backdrop-blur-md p-4">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-sm rounded-[2.5rem] p-8 shadow-2xl border border-slate-200 dark:border-slate-800 font-mono text-center">
+            <div class="w-12 h-12 rounded-2xl bg-sky-500/10 text-sky-500 flex items-center justify-center mx-auto mb-4 text-xl">🔒</div>
+            <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-1 uppercase tracking-tight">Admin Login</h2>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-6">Masukkan username untuk masuk ke dashboard admin.</p>
+            
+            <form onsubmit="handleLogin(event)" class="space-y-4 text-left text-xs">
+                <div>
+                    <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[10px]">Username Admin</label>
+                    <input type="text" id="login-username" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-400 text-slate-900 dark:text-white" placeholder="Contoh: admin">
+                </div>
+                <button type="submit" class="w-full py-3.5 bg-sky-500 hover:bg-sky-600 text-white font-bold uppercase tracking-widest rounded-xl shadow-lg shadow-sky-500/30 transition-all">
+                    Masuk Dashboard
+                </button>
+            </form>
+        </div>
+    </div>
+
     <!-- Header / Navbar Admin -->
     <header class="w-full p-4 md:p-6 flex justify-between items-center z-50 font-mono text-xs uppercase tracking-widest bg-white/10 dark:bg-black/20 backdrop-blur-md border-b border-white/20 dark:border-white/10">
         <div class="font-futuristic font-bold text-sm tracking-wider text-slate-900 dark:text-white">
             DEEPA STORE <span class="text-sky-500 font-normal">// ADMIN PANEL</span>
         </div>
         <div class="flex items-center gap-4">
+            <span id="admin-user-display" class="text-[10px] text-slate-500 dark:text-slate-400 hidden sm:inline"></span>
+            <button onclick="handleLogout()" class="px-3 py-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-xl transition-all">Logout</button>
             <a href="index.html" class="px-4 py-2 bg-white/20 dark:bg-slate-800/60 hover:bg-white/40 dark:hover:bg-slate-700 rounded-xl transition-all text-slate-900 dark:text-white">Lihat Toko</a>
         </div>
     </header>
@@ -61,7 +82,7 @@
                 <div id="stat-active" class="text-2xl font-black text-slate-900 dark:text-white">0</div>
             </div>
             <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-5 rounded-3xl border border-white/50 dark:border-slate-800 shadow-xl">
-                <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Produk Diarsipkan (Stok Habis)</div>
+                <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Produk Diarsipkan</div>
                 <div id="stat-archived" class="text-2xl font-black text-rose-500">0</div>
             </div>
             <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-5 rounded-3xl border border-white/50 dark:border-slate-800 shadow-xl flex items-center justify-between">
@@ -103,7 +124,7 @@
 
     <!-- MODAL EDIT / TAMBAH PRODUK -->
     <div id="admin-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 hidden">
-        <div class="bg-sky-50 dark:bg-slate-900 w-full max-w-md rounded-[2.5rem] p-6 sm:p-8 shadow-2xl border border-sky-200 dark:border-slate-800 relative font-mono">
+        <div class="bg-sky-50 dark:bg-slate-900 w-full max-w-md rounded-[2.5rem] p-6 sm:p-8 shadow-2xl border border-sky-200 dark:border-slate-800 relative font-mono max-h-[90vh] overflow-y-auto">
             
             <button onclick="closeProductModal()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-700 dark:hover:text-white p-2">✕</button>
 
@@ -125,8 +146,12 @@
                     <input type="number" id="input-price" class="w-full p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-400 text-slate-900 dark:text-white" placeholder="3000">
                 </div>
                 <div>
-                    <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase">Jumlah Stok (Jika 0 otomatis diarsipkan)</label>
+                    <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase">Jumlah Stok</label>
                     <input type="number" id="input-stock" class="w-full p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-400 text-slate-900 dark:text-white" placeholder="10">
+                </div>
+                <div>
+                    <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase">Upload Foto Produk</label>
+                    <input type="file" id="input-image" accept="image/*" class="w-full p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-xs">
                 </div>
                 <div>
                     <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase">Deskripsi Singkat</label>
@@ -140,8 +165,34 @@
         </div>
     </div>
 
-    <!-- Script Manajemen Data & Logika Vercel Ready -->
+    <!-- Script Manajemen Data, Login & Fitur Arsip Manual -->
     <script>
+        // Cek Login Session saat halaman dimuat
+        window.addEventListener('DOMContentLoaded', () => {
+            const loggedAdmin = localStorage.getItem('deepa_admin_user');
+            if (loggedAdmin) {
+                document.getElementById('login-modal').classList.add('hidden');
+                document.getElementById('admin-user-display').textContent = `Admin: ${loggedAdmin}`;
+            }
+            renderAdminTable();
+        });
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('login-username').value.trim();
+            if (username) {
+                localStorage.setItem('deepa_admin_user', username);
+                document.getElementById('login-modal').classList.add('hidden');
+                document.getElementById('admin-user-display').textContent = `Admin: ${username}`;
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('deepa_admin_user');
+            document.getElementById('login-modal').classList.remove('hidden');
+            document.getElementById('login-username').value = '';
+        }
+
         // Cek Waktu untuk Tema Dark/Light otomatis
         function updateTheme() {
             const hour = new Date().getHours();
@@ -153,10 +204,10 @@
         }
         updateTheme();
 
-        // Database Produk Lokal (Local Storage agar tersimpan persisten & siap deploy ke Vercel)
+        // Database Produk Lokal (Local Storage)
         let products = JSON.parse(localStorage.getItem('deepa_products')) || [
-            { id: 1, name: 'Netflix', category: 'Hiburan', price: 3000, stock: 15, desc: 'Streaming film & series favorit dengan kualitas HD/4K.' },
-            { id: 2, name: 'Disney+', category: 'Hiburan', price: 3000, stock: 0, desc: 'Nonton ribuan film Disney, Pixar, Marvel, & Star Wars sepuasnya.' }
+            { id: 1, name: 'Netflix', category: 'Hiburan', price: 3000, stock: 15, isArchived: false, image: '', desc: 'Streaming film & series favorit dengan kualitas HD/4K.' },
+            { id: 2, name: 'Disney+', category: 'Hiburan', price: 3000, stock: 15, isArchived: false, image: '', desc: 'Nonton ribuan film Disney, Pixar, Marvel, & Star Wars sepuasnya.' }
         ];
 
         function saveToStorage() {
@@ -173,18 +224,26 @@
 
             products.forEach((p, index) => {
                 const isOutOfStock = p.stock <= 0;
-                if (isOutOfStock) {
+                const isArchived = p.isArchived || isOutOfStock;
+
+                if (isArchived) {
                     archivedCount++;
                 } else {
                     activeCount++;
                 }
 
                 const tr = document.createElement('tr');
-                tr.className = `border-b border-slate-100 dark:border-slate-800/60 transition-all ${isOutOfStock ? 'opacity-60 bg-rose-50/50 dark:bg-rose-950/10' : ''}`;
+                tr.className = `border-b border-slate-100 dark:border-slate-800/60 transition-all ${isArchived ? 'opacity-60 bg-rose-50/50 dark:bg-rose-950/10' : ''}`;
                 
+                // Render thumbnail foto jika ada
+                let thumbHtml = `<div class="w-8 h-8 rounded-lg bg-sky-100 dark:bg-slate-800 flex items-center justify-center font-bold text-sky-600">${p.name.charAt(0)}</div>`;
+                if (p.image) {
+                    thumbHtml = `<img src="${p.image}" class="w-8 h-8 rounded-lg object-cover shadow-sm border border-slate-200 dark:border-slate-700">`;
+                }
+
                 tr.innerHTML = `
                     <td class="py-4 font-bold text-slate-900 dark:text-white flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-lg bg-sky-100 dark:bg-slate-800 flex items-center justify-center font-bold text-sky-600">${p.name.charAt(0)}</div>
+                        ${thumbHtml}
                         <div>
                             <div>${p.name}</div>
                             <div class="text-[10px] text-slate-400 font-normal">ID: #DP-${p.id}</div>
@@ -193,14 +252,15 @@
                     <td class="py-4 text-slate-600 dark:text-slate-300">${p.category}</td>
                     <td class="py-4 font-bold text-pink-500">Rp${p.price.toLocaleString('id-ID')}</td>
                     <td class="py-4">
-                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${isOutOfStock ? 'bg-rose-100 text-rose-600 dark:bg-rose-950 dark:text-rose-400' : 'bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400'}">
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${p.stock <= 0 ? 'bg-rose-100 text-rose-600 dark:bg-rose-950 dark:text-rose-400' : 'bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400'}">
                             ${p.stock} Unit
                         </span>
                     </td>
                     <td class="py-4">
-                        ${isOutOfStock ? '<span class="text-rose-500 font-bold uppercase text-[10px]">📦 Diarsipkan (Stok Kosong)</span>' : '<span class="text-emerald-500 font-bold uppercase text-[10px]">🟢 Aktif di Toko</span>'}
+                        ${isArchived ? '<span class="text-rose-500 font-bold uppercase text-[10px]">📦 Diarsipkan</span>' : '<span class="text-emerald-500 font-bold uppercase text-[10px]">🟢 Aktif</span>'}
                     </td>
                     <td class="py-4 text-right space-x-2">
+                        <button onclick="toggleArchive(${index})" title="Arsipkan / Aktifkan" class="px-2.5 py-1.5 bg-amber-100 dark:bg-slate-800 text-amber-600 dark:text-amber-400 rounded-lg hover:bg-amber-200 transition-all">📦</button>
                         <button onclick="editProduct(${index})" class="px-3 py-1.5 bg-sky-100 dark:bg-slate-800 text-sky-600 dark:text-sky-300 rounded-lg hover:bg-sky-200 transition-all">Edit</button>
                         <button onclick="deleteProduct(${index})" class="px-3 py-1.5 bg-rose-100 dark:bg-slate-800 text-rose-600 dark:text-rose-300 rounded-lg hover:bg-rose-200 transition-all">Hapus</button>
                     </td>
@@ -212,8 +272,29 @@
             document.getElementById('stat-archived').textContent = archivedCount;
         }
 
+        function toggleArchive(index) {
+            products[index].isArchived = !products[index].isArchived;
+            saveToStorage();
+        }
+
+        let currentImageBase64 = '';
+
+        document.getElementById('input-image').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(uploadEvent) {
+                    currentImageBase64 = uploadEvent.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
         function openProductModal(index = -1) {
             document.getElementById('admin-modal').classList.remove('hidden');
+            currentImageBase64 = '';
+            document.getElementById('input-image').value = '';
+
             if (index > -1) {
                 document.getElementById('modal-heading').textContent = "Edit Produk";
                 document.getElementById('edit-index').value = index;
@@ -222,6 +303,7 @@
                 document.getElementById('input-price').value = products[index].price;
                 document.getElementById('input-stock').value = products[index].stock;
                 document.getElementById('input-desc').value = products[index].desc;
+                currentImageBase64 = products[index].image || '';
             } else {
                 document.getElementById('modal-heading').textContent = "Tambah Produk Baru";
                 document.getElementById('edit-index').value = -1;
@@ -239,8 +321,8 @@
 
         function saveProduct() {
             const index = parseInt(document.getElementById('edit-index').value);
-            const name = document.getElementById('input-name').value;
-            const category = document.getElementById('input-category').value;
+            const name = document.getElementById('input-name').value.trim();
+            const category = document.getElementById('input-category').value.trim();
             const price = parseInt(document.getElementById('input-price').value) || 0;
             const stock = parseInt(document.getElementById('input-stock').value) || 0;
             const desc = document.getElementById('input-desc').value;
@@ -251,10 +333,27 @@
             }
 
             if (index > -1) {
-                products[index] = { ...products[index], name, category, price, stock, desc };
+                products[index] = { 
+                    ...products[index], 
+                    name, 
+                    category, 
+                    price, 
+                    stock, 
+                    desc, 
+                    image: currentImageBase64 || products[index].image 
+                };
             } else {
                 const newId = products.length > 0 ? products[products.length - 1].id + 1 : 1;
-                products.push({ id: newId, name, category, price, stock, desc });
+                products.push({ 
+                    id: newId, 
+                    name, 
+                    category, 
+                    price, 
+                    stock, 
+                    isArchived: false, 
+                    image: currentImageBase64, 
+                    desc 
+                });
             }
 
             saveToStorage();
@@ -271,9 +370,6 @@
                 saveToStorage();
             }
         }
-
-        // Jalankan render saat halaman dimuat
-        renderAdminTable();
     </script>
 </body>
 </html>
