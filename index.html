@@ -163,7 +163,7 @@
         }
     </style>
 </head>
-<body class="antialiased overflow-x-hidden font-sans select-none text-slate-800 dark:text-slate-200 min-h-screen flex flex-col">
+<body class="antialiased overflow-x-hidden font-sans select-none text-slate-800 dark:text-slate-200 h-screen w-screen flex flex-col justify-between overflow-hidden">
 
     <!-- Loading Screen Split Curtains -->
     <div id="loader-top" class="fixed top-0 left-0 w-full h-1/2 bg-black z-[100] curtain flex items-end justify-center pb-1 shadow-2xl">
@@ -225,7 +225,7 @@
     </div>
 
     <!-- Header Navigation -->
-    <header class="fixed top-0 left-0 w-full p-4 md:p-8 flex justify-between items-center z-50 font-mono text-[10px] md:text-xs uppercase tracking-widest transition-colors duration-1000">
+    <header class="absolute top-0 left-0 w-full p-4 md:p-8 flex justify-between items-center z-50 font-mono text-[10px] md:text-xs uppercase tracking-widest transition-colors duration-1000 pointer-events-auto">
         <!-- Left Section -->
         <div class="hidden lg:block w-1/3 text-left">
             INDONESIA
@@ -248,13 +248,13 @@
     </header>
 
     <!-- Fallback date for mobile -->
-    <div class="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 font-mono text-[9px] uppercase tracking-widest current-date-display opacity-70"></div>
+    <div class="lg:hidden absolute bottom-4 left-1/2 -translate-x-1/2 z-50 font-mono text-[9px] uppercase tracking-widest current-date-display opacity-70 pointer-events-none"></div>
 
-    <!-- MAIN VIEW CONTAINER -->
-    <div class="relative z-40 flex-1 flex flex-col justify-center items-center w-full pt-24 pb-16 px-4 sm:px-6">
+    <!-- MAIN VIEW CONTAINER (Centered Vertically & Horizontally) -->
+    <div class="relative z-40 flex-1 flex flex-col justify-center items-center w-full h-full px-4 sm:px-6">
 
         <!-- HOME VIEW (Landing) -->
-        <main id="home-view" class="view-section flex flex-col items-center justify-center text-center my-auto">
+        <main id="home-view" class="view-section flex flex-col items-center justify-center text-center">
             <!-- Tagline with Typing Effect -->
             <div class="flex items-center gap-1 mb-2 md:mb-4 font-mono text-[10px] sm:text-xs md:text-sm tracking-widest uppercase transition-colors duration-1000 h-6">
                 <span id="typing-text"></span><span class="typing-cursor"></span>
@@ -267,7 +267,7 @@
         </main>
 
         <!-- JAJAN CATALOG VIEW -->
-        <div id="jajan-view" class="view-section hidden w-full max-w-4xl mx-auto my-auto font-mono">
+        <div id="jajan-view" class="view-section hidden w-full max-w-4xl mx-auto font-mono">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 justify-center">
                 
                 <!-- Card 1: Netflix -->
