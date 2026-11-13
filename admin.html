@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en" class="transition-colors duration-1000">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepa Store - Admin Dashboard</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Cinzel"', 'serif'],
+                        mono: ['"Space Mono"', 'monospace'],
+                        sans: ['Inter', 'sans-serif'],
+                        futuristic: ['"Orbitron"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .bg-layer { transition: opacity 1.5s ease-in-out; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(150, 150, 150, 0.3); border-radius: 4px; }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden font-sans select-none text-slate-800 dark:text-slate-200 min-h-screen flex flex-col">
+
+    <!-- Background Gradients -->
+    <div id="bg-day" class="bg-layer fixed inset-0 bg-gradient-to-b from-blue-400 to-blue-200 opacity-100 dark:opacity-0 -z-30"></div>
+    <div id="bg-night" class="bg-layer fixed inset-0 bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 opacity-0 dark:opacity-100 -z-30"></div>
+
+    <!-- Header / Navbar Admin -->
+    <header class="w-full p-4 md:p-6 flex justify-between items-center z-50 font-mono text-xs uppercase tracking-widest bg-white/10 dark:bg-black/20 backdrop-blur-md border-b border-white/20 dark:border-white/10">
+        <div class="font-futuristic font-bold text-sm tracking-wider text-slate-900 dark:text-white">
+            DEEPA STORE <span class="text-sky-500 font-normal">// ADMIN PANEL</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <a href="index.html" class="px-4 py-2 bg-white/20 dark:bg-slate-800/60 hover:bg-white/40 dark:hover:bg-slate-700 rounded-xl transition-all text-slate-900 dark:text-white">Lihat Toko</a>
+        </div>
+    </header>
+
+    <!-- Main Container Admin -->
+    <main class="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 lg:p-8 font-mono">
+        
+        <!-- Top Stats / Info -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-5 rounded-3xl border border-white/50 dark:border-slate-800 shadow-xl">
+                <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Total Produk Aktif</div>
+                <div id="stat-active" class="text-2xl font-black text-slate-900 dark:text-white">0</div>
+            </div>
+            <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-5 rounded-3xl border border-white/50 dark:border-slate-800 shadow-xl">
+                <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Produk Diarsipkan (Stok Habis)</div>
+                <div id="stat-archived" class="text-2xl font-black text-rose-500">0</div>
+            </div>
+            <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-5 rounded-3xl border border-white/50 dark:border-slate-800 shadow-xl flex items-center justify-between">
+                <div>
+                    <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Aksi Cepat</div>
+                    <div class="text-xs font-bold text-sky-500">Tambah Produk Baru</div>
+                </div>
+                <button onclick="openProductModal()" class="w-10 h-10 rounded-2xl bg-sky-500 text-white font-bold text-xl flex items-center justify-center shadow-lg shadow-sky-500/30 hover:bg-sky-600 transition-all">+</button>
+            </div>
+        </div>
+
+        <!-- Tabel Daftar Produk -->
+        <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[2.5rem] p-6 shadow-2xl border border-white/50 dark:border-slate-800">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white uppercase tracking-tight">Kelola Katalog Produk</h2>
+                <span class="text-xs text-slate-500 dark:text-slate-400">Sinkronisasi Otomatis Vercel</span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead>
+                        <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-400 uppercase tracking-wider">
+                            <th class="pb-3 font-bold">Produk</th>
+                            <th class="pb-3 font-bold">Kategori</th>
+                            <th class="pb-3 font-bold">Harga Mulai</th>
+                            <th class="pb-3 font-bold">Stok</th>
+                            <th class="pb-3 font-bold">Status</th>
+                            <th class="pb-3 font-bold text-right">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="product-table-body" class="divide-y divide-slate-100 dark:divide-slate-800/60">
+                        <!-- Data akan dirender otomatis via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- MODAL EDIT / TAMBAH PRODUK -->
+    <div id="admin-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 hidden">
+        <div class="bg-sky-50 dark:bg-slate-900 w-full max-w-md rounded-[2.5rem] p-6 sm:p-8 shadow-2xl border border-sky-200 dark:border-slate-800 relative font-mono">
+            
+            <button onclick="closeProductModal()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-700 dark:hover:text-white p-2">✕</button>
+
+            <h3 id="modal-heading" class="text-lg font-bold text-slate-900 dark:text-white mb-4 uppercase tracking-tight">Tambah / Edit Produk</h3>
+
+            <input type="hidden" id="edit-index" value="-1">
+
+            <div class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase">Nama Produk</label>
+                    <input type="text" id="input-name" class="w-full p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-400 text-slate-900 dark:text-white" placeholder="Contoh: Netflix">
+                </div>
+                <div>
+                    <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase">Kategori</label>
+                    <input type="text" id="input-category" class="w-full p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-400 text-slate-900 dark:text-white" placeholder="Contoh: Hiburan">
+                </div>
+                <div>
+                    <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase">Harga Mulai (Rp)</label>
+                    <input type="number" id="input-price" class="w-full p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-400 text-slate-900 dark:text-white" placeholder="3000">
+                </div>
+                <div>
+                    <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase">Jumlah Stok (Jika 0 otomatis diarsipkan)</label>
+                    <input type="number" id="input-stock" class="w-full p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-400 text-slate-900 dark:text-white" placeholder="10">
+                </div>
+                <div>
+                    <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase">Deskripsi Singkat</label>
+                    <textarea id="input-desc" class="w-full p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-400 text-slate-900 dark:text-white" rows="2" placeholder="Streaming film & series..."></textarea>
+                </div>
+
+                <button onclick="saveProduct()" class="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold uppercase tracking-widest rounded-xl shadow-lg shadow-emerald-500/30 transition-all mt-2">
+                    Simpan Perubahan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Manajemen Data & Logika Vercel Ready -->
+    <script>
+        // Cek Waktu untuk Tema Dark/Light otomatis
+        function updateTheme() {
+            const hour = new Date().getHours();
+            if (hour >= 6 && hour < 18) {
+                document.documentElement.classList.remove('dark');
+            } else {
+                document.documentElement.classList.add('dark');
+            }
+        }
+        updateTheme();
+
+        // Database Produk Lokal (Local Storage agar tersimpan persisten & siap deploy ke Vercel)
+        let products = JSON.parse(localStorage.getItem('deepa_products')) || [
+            { id: 1, name: 'Netflix', category: 'Hiburan', price: 3000, stock: 15, desc: 'Streaming film & series favorit dengan kualitas HD/4K.' },
+            { id: 2, name: 'Disney+', category: 'Hiburan', price: 3000, stock: 0, desc: 'Nonton ribuan film Disney, Pixar, Marvel, & Star Wars sepuasnya.' }
+        ];
+
+        function saveToStorage() {
+            localStorage.setItem('deepa_products', JSON.stringify(products));
+            renderAdminTable();
+        }
+
+        function renderAdminTable() {
+            const tbody = document.getElementById('product-table-body');
+            tbody.innerHTML = '';
+
+            let activeCount = 0;
+            let archivedCount = 0;
+
+            products.forEach((p, index) => {
+                const isOutOfStock = p.stock <= 0;
+                if (isOutOfStock) {
+                    archivedCount++;
+                } else {
+                    activeCount++;
+                }
+
+                const tr = document.createElement('tr');
+                tr.className = `border-b border-slate-100 dark:border-slate-800/60 transition-all ${isOutOfStock ? 'opacity-60 bg-rose-50/50 dark:bg-rose-950/10' : ''}`;
+                
+                tr.innerHTML = `
+                    <td class="py-4 font-bold text-slate-900 dark:text-white flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-sky-100 dark:bg-slate-800 flex items-center justify-center font-bold text-sky-600">${p.name.charAt(0)}</div>
+                        <div>
+                            <div>${p.name}</div>
+                            <div class="text-[10px] text-slate-400 font-normal">ID: #DP-${p.id}</div>
+                        </div>
+                    </td>
+                    <td class="py-4 text-slate-600 dark:text-slate-300">${p.category}</td>
+                    <td class="py-4 font-bold text-pink-500">Rp${p.price.toLocaleString('id-ID')}</td>
+                    <td class="py-4">
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${isOutOfStock ? 'bg-rose-100 text-rose-600 dark:bg-rose-950 dark:text-rose-400' : 'bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400'}">
+                            ${p.stock} Unit
+                        </span>
+                    </td>
+                    <td class="py-4">
+                        ${isOutOfStock ? '<span class="text-rose-500 font-bold uppercase text-[10px]">📦 Diarsipkan (Stok Kosong)</span>' : '<span class="text-emerald-500 font-bold uppercase text-[10px]">🟢 Aktif di Toko</span>'}
+                    </td>
+                    <td class="py-4 text-right space-x-2">
+                        <button onclick="editProduct(${index})" class="px-3 py-1.5 bg-sky-100 dark:bg-slate-800 text-sky-600 dark:text-sky-300 rounded-lg hover:bg-sky-200 transition-all">Edit</button>
+                        <button onclick="deleteProduct(${index})" class="px-3 py-1.5 bg-rose-100 dark:bg-slate-800 text-rose-600 dark:text-rose-300 rounded-lg hover:bg-rose-200 transition-all">Hapus</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('stat-active').textContent = activeCount;
+            document.getElementById('stat-archived').textContent = archivedCount;
+        }
+
+        function openProductModal(index = -1) {
+            document.getElementById('admin-modal').classList.remove('hidden');
+            if (index > -1) {
+                document.getElementById('modal-heading').textContent = "Edit Produk";
+                document.getElementById('edit-index').value = index;
+                document.getElementById('input-name').value = products[index].name;
+                document.getElementById('input-category').value = products[index].category;
+                document.getElementById('input-price').value = products[index].price;
+                document.getElementById('input-stock').value = products[index].stock;
+                document.getElementById('input-desc').value = products[index].desc;
+            } else {
+                document.getElementById('modal-heading').textContent = "Tambah Produk Baru";
+                document.getElementById('edit-index').value = -1;
+                document.getElementById('input-name').value = '';
+                document.getElementById('input-category').value = 'Hiburan';
+                document.getElementById('input-price').value = '';
+                document.getElementById('input-stock').value = '10';
+                document.getElementById('input-desc').value = '';
+            }
+        }
+
+        function closeProductModal() {
+            document.getElementById('admin-modal').classList.add('hidden');
+        }
+
+        function saveProduct() {
+            const index = parseInt(document.getElementById('edit-index').value);
+            const name = document.getElementById('input-name').value;
+            const category = document.getElementById('input-category').value;
+            const price = parseInt(document.getElementById('input-price').value) || 0;
+            const stock = parseInt(document.getElementById('input-stock').value) || 0;
+            const desc = document.getElementById('input-desc').value;
+
+            if (!name) {
+                alert('Nama produk wajib diisi!');
+                return;
+            }
+
+            if (index > -1) {
+                products[index] = { ...products[index], name, category, price, stock, desc };
+            } else {
+                const newId = products.length > 0 ? products[products.length - 1].id + 1 : 1;
+                products.push({ id: newId, name, category, price, stock, desc });
+            }
+
+            saveToStorage();
+            closeProductModal();
+        }
+
+        function editProduct(index) {
+            openProductModal(index);
+        }
+
+        function deleteProduct(index) {
+            if (confirm(`Yakin ingin menghapus produk ${products[index].name}?`)) {
+                products.splice(index, 1);
+                saveToStorage();
+            }
+        }
+
+        // Jalankan render saat halaman dimuat
+        renderAdminTable();
+    </script>
+</body>
+</html>
