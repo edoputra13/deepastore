@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Satya - Selected Work</title>
+    <title>Deepa Store - Selected Work</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -138,13 +138,16 @@
         .view-section {
             transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
         }
-        .view-enter {
+
+        /* Modal Animation */
+        .modal-enter {
             opacity: 0;
-            transform: translateY(15px);
+            transform: scale(0.95) translateY(10px);
         }
-        .view-enter-active {
+        .modal-enter-active {
             opacity: 1;
-            transform: translateY(0);
+            transform: scale(1) translateY(0);
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
         }
 
         /* Custom Scrollbar */
@@ -264,8 +267,8 @@
         </main>
 
         <!-- JAJAN CATALOG VIEW -->
-        <div id="jajan-view" class="view-section hidden w-full max-w-5xl mx-auto my-auto font-mono">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div id="jajan-view" class="view-section hidden w-full max-w-4xl mx-auto my-auto font-mono">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 justify-center">
                 
                 <!-- Card 1: Netflix -->
                 <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[2rem] p-6 shadow-xl relative flex flex-col justify-between border border-white/50 dark:border-slate-800 transition-all duration-300 hover:-translate-y-1">
@@ -278,11 +281,11 @@
                         <div>
                             <h3 class="font-mono font-bold text-lg text-slate-900 dark:text-white tracking-tight">Netflix</h3>
                             <span class="inline-block bg-sky-100 dark:bg-sky-950 text-sky-600 dark:text-sky-300 text-[10px] font-mono uppercase px-2 py-0.5 rounded-full my-1 tracking-wider">Hiburan</span>
-                            <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 tracking-wider">Mulai <span class="font-bold text-slate-900 dark:text-white">Rp6.000</span></div>
+                            <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 tracking-wider">Mulai <span class="font-bold text-slate-900 dark:text-white">Rp3.000</span></div>
                         </div>
                     </div>
 
-                    <button onclick="alert('Memilih varian Netflix')" class="w-full py-3.5 bg-sky-200 hover:bg-sky-300 dark:bg-sky-950/70 dark:hover:bg-sky-900 text-sky-900 dark:text-sky-200 font-mono font-bold text-xs uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 transition-colors">
+                    <button onclick="openProductModal('Netflix', 'Hiburan', 'Streaming film & series favorit dengan kualitas HD/4K.')" class="w-full py-3.5 bg-sky-200 hover:bg-sky-300 dark:bg-sky-950/70 dark:hover:bg-sky-900 text-sky-900 dark:text-sky-200 font-mono font-bold text-xs uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 transition-colors">
                         Pilih Varian 
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
                     </button>
@@ -299,32 +302,11 @@
                         <div>
                             <h3 class="font-mono font-bold text-lg text-slate-900 dark:text-white tracking-tight">Disney+</h3>
                             <span class="inline-block bg-sky-100 dark:bg-sky-950 text-sky-600 dark:text-sky-300 text-[10px] font-mono uppercase px-2 py-0.5 rounded-full my-1 tracking-wider">Hiburan</span>
-                            <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 tracking-wider">Mulai <span class="font-bold text-slate-900 dark:text-white">Rp5.000</span></div>
-                        </div>
-                    </div>
-
-                    <button onclick="alert('Memilih varian Disney+')" class="w-full py-3.5 bg-sky-200 hover:bg-sky-300 dark:bg-sky-950/70 dark:hover:bg-sky-900 text-sky-900 dark:text-sky-200 font-mono font-bold text-xs uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 transition-colors">
-                        Pilih Varian 
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                    </button>
-                </div>
-
-                <!-- Card 3: Canva -->
-                <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[2rem] p-6 shadow-xl relative flex flex-col justify-between border border-white/50 dark:border-slate-800 transition-all duration-300 hover:-translate-y-1">
-                    <div class="absolute top-4 right-5 text-amber-400 text-lg">★</div>
-                    
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-16 h-16 shrink-0 bg-gradient-to-tr from-cyan-500 to-indigo-600 rounded-2xl shadow-md flex items-center justify-center text-white">
-                            <span class="font-serif font-bold text-3xl">C</span>
-                        </div>
-                        <div>
-                            <h3 class="font-mono font-bold text-lg text-slate-900 dark:text-white tracking-tight">Canva</h3>
-                            <span class="inline-block bg-sky-100 dark:bg-sky-950 text-sky-600 dark:text-sky-300 text-[10px] font-mono uppercase px-2 py-0.5 rounded-full my-1 tracking-wider">Desain</span>
                             <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 tracking-wider">Mulai <span class="font-bold text-slate-900 dark:text-white">Rp3.000</span></div>
                         </div>
                     </div>
 
-                    <button onclick="alert('Memilih varian Canva')" class="w-full py-3.5 bg-sky-200 hover:bg-sky-300 dark:bg-sky-950/70 dark:hover:bg-sky-900 text-sky-900 dark:text-sky-200 font-mono font-bold text-xs uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 transition-colors">
+                    <button onclick="openProductModal('Disney+', 'Hiburan', 'Nonton ribuan film Disney, Pixar, Marvel, & Star Wars sepuasnya.')" class="w-full py-3.5 bg-sky-200 hover:bg-sky-300 dark:bg-sky-950/70 dark:hover:bg-sky-900 text-sky-900 dark:text-sky-200 font-mono font-bold text-xs uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 transition-colors">
                         Pilih Varian 
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
                     </button>
@@ -333,6 +315,74 @@
             </div>
         </div>
 
+    </div>
+
+    <!-- PRODUCT VARIANT MODAL POP-UP -->
+    <div id="product-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 hidden">
+        <div id="modal-box" class="bg-sky-50 dark:bg-slate-900 w-full max-w-lg rounded-[2.5rem] sm:rounded-[3rem] p-6 sm:p-8 shadow-2xl border border-sky-200 dark:border-slate-800 relative font-mono modal-enter max-h-[90vh] overflow-y-auto">
+            
+            <!-- Close Button -->
+            <button onclick="closeProductModal()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors p-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+
+            <!-- Product Header Info -->
+            <div class="flex items-center gap-4 mb-4">
+                <div id="modal-icon-container" class="w-16 h-16 shrink-0 bg-white dark:bg-slate-800 rounded-2xl shadow-md flex items-center justify-center p-2 border border-sky-100 dark:border-slate-700">
+                    <span id="modal-icon-text" class="font-futuristic font-black text-red-600 text-3xl tracking-tighter">N</span>
+                </div>
+                <div>
+                    <h3 id="modal-title" class="font-mono font-bold text-2xl text-slate-900 dark:text-white tracking-tight">Netflix</h3>
+                    <span id="modal-category" class="inline-block bg-sky-200/70 dark:bg-sky-950 text-sky-700 dark:text-sky-300 text-[10px] font-mono uppercase px-2.5 py-0.5 rounded-full my-1 tracking-wider">Hiburan</span>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <p id="modal-desc" class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
+                Streaming film & series favorit dengan kualitas HD/4K.
+            </p>
+
+            <!-- Pilih Paket -->
+            <div class="mb-5">
+                <label class="block text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-widest mb-2.5">Pilih Paket</label>
+                <div id="packet-options" class="flex flex-wrap gap-2.5">
+                    <button class="packet-btn px-5 py-2 text-xs font-bold rounded-full border border-pink-400 bg-pink-400 text-white shadow-md cursor-default">1P 1U</button>
+                </div>
+            </div>
+
+            <!-- Pilih Durasi -->
+            <div class="mb-6">
+                <label class="block text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-widest mb-2.5">Pilih Durasi</label>
+                <div id="duration-options" class="flex flex-wrap gap-2.5">
+                    <button onclick="selectDuration('1 Hari', 3000, this)" class="duration-btn px-4 py-2 text-xs font-bold rounded-full border border-pink-400 bg-pink-400 text-white shadow-md transition-all">1 Hari</button>
+                    <button onclick="selectDuration('3 Hari', 6000, this)" class="duration-btn px-4 py-2 text-xs font-bold rounded-full border border-sky-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-sky-400 transition-all">3 Hari</button>
+                    <button onclick="selectDuration('7 Hari', 12000, this)" class="duration-btn px-4 py-2 text-xs font-bold rounded-full border border-sky-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-sky-400 transition-all">7 Hari</button>
+                </div>
+            </div>
+
+            <!-- Harga Box -->
+            <div class="bg-pink-100/70 dark:bg-slate-800/80 border border-pink-200 dark:border-slate-700 rounded-2xl p-4 flex items-center justify-between mb-5 shadow-sm">
+                <span class="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">Harga</span>
+                <span id="modal-price" class="text-xl sm:text-2xl font-black text-pink-500 dark:text-pink-400 tracking-tight">Rp3.000</span>
+            </div>
+
+            <!-- Keterangan Produk -->
+            <div class="bg-sky-100/60 dark:bg-slate-800/50 rounded-2xl p-4 mb-6 text-xs text-slate-600 dark:text-slate-400 leading-relaxed border border-sky-200/50 dark:border-slate-700/50">
+                <div class="font-bold text-slate-800 dark:text-slate-200 mb-1">Keterangan produk</div>
+                Akun 1 Profile 1 User. Garansi selama durasi aktif. Dilarang mengubah password & profil orang lain.
+            </div>
+
+            <!-- Action Button WhatsApp -->
+            <div>
+                <button onclick="buyViaWhatsApp()" class="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-mono font-bold text-xs uppercase tracking-widest rounded-2xl shadow-lg shadow-emerald-500/30 flex items-center justify-center gap-2 transition-all">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                    Beli Langsung via WhatsApp
+                </button>
+            </div>
+
+        </div>
     </div>
 
     <!-- Time Logic & Page Switcher Script -->
@@ -414,14 +464,13 @@
                 if (viewName === 'jajan') {
                     jajanView.classList.remove('hidden');
                     navLinks[1].classList.add('text-sky-400', 'font-semibold');
-                    ambientGlow.style.opacity = '1'; // Smooth ambient glow on
+                    ambientGlow.style.opacity = '1';
                 } else {
                     homeView.classList.remove('hidden');
                     navLinks[0].classList.add('text-sky-400', 'font-semibold');
-                    ambientGlow.style.opacity = '0'; // Ambient glow off
+                    ambientGlow.style.opacity = '0';
                 }
 
-                // Fade in target view smoothly
                 const targetView = viewName === 'jajan' ? jajanView : homeView;
                 targetView.style.opacity = '0';
                 targetView.style.transform = 'translateY(15px)';
@@ -433,6 +482,92 @@
                 }, 50);
 
             }, 300);
+        }
+
+        // Modal Control & Dynamic Price Functions
+        let selectedProductData = {
+            name: 'Netflix',
+            packet: '1P 1U',
+            duration: '1 Hari',
+            price: 'Rp3.000',
+            rawPrice: 3000
+        };
+
+        function openProductModal(name, category, desc) {
+            selectedProductData.name = name;
+            document.getElementById('modal-title').textContent = name;
+            document.getElementById('modal-category').textContent = category;
+            document.getElementById('modal-desc').textContent = desc;
+
+            // Set default ke 1 Hari saat modal dibuka
+            selectedProductData.duration = '1 Hari';
+            selectedProductData.price = 'Rp3.000';
+            selectedProductData.rawPrice = 3000;
+            document.getElementById('modal-price').textContent = 'Rp3.000';
+
+            // Reset tombol durasi ke default pertama (1 Hari aktif)
+            const durationButtons = document.querySelectorAll('.duration-btn');
+            durationButtons.forEach((btn, index) => {
+                if(index === 0) {
+                    btn.className = "duration-btn px-4 py-2 text-xs font-bold rounded-full border border-pink-400 bg-pink-400 text-white shadow-md transition-all";
+                } else {
+                    btn.className = "duration-btn px-4 py-2 text-xs font-bold rounded-full border border-sky-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-sky-400 transition-all";
+                }
+            });
+
+            // Sesuaikan ikon modal berdasarkan produk
+            const iconText = document.getElementById('modal-icon-text');
+            const iconContainer = document.getElementById('modal-icon-container');
+            if(name === 'Netflix') {
+                iconContainer.className = "w-16 h-16 shrink-0 bg-white dark:bg-slate-800 rounded-2xl shadow-md flex items-center justify-center p-2 border border-sky-100 dark:border-slate-700";
+                iconText.className = "font-futuristic font-black text-red-600 text-3xl tracking-tighter";
+                iconText.textContent = "N";
+            } else if(name === 'Disney+') {
+                iconContainer.className = "w-16 h-16 shrink-0 bg-slate-900 rounded-2xl shadow-md flex items-center justify-center p-2 text-white";
+                iconText.className = "font-serif font-bold text-xs tracking-tight text-center";
+                iconText.textContent = "Disney+";
+            }
+
+            const modal = document.getElementById('product-modal');
+            const modalBox = document.getElementById('modal-box');
+            modal.classList.remove('hidden');
+            modalBox.classList.add('modal-enter-active');
+        }
+
+        function closeProductModal() {
+            const modal = document.getElementById('product-modal');
+            modal.classList.add('hidden');
+        }
+
+        function selectDuration(durationName, priceValue, btn) {
+            document.querySelectorAll('.duration-btn').forEach(b => {
+                b.className = "duration-btn px-4 py-2 text-xs font-bold rounded-full border border-sky-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-sky-400 transition-all";
+            });
+            btn.className = "duration-btn px-4 py-2 text-xs font-bold rounded-full border border-pink-400 bg-pink-400 text-white shadow-md transition-all";
+
+            selectedProductData.duration = durationName;
+            selectedProductData.rawPrice = priceValue;
+            
+            const formattedPrice = "Rp" + priceValue.toLocaleString('id-ID');
+            selectedProductData.price = formattedPrice;
+
+            document.getElementById('modal-price').textContent = formattedPrice;
+        }
+
+        function buyViaWhatsApp() {
+            const phoneNumber = "6281234567890"; // Ganti dengan nomor WhatsApp Admin Deepa Store Anda
+            const message = `Halo Deepa Store, saya ingin memesan:\n\n*Produk:* ${selectedProductData.name}\n*Paket:* ${selectedProductData.packet}\n*Durasi:* ${selectedProductData.duration}\n*Total Harga:* ${selectedProductData.price}\n\nMohon proses pesanan saya. Terima kasih!`;
+            const encoded = encodeURIComponent(message);
+            window.open(`https://wa.me/${phoneNumber}?text=${encoded}`, '_blank');
+            closeProductModal();
+        }
+
+        // Close modal when clicking outside box
+        window.onclick = function(event) {
+            const modal = document.getElementById('product-modal');
+            if (event.target === modal) {
+                closeProductModal();
+            }
         }
 
         // Navbar Animation Effects
