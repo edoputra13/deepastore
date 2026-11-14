@@ -188,7 +188,7 @@
     <!-- Script Integrasi Neon Data API -->
     <script>
         const CORRECT_ADMIN_USER = "edoputra28*";
-        const NEON_DATA_API_URL = "https://ep-billowing-shadow-bbbzzr6h.apirest.c-15.us-east-1.aws.neon.tech/neondb/rest/v1";
+        const NEON_DATA_API_URL = "https://ep-billowing-shadow-bbbzzr6h.rt.c-15.us-east-1.aws.neon.tech/products";
         const apiHeaders = {
             "Content-Type": "application/json",
             "Prefer": "return=representation"
@@ -268,7 +268,7 @@
         // 1. Fetch / Ambil Data dari Neon Data API
         async function fetchProductsFromAPI() {
             try {
-                const response = await fetch(`${NEON_DATA_API_URL}/products?select=*`, {
+                const response = await fetch(`${NEON_DATA_API_URL}?select=*`, {
                     method: "GET",
                     headers: apiHeaders
                 });
@@ -388,13 +388,13 @@
             try {
                 let response;
                 if (id) {
-                    response = await fetch(`${NEON_DATA_API_URL}/products?id=eq.${id}`, {
+                    response = await fetch(`${NEON_DATA_API_URL}?id=eq.${id}`, {
                         method: 'PATCH',
                         headers: apiHeaders,
                         body: JSON.stringify(productPayload)
                     });
                 } else {
-                    response = await fetch(`${NEON_DATA_API_URL}/products`, {
+                    response = await fetch(NEON_DATA_API_URL, {
                         method: 'POST',
                         headers: apiHeaders,
                         body: JSON.stringify(productPayload)
@@ -424,7 +424,7 @@
         async function toggleArchiveAPI(id, index) {
             try {
                 const currentStatus = products[index].isArchived;
-                const response = await fetch(`${NEON_DATA_API_URL}/products?id=eq.${id}`, {
+                const response = await fetch(`${NEON_DATA_API_URL}?id=eq.${id}`, {
                     method: 'PATCH',
                     headers: apiHeaders,
                     body: JSON.stringify({ isArchived: !currentStatus })
@@ -443,7 +443,7 @@
         async function deleteProductAPI(id) {
             if (confirm(`Yakin ingin menghapus produk ID #${id}?`)) {
                 try {
-                    const response = await fetch(`${NEON_DATA_API_URL}/products?id=eq.${id}`, {
+                    const response = await fetch(`${NEON_DATA_API_URL}?id=eq.${id}`, {
                         method: 'DELETE',
                         headers: apiHeaders
                     });
