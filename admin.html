@@ -201,27 +201,20 @@
         window.addEventListener('DOMContentLoaded', () => {
             const loggedAdmin = localStorage.getItem('deepa_admin_user');
             if (loggedAdmin === CORRECT_ADMIN_USER) {
-                // Jika sudah login dengan benar, sembunyikan modal
                 document.getElementById('login-modal').classList.add('hidden');
                 document.getElementById('admin-user-display').textContent = `Admin: ${loggedAdmin}`;
             } else {
-                // Jika belum/gagal login, pastikan modal login TETAP MUNCUL dan tidak bisa diakses
                 document.getElementById('login-modal').classList.remove('hidden');
                 localStorage.removeItem('deepa_admin_user');
             }
             renderAdminTable();
         });
 
-        // Fitur Auto-Close: Hanya menutup modal saat area luar diklik (jika sudah login atau ingin batal, tapi session tetap divalidasi)
+        // Fitur Auto-Close: Saat area luar diklik, pop-up login akan langsung menutup
         function handleOutsideClick(event) {
             const loginBox = document.getElementById('login-box');
-            const loggedAdmin = localStorage.getItem('deepa_admin_user');
-            
-            // Hanya izinkan tutup modal jika area luar diklik DAN user sudah terautentikasi sebelumnya
             if (!loginBox.contains(event.target)) {
-                if (loggedAdmin === CORRECT_ADMIN_USER) {
-                    document.getElementById('login-modal').classList.add('hidden');
-                }
+                document.getElementById('login-modal').classList.add('hidden');
             }
         }
 
@@ -241,7 +234,7 @@
                 document.getElementById('admin-user-display').textContent = `Admin: ${usernameInput}`;
                 errorElement.classList.add('hidden');
             } else {
-                // Gagal login: Munculkan pesan error dan pastikan sesi dibersihkan
+                // Gagal login: Munculkan pesan error, pastikan sesi dibersihkan dan modal TIDAK MENUTUP
                 localStorage.removeItem('deepa_admin_user');
                 errorElement.classList.remove('hidden');
                 document.getElementById('login-username').value = '';
