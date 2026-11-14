@@ -257,10 +257,10 @@
             </h1>
         </main>
 
-        <!-- JAJAN CATALOG VIEW (Menampilkan Foto Produk Dinamis) -->
+        <!-- JAJAN CATALOG VIEW -->
         <div id="jajan-view" class="view-section hidden w-full max-w-4xl mx-auto font-mono max-h-[75vh] overflow-y-auto px-2 py-4">
             <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 justify-center">
-                <!-- Produk dirender otomatis via JavaScript dengan foto produk -->
+                <!-- Produk dirender otomatis via JavaScript -->
             </div>
         </div>
 
@@ -323,7 +323,7 @@
 
     </div>
 
-    <!-- PRODUCT VARIANT MODAL POP-UP -->
+    <!-- PRODUCT VARIANT MODAL POP-UP (Tanpa Keterangan Produk) -->
     <div id="product-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 hidden">
         <div id="modal-box" class="bg-sky-50 dark:bg-slate-900 w-full max-w-lg rounded-[2.5rem] sm:rounded-[3rem] p-6 sm:p-8 shadow-2xl border border-sky-200 dark:border-slate-800 relative font-mono modal-enter max-h-[90vh] overflow-y-auto">
             
@@ -333,15 +333,13 @@
                 </svg>
             </button>
 
-            <div class="flex items-center gap-4 mb-4">
+            <div class="flex items-center gap-4 mb-6">
                 <div id="modal-icon-container" class="w-16 h-16 shrink-0 bg-white dark:bg-slate-800 rounded-2xl shadow-md flex items-center justify-center overflow-hidden border border-sky-100 dark:border-slate-700"></div>
                 <div>
                     <h3 id="modal-title" class="font-mono font-bold text-2xl text-slate-900 dark:text-white tracking-tight">Netflix</h3>
                     <span id="modal-category" class="inline-block bg-sky-200/70 dark:bg-sky-950 text-sky-700 dark:text-sky-300 text-[10px] font-mono uppercase px-2.5 py-0.5 rounded-full my-1 tracking-wider">Hiburan</span>
                 </div>
             </div>
-
-            <p id="modal-desc" class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mb-6 leading-relaxed"></p>
 
             <div class="mb-5">
                 <label class="block text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-widest mb-2.5">Pilih Paket</label>
@@ -359,14 +357,9 @@
                 </div>
             </div>
 
-            <div class="bg-pink-100/70 dark:bg-slate-800/80 border border-pink-200 dark:border-slate-700 rounded-2xl p-4 flex items-center justify-between mb-5 shadow-sm">
+            <div class="bg-pink-100/70 dark:bg-slate-800/80 border border-pink-200 dark:border-slate-700 rounded-2xl p-4 flex items-center justify-between mb-6 shadow-sm">
                 <span class="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">Harga</span>
                 <span id="modal-price" class="text-xl sm:text-2xl font-black text-pink-500 dark:text-pink-400 tracking-tight">Rp3.000</span>
-            </div>
-
-            <div class="bg-sky-100/60 dark:bg-slate-800/50 rounded-2xl p-4 mb-6 text-xs text-slate-600 dark:text-slate-400 leading-relaxed border border-sky-200/50 dark:border-slate-700/50">
-                <div class="font-bold text-slate-800 dark:text-slate-200 mb-1">Keterangan produk</div>
-                Akun 1 Profile 1 User. Garansi selama durasi aktif. Dilarang mengubah password & profil orang lain.
             </div>
 
             <div>
@@ -379,7 +372,7 @@
         </div>
     </div>
 
-    <!-- Script Utama & Pengaturan Tampilan Produk -->
+    <!-- Script Utama -->
     <script>
         function updateThemeBasedOnTime() {
             const options = { timeZone: 'Asia/Jakarta', hour: 'numeric', hour12: false };
@@ -424,7 +417,6 @@
             }, 1500);
         });
 
-        // Memuat Produk & Menampilkan Foto Produk yang diunggah dari Admin
         function loadDynamicProducts() {
             const grid = document.getElementById('product-grid');
             grid.innerHTML = '';
@@ -450,7 +442,6 @@
                 const card = document.createElement('div');
                 card.className = "bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[2rem] p-6 shadow-xl relative flex flex-col justify-between border border-white/50 dark:border-slate-800 transition-all duration-300 hover:-translate-y-1";
                 
-                // Render Thumbnail Foto Produk di Kartu Jajan
                 let mediaHTML = `<span class="font-bold text-sky-600 text-xl">${p.name.charAt(0)}</span>`;
                 let mediaContainerClass = "w-16 h-16 shrink-0 bg-sky-100 dark:bg-slate-800 rounded-2xl shadow-md flex items-center justify-center p-0 overflow-hidden border border-slate-200 dark:border-slate-700";
                 
@@ -560,7 +551,6 @@
             selectedProductData.name = product.name;
             document.getElementById('modal-title').textContent = product.name;
             document.getElementById('modal-category').textContent = product.category;
-            document.getElementById('modal-desc').textContent = product.desc;
 
             const initialPrice = product.price || 3000;
             selectedProductData.duration = '1 Hari';
