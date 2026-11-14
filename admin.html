@@ -50,7 +50,7 @@
     <div id="bg-night" class="bg-layer fixed inset-0 bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 opacity-0 dark:opacity-100 -z-30"></div>
 
     <!-- MODAL LOGIN ADMIN -->
-    <div id="login-modal" onclick="handleOutsideClick(event)" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/75 backdrop-blur-md p-4">
+    <div id="login-modal" onclick="handleOutsideClick(event)" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
         <div id="login-box" class="bg-white/90 dark:bg-slate-900/95 backdrop-blur-xl w-full max-w-sm rounded-[2.5rem] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.4)] border border-white/20 dark:border-slate-800 font-mono text-center modal-popup-animation relative overflow-hidden">
             
             <!-- Glow Accent -->
@@ -67,7 +67,7 @@
             <form onsubmit="handleLogin(event)" class="space-y-4 text-left text-xs">
                 <div>
                     <label class="block font-bold mb-1.5 text-slate-700 dark:text-slate-300 uppercase text-[10px] tracking-wider">Username Admin</label>
-                    <input type="text" id="login-username" required class="w-full p-3.5 rounded-2xl bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white text-xs transition-all shadow-inner" placeholder="Masukkan username...">
+                    <input type="text" id="login-username" required autocomplete="off" class="w-full p-3.5 rounded-2xl bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white text-xs transition-all shadow-inner" placeholder="Masukkan username...">
                 </div>
                 <!-- Pesan Error Keamanan -->
                 <div id="login-error" class="text-rose-500 text-[10px] hidden font-bold text-center bg-rose-500/10 py-2 rounded-xl">Lah lu bukan admin ege</div>
@@ -79,76 +79,78 @@
         </div>
     </div>
 
-    <!-- Header / Navbar Admin -->
-    <header class="w-full p-3 sm:p-5 flex justify-between items-center z-50 font-mono text-xs uppercase tracking-widest bg-white/10 dark:bg-black/20 backdrop-blur-md border-b border-white/20 dark:border-white/10">
-        <div class="flex items-center gap-2.5">
-            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-sky-500/20 dark:bg-slate-800 text-sky-500 flex items-center justify-center border border-sky-300/30 dark:border-slate-700 shrink-0 shadow-inner">
-                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                </svg>
-            </div>
-            <div class="hidden sm:block font-futuristic font-bold text-xs tracking-wider text-slate-900 dark:text-white">
-                DEEPA <span class="text-sky-500 font-normal">ADMIN</span>
-            </div>
-        </div>
-
-        <div class="flex items-center gap-2 sm:gap-4">
-            <span id="admin-user-display" class="text-[9px] sm:text-[10px] text-slate-500 dark:text-slate-400 hidden md:inline"></span>
-            <button onclick="handleLogout()" class="px-2.5 sm:px-3 py-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-xl transition-all text-[10px] sm:text-xs">Logout</button>
-            <button onclick="openLoginModal()" class="px-2.5 sm:px-3 py-1.5 bg-sky-500/10 hover:bg-sky-500/20 text-sky-500 rounded-xl transition-all text-[10px] sm:text-xs">Login Admin</button>
-            <a href="index.html" class="px-3 sm:px-4 py-1.5 sm:py-2 bg-white/20 dark:bg-slate-800/60 hover:bg-white/40 dark:hover:bg-slate-700 rounded-xl transition-all text-slate-900 dark:text-white text-[10px] sm:text-xs">Lihat Toko</a>
-        </div>
-    </header>
-
-    <!-- Main Container Admin -->
-    <main class="flex-1 max-w-5xl w-full mx-auto p-3 sm:p-6 lg:p-8 font-mono">
-        
-        <!-- Top Stats / Info -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
-            <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/50 dark:border-slate-800 shadow-xl">
-                <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Total Produk Aktif</div>
-                <div id="stat-active" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">0</div>
-            </div>
-            <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/50 dark:border-slate-800 shadow-xl">
-                <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Produk Diarsipkan</div>
-                <div id="stat-archived" class="text-xl sm:text-2xl font-black text-rose-500">0</div>
-            </div>
-            <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/50 dark:border-slate-800 shadow-xl flex items-center justify-between">
-                <div>
-                    <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Aksi Cepat</div>
-                    <div class="text-xs font-bold text-sky-500">Tambah Produk Baru</div>
+    <!-- PROTECTED DASHBOARD CONTENT (Sembunyikan Total jika Belum Login) -->
+    <div id="admin-dashboard-content" class="hidden flex-1 flex flex-col">
+        <!-- Header / Navbar Admin -->
+        <header class="w-full p-3 sm:p-5 flex justify-between items-center z-50 font-mono text-xs uppercase tracking-widest bg-white/10 dark:bg-black/20 backdrop-blur-md border-b border-white/20 dark:border-white/10">
+            <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-sky-500/20 dark:bg-slate-800 text-sky-500 flex items-center justify-center border border-sky-300/30 dark:border-slate-700 shrink-0 shadow-inner">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
                 </div>
-                <button onclick="openProductModal()" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-sky-500 text-white font-bold text-lg sm:text-xl flex items-center justify-center shadow-lg shadow-sky-500/30 hover:bg-sky-600 transition-all">+</button>
-            </div>
-        </div>
-
-        <!-- Tabel Daftar Produk -->
-        <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 shadow-2xl border border-white/50 dark:border-slate-800">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-2">
-                <h2 class="text-sm sm:text-lg font-bold text-slate-900 dark:text-white uppercase tracking-tight">Kelola Katalog Produk</h2>
-                <span class="text-[10px] text-slate-500 dark:text-slate-400">Sinkronisasi Otomatis Vercel</span>
+                <div class="hidden sm:block font-futuristic font-bold text-xs tracking-wider text-slate-900 dark:text-white">
+                    DEEPA <span class="text-sky-500 font-normal">ADMIN</span>
+                </div>
             </div>
 
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs whitespace-nowrap sm:whitespace-normal">
-                    <thead>
-                        <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-400 uppercase tracking-wider text-[10px] sm:text-xs">
-                            <th class="pb-3 font-bold">Produk</th>
-                            <th class="pb-3 font-bold">Kategori</th>
-                            <th class="pb-3 font-bold">Harga Mulai</th>
-                            <th class="pb-3 font-bold">Stok</th>
-                            <th class="pb-3 font-bold">Status</th>
-                            <th class="pb-3 font-bold text-right">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="product-table-body" class="divide-y divide-slate-100 dark:divide-slate-800/60">
-                        <!-- Data dirender via JavaScript -->
-                    </tbody>
-                </table>
+            <div class="flex items-center gap-2 sm:gap-4">
+                <span id="admin-user-display" class="text-[9px] sm:text-[10px] text-slate-500 dark:text-slate-400 hidden md:inline"></span>
+                <button onclick="handleLogout()" class="px-2.5 sm:px-3 py-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-xl transition-all text-[10px] sm:text-xs">Logout</button>
+                <a href="index.html" class="px-3 sm:px-4 py-1.5 sm:py-2 bg-white/20 dark:bg-slate-800/60 hover:bg-white/40 dark:hover:bg-slate-700 rounded-xl transition-all text-slate-900 dark:text-white text-[10px] sm:text-xs">Lihat Toko</a>
             </div>
-        </div>
+        </header>
 
-    </main>
+        <!-- Main Container Admin -->
+        <main class="flex-1 max-w-5xl w-full mx-auto p-3 sm:p-6 lg:p-8 font-mono">
+            
+            <!-- Top Stats / Info -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
+                <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/50 dark:border-slate-800 shadow-xl">
+                    <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Total Produk Aktif</div>
+                    <div id="stat-active" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">0</div>
+                </div>
+                <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/50 dark:border-slate-800 shadow-xl">
+                    <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Produk Diarsipkan</div>
+                    <div id="stat-archived" class="text-xl sm:text-2xl font-black text-rose-500">0</div>
+                </div>
+                <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/50 dark:border-slate-800 shadow-xl flex items-center justify-between">
+                    <div>
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Aksi Cepat</div>
+                        <div class="text-xs font-bold text-sky-500">Tambah Produk Baru</div>
+                    </div>
+                    <button onclick="openProductModal()" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-sky-500 text-white font-bold text-lg sm:text-xl flex items-center justify-center shadow-lg shadow-sky-500/30 hover:bg-sky-600 transition-all">+</button>
+                </div>
+            </div>
+
+            <!-- Tabel Daftar Produk -->
+            <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 shadow-2xl border border-white/50 dark:border-slate-800">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-2">
+                    <h2 class="text-sm sm:text-lg font-bold text-slate-900 dark:text-white uppercase tracking-tight">Kelola Katalog Produk</h2>
+                    <span class="text-[10px] text-slate-500 dark:text-slate-400">Sinkronisasi Otomatis Vercel</span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs whitespace-nowrap sm:whitespace-normal">
+                        <thead>
+                            <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-400 uppercase tracking-wider text-[10px] sm:text-xs">
+                                <th class="pb-3 font-bold">Produk</th>
+                                <th class="pb-3 font-bold">Kategori</th>
+                                <th class="pb-3 font-bold">Harga Mulai</th>
+                                <th class="pb-3 font-bold">Stok</th>
+                                <th class="pb-3 font-bold">Status</th>
+                                <th class="pb-3 font-bold text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="product-table-body" class="divide-y divide-slate-100 dark:divide-slate-800/60">
+                            <!-- Data dirender via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
 
     <!-- MODAL EDIT / TAMBAH PRODUK -->
     <div id="admin-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-3 sm:p-4 hidden">
@@ -193,33 +195,43 @@
         </div>
     </div>
 
-    <!-- Script Keamanan Login & Sesi -->
+    <!-- Script Keamanan Ketat & Sesi Admin -->
     <script>
         const CORRECT_ADMIN_USER = "edoputra28*";
 
-        // Cek Login Session saat halaman dimuat
+        // Cek Keamanan Ketat Saat Halaman Dimuat
         window.addEventListener('DOMContentLoaded', () => {
             const loggedAdmin = localStorage.getItem('deepa_admin_user');
+            
             if (loggedAdmin === CORRECT_ADMIN_USER) {
+                // Jika sudah login sah: Buka dashboard & sembunyikan modal
                 document.getElementById('login-modal').classList.add('hidden');
+                document.getElementById('admin-dashboard-content').classList.remove('hidden');
                 document.getElementById('admin-user-display').textContent = `Admin: ${loggedAdmin}`;
+                renderAdminTable();
             } else {
+                // Jika BELUM / GAGAL login: Kunci total dashboard, paksa tampilkan modal login
                 document.getElementById('login-modal').classList.remove('hidden');
+                document.getElementById('admin-dashboard-content').classList.add('hidden');
                 localStorage.removeItem('deepa_admin_user');
             }
-            renderAdminTable();
         });
 
-        // Fitur Auto-Close: Saat area luar diklik, pop-up login akan langsung menutup
+        // Fitur Auto-Close: Klik luar hanya menutup modal, namun jika belum login, modal akan tetap terkunci/muncul kembali
         function handleOutsideClick(event) {
             const loginBox = document.getElementById('login-box');
-            if (!loginBox.contains(event.target)) {
-                document.getElementById('login-modal').classList.add('hidden');
-            }
-        }
+            const loggedAdmin = localStorage.getItem('deepa_admin_user');
 
-        function openLoginModal() {
-            document.getElementById('login-modal').classList.remove('hidden');
+            if (!loginBox.contains(event.target)) {
+                if (loggedAdmin === CORRECT_ADMIN_USER) {
+                    document.getElementById('login-modal').classList.add('hidden');
+                } else {
+                    // Jika belum login, beri efek getar kecil atau biarkan modal tetap terbuka agar tidak bisa lolos
+                    const errorElement = document.getElementById('login-error');
+                    errorElement.textContent = "Harap masukkan username admin yang valid!";
+                    errorElement.classList.remove('hidden');
+                }
+            }
         }
 
         function handleLogin(e) {
@@ -228,15 +240,19 @@
             const errorElement = document.getElementById('login-error');
 
             if (usernameInput === CORRECT_ADMIN_USER) {
-                // Berhasil login
+                // Login Berhasil: Set sesi, sembunyikan modal, tampilkan dashboard admin
                 localStorage.setItem('deepa_admin_user', usernameInput);
                 document.getElementById('login-modal').classList.add('hidden');
+                document.getElementById('admin-dashboard-content').classList.remove('hidden');
                 document.getElementById('admin-user-display').textContent = `Admin: ${usernameInput}`;
                 errorElement.classList.add('hidden');
+                renderAdminTable();
             } else {
-                // Gagal login: Munculkan pesan error, pastikan sesi dibersihkan dan modal TIDAK MENUTUP
+                // Login Gagal: Hapus sesi, tampilkan pesan error, dashboard tetap tersembunyi
                 localStorage.removeItem('deepa_admin_user');
+                errorElement.textContent = "Lah lu bukan admin ege";
                 errorElement.classList.remove('hidden');
+                document.getElementById('admin-dashboard-content').classList.add('hidden');
                 document.getElementById('login-username').value = '';
                 document.getElementById('login-username').focus();
             }
@@ -246,6 +262,7 @@
             localStorage.removeItem('deepa_admin_user');
             document.getElementById('login-username').value = '';
             document.getElementById('login-error').classList.add('hidden');
+            document.getElementById('admin-dashboard-content').classList.add('hidden');
             document.getElementById('login-modal').classList.remove('hidden');
         }
 
@@ -273,6 +290,7 @@
 
         function renderAdminTable() {
             const tbody = document.getElementById('product-table-body');
+            if (!tbody) return;
             tbody.innerHTML = '';
 
             let activeCount = 0;
