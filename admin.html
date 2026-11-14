@@ -120,7 +120,7 @@
             <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 shadow-2xl border border-white/50 dark:border-slate-800">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-2">
                     <h2 class="text-sm sm:text-lg font-bold text-slate-900 dark:text-white uppercase tracking-tight">Kelola Katalog Produk</h2>
-                    <span class="text-[10px] text-slate-500 dark:text-slate-400">Sinkronisasi Otomatis Vercel</span>
+                    <span class="text-[10px] text-slate-500 dark:text-slate-400">Database Serverless (Neon API)</span>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -150,7 +150,7 @@
 
             <h3 id="modal-heading" class="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-4 uppercase tracking-tight">Tambah / Edit Produk</h3>
 
-            <input type="hidden" id="edit-index" value="-1">
+            <input type="hidden" id="edit-id" value="">
 
             <div class="space-y-3.5 text-xs">
                 <div>
@@ -170,23 +170,27 @@
                     <input type="number" id="input-stock" class="w-full p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-400 text-slate-900 dark:text-white text-xs" placeholder="10">
                 </div>
                 <div>
-                    <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[10px]">Upload Foto Produk</label>
-                    <input type="file" id="input-image" accept="image/*" class="w-full p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[11px]">
+                    <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[10px]">URL Foto / Base64 Produk</label>
+                    <input type="text" id="input-image" class="w-full p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-400 text-slate-900 dark:text-white text-xs" placeholder="https://... atau biarkan kosong">
                 </div>
                 <div>
                     <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[10px]">Deskripsi Produk</label>
                     <textarea id="input-desc" class="w-full p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-400 text-slate-900 dark:text-white text-xs" rows="3" placeholder="Tuliskan deskripsi produk di sini..."></textarea>
                 </div>
 
-                <button onclick="saveProduct()" class="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold uppercase tracking-widest rounded-xl shadow-lg shadow-emerald-500/30 transition-all mt-2 text-xs">
-                    Simpan Perubahan
+                <button onclick="saveProductViaAPI()" class="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold uppercase tracking-widest rounded-xl shadow-lg shadow-emerald-500/30 transition-all mt-2 text-xs">
+                    Simpan Perubahan ke API
                 </button>
             </div>
         </div>
     </div>
 
+    <!-- Script Integrasi API -->
     <script>
         const CORRECT_ADMIN_USER = "edoputra28*";
+        const API_BASE_URL = "/api/products"; // Ganti dengan endpoint server API backend Anda
+
+        let products = [];
 
         window.addEventListener('DOMContentLoaded', () => {
             const loggedAdmin = localStorage.getItem('deepa_admin_user');
@@ -194,7 +198,7 @@
                 document.getElementById('login-modal').classList.add('hidden');
                 document.getElementById('admin-dashboard-content').classList.remove('hidden');
                 document.getElementById('admin-user-display').textContent = `Admin: ${loggedAdmin}`;
-                renderAdminTable();
+                fetchProductsFromAPI();
             } else {
                 document.getElementById('login-modal').classList.remove('hidden');
                 document.getElementById('admin-dashboard-content').classList.add('hidden');
@@ -228,7 +232,7 @@
                 document.getElementById('admin-dashboard-content').classList.remove('hidden');
                 document.getElementById('admin-user-display').textContent = `Admin: ${usernameInput}`;
                 errorElement.classList.add('hidden');
-                renderAdminTable();
+                fetchProductsFromAPI();
             } else {
                 localStorage.removeItem('deepa_admin_user');
                 errorElement.textContent = "Lah lu bukan admin ege";
@@ -257,14 +261,22 @@
         }
         updateTheme();
 
-        let products = JSON.parse(localStorage.getItem('deepa_products')) || [
-            { id: 1, name: 'Netflix', category: 'Hiburan', price: 3000, stock: 15, isArchived: false, image: '', desc: 'Streaming film & series favorit dengan kualitas HD/4K.' },
-            { id: 2, name: 'Disney+', category: 'Hiburan', price: 3000, stock: 15, isArchived: false, image: '', desc: 'Nonton ribuan film Disney, Pixar, Marvel, & Star Wars sepuasnya.' }
-        ];
-
-        function saveToStorage() {
-            localStorage.setItem('deepa_products', JSON.stringify(products));
-            renderAdminTable();
+        // 1. Fetch / Ambil Data dari API Serverless (Neon DB)
+        async function fetchProductsFromAPI() {
+            try {
+                const response = await fetch(API_BASE_URL);
+                if (!response.ok) throw new Error('Gagal mengambil data dari API server');
+                products = await response.json();
+                renderAdminTable();
+            } catch (error) {
+                console.warn('Gagal terhubung ke API backend, menggunakan data fallback lokal:', error);
+                // Fallback otomatis jika API belum aktif saat testing lokal
+                products = JSON.parse(localStorage.getItem('deepa_products')) || [
+                    { id: 1, name: 'Netflix', category: 'Hiburan', price: 3000, stock: 15, isArchived: false, image: '', desc: 'Streaming film & series favorit dengan kualitas HD/4K.' },
+                    { id: 2, name: 'Disney+', category: 'Hiburan', price: 3000, stock: 15, isArchived: false, image: '', desc: 'Nonton ribuan film Disney, Pixar, Marvel, & Star Wars sepuasnya.' }
+                ];
+                renderAdminTable();
+            }
         }
 
         function renderAdminTable() {
@@ -299,7 +311,7 @@
                         </div>
                     </td>
                     <td class="py-3 sm:py-4 text-slate-600 dark:text-slate-300">${p.category}</td>
-                    <td class="py-3 sm:py-4 font-bold text-pink-500">Rp${p.price.toLocaleString('id-ID')}</td>
+                    <td class="py-3 sm:py-4 font-bold text-pink-500">Rp${Number(p.price).toLocaleString('id-ID')}</td>
                     <td class="py-3 sm:py-4">
                         <span class="px-2.5 py-1 rounded-full text-[9px] sm:text-[10px] font-bold ${p.stock <= 0 ? 'bg-rose-100 text-rose-600 dark:bg-rose-950 dark:text-rose-400' : 'bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400'}">
                             ${p.stock} Unit
@@ -309,9 +321,9 @@
                         ${isArchived ? '<span class="text-rose-500 font-bold uppercase text-[9px] sm:text-[10px]">📦 Diarsipkan</span>' : '<span class="text-emerald-500 font-bold uppercase text-[9px] sm:text-[10px]">🟢 Aktif</span>'}
                     </td>
                     <td class="py-3 sm:py-4 text-right space-x-1 sm:space-x-2">
-                        <button onclick="toggleArchive(${index})" title="Arsipkan / Aktifkan" class="px-2 py-1.5 bg-amber-100 dark:bg-slate-800 text-amber-600 dark:text-amber-400 rounded-lg hover:bg-amber-200 transition-all text-xs">📦</button>
+                        <button onclick="toggleArchiveAPI(${p.id}, ${index})" title="Arsipkan / Aktifkan" class="px-2 py-1.5 bg-amber-100 dark:bg-slate-800 text-amber-600 dark:text-amber-400 rounded-lg hover:bg-amber-200 transition-all text-xs">📦</button>
                         <button onclick="editProduct(${index})" class="px-2.5 py-1.5 bg-sky-100 dark:bg-slate-800 text-sky-600 dark:text-sky-300 rounded-lg hover:bg-sky-200 transition-all text-xs">Edit</button>
-                        <button onclick="deleteProduct(${index})" class="px-2.5 py-1.5 bg-rose-100 dark:bg-slate-800 text-rose-600 dark:text-rose-300 rounded-lg hover:bg-rose-200 transition-all text-xs">Hapus</button>
+                        <button onclick="deleteProductAPI(${p.id})" class="px-2.5 py-1.5 bg-rose-100 dark:bg-slate-800 text-rose-600 dark:text-rose-300 rounded-lg hover:bg-rose-200 transition-all text-xs">Hapus</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -321,45 +333,27 @@
             document.getElementById('stat-archived').textContent = archivedCount;
         }
 
-        function toggleArchive(index) {
-            products[index].isArchived = !products[index].isArchived;
-            saveToStorage();
-        }
-
-        let currentImageBase64 = '';
-
-        document.getElementById('input-image').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(uploadEvent) {
-                    currentImageBase64 = uploadEvent.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
         function openProductModal(index = -1) {
             document.getElementById('admin-modal').classList.remove('hidden');
-            currentImageBase64 = '';
-            document.getElementById('input-image').value = '';
 
             if (index > -1) {
-                document.getElementById('modal-heading').textContent = "Edit Produk";
-                document.getElementById('edit-index').value = index;
-                document.getElementById('input-name').value = products[index].name;
-                document.getElementById('input-category').value = products[index].category;
-                document.getElementById('input-price').value = products[index].price;
-                document.getElementById('input-stock').value = products[index].stock;
-                document.getElementById('input-desc').value = products[index].desc || '';
-                currentImageBase64 = products[index].image || '';
+                const p = products[index];
+                document.getElementById('modal-heading').textContent = "Edit Produk via API";
+                document.getElementById('edit-id').value = p.id;
+                document.getElementById('input-name').value = p.name;
+                document.getElementById('input-category').value = p.category;
+                document.getElementById('input-price').value = p.price;
+                document.getElementById('input-stock').value = p.stock;
+                document.getElementById('input-image').value = p.image || '';
+                document.getElementById('input-desc').value = p.desc || '';
             } else {
-                document.getElementById('modal-heading').textContent = "Tambah Produk Baru";
-                document.getElementById('edit-index').value = -1;
+                document.getElementById('modal-heading').textContent = "Tambah Produk Baru via API";
+                document.getElementById('edit-id').value = '';
                 document.getElementById('input-name').value = '';
                 document.getElementById('input-category').value = 'Hiburan';
                 document.getElementById('input-price').value = '';
                 document.getElementById('input-stock').value = '10';
+                document.getElementById('input-image').value = '';
                 document.getElementById('input-desc').value = '';
             }
         }
@@ -368,12 +362,14 @@
             document.getElementById('admin-modal').classList.add('hidden');
         }
 
-        function saveProduct() {
-            const index = parseInt(document.getElementById('edit-index').value);
+        // 2. Simpan atau Perbarui Produk melalui API (POST / PUT)
+        async function saveProductViaAPI() {
+            const id = document.getElementById('edit-id').value;
             const name = document.getElementById('input-name').value.trim();
             const category = document.getElementById('input-category').value.trim();
             const price = parseInt(document.getElementById('input-price').value) || 0;
             const stock = parseInt(document.getElementById('input-stock').value) || 0;
+            const image = document.getElementById('input-image').value.trim();
             const desc = document.getElementById('input-desc').value.trim();
 
             if (!name) {
@@ -381,43 +377,88 @@
                 return;
             }
 
-            if (index > -1) {
-                products[index] = { 
-                    ...products[index], 
-                    name, 
-                    category, 
-                    price, 
-                    stock, 
-                    desc, 
-                    image: currentImageBase64 || products[index].image 
-                };
-            } else {
-                const newId = products.length > 0 ? products[products.length - 1].id + 1 : 1;
-                products.push({ 
-                    id: newId, 
-                    name, 
-                    category, 
-                    price, 
-                    stock, 
-                    isArchived: false, 
-                    image: currentImageBase64, 
-                    desc 
-                });
-            }
+            const productPayload = { name, category, price, stock, image, desc, isArchived: false };
 
-            saveToStorage();
-            closeProductModal();
+            try {
+                let response;
+                if (id) {
+                    // Update produk yang sudah ada (PUT)
+                    response = await fetch(`${API_BASE_URL}/${id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(productPayload)
+                    });
+                } else {
+                    // Tambah produk baru (POST)
+                    response = await fetch(API_BASE_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(productPayload)
+                    });
+                }
+
+                if (!response.ok) throw new Error('Gagal menyimpan ke server API');
+                
+                closeProductModal();
+                fetchProductsFromAPI(); // Refresh data dari server
+            } catch (error) {
+                console.warn('API belum merespons, menyimpan ke localStorage sebagai simulasi fallback:', error);
+                
+                // Fallback simulasi localStorage jika server API belum dinyalakan
+                if (id) {
+                    const idx = products.findIndex(p => p.id == id);
+                    if (idx > -1) products[idx] = { ...products[idx], ...productPayload };
+                } else {
+                    const newId = products.length > 0 ? products[products.length - 1].id + 1 : 1;
+                    products.push({ id: newId, ...productPayload });
+                }
+                localStorage.setItem('deepa_products', JSON.stringify(products));
+                closeProductModal();
+                renderAdminTable();
+            }
+        }
+
+        // 3. Arsipkan Produk via API
+        async function toggleArchiveAPI(id, index) {
+            try {
+                const currentStatus = products[index].isArchived;
+                const response = await fetch(`${API_BASE_URL}/${id}/archive`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ isArchived: !currentStatus })
+                });
+
+                if (!response.ok) throw new Error('Gagal memperbarui status arsip via API');
+                fetchProductsFromAPI();
+            } catch (error) {
+                // Fallback lokal
+                products[index].isArchived = !products[index].isArchived;
+                localStorage.setItem('deepa_products', JSON.stringify(products));
+                renderAdminTable();
+            }
+        }
+
+        // 4. Hapus Produk via API (DELETE)
+        async function deleteProductAPI(id) {
+            if (confirm(`Yakin ingin menghapus produk ID #${id}?`)) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/${id}`, {
+                        method: 'DELETE'
+                    });
+
+                    if (!response.ok) throw new Error('Gagal menghapus produk dari server API');
+                    fetchProductsFromAPI();
+                } catch (error) {
+                    // Fallback lokal
+                    products = products.filter(p => p.id !== id);
+                    localStorage.setItem('deepa_products', JSON.stringify(products));
+                    renderAdminTable();
+                }
+            }
         }
 
         function editProduct(index) {
             openProductModal(index);
-        }
-
-        function deleteProduct(index) {
-            if (confirm(`Yakin ingin menghapus produk ${products[index].name}?`)) {
-                products.splice(index, 1);
-                saveToStorage();
-            }
         }
     </script>
 </body>
