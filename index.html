@@ -88,26 +88,42 @@
         }
         @keyframes blink { 50% { opacity: 0; } }
 
-        @keyframes navPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(0.95); box-shadow: 0 0 25px rgba(255, 255, 255, 0.5); }
-            100% { transform: scale(1); }
-        }
-        .nav-clicked { animation: navPulse 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-
-        @keyframes linkRipple {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.15); color: #38bdf8; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .link-clicked { animation: linkRipple 0.3s ease-in-out; }
-
         .view-section { transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out; }
 
         .modal-enter { opacity: 0; transform: scale(0.95) translateY(10px); }
         .modal-enter-active {
             opacity: 1; transform: scale(1) translateY(0);
             transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+        }
+
+        .futuristic-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        }
+        .dark .futuristic-card {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(56, 189, 248, 0.15);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(56, 189, 248, 0.1);
+        }
+
+        .platform-item {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .platform-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent, rgba(56, 189, 248, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        .platform-item:hover::before {
+            transform: translateX(100%);
         }
 
         ::-webkit-scrollbar { width: 8px; }
@@ -129,7 +145,7 @@
     <div id="bg-day" class="bg-layer fixed inset-0 bg-gradient-to-b from-blue-400 to-blue-200 opacity-100 dark:opacity-0 -z-30"></div>
     <div id="bg-night" class="bg-layer fixed inset-0 bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 opacity-0 dark:opacity-100 -z-30"></div>
     
-    <div id="ambient-glow" class="fixed inset-0 pointer-events-none opacity-0 transition-opacity duration-700 -z-20 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.12)_0%,transparent_70%)]"></div>
+    <div id="ambient-glow" class="fixed inset-0 pointer-events-none opacity-0 transition-opacity duration-700 -z-20 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.15)_0%,transparent_70%)]"></div>
 
     <!-- Day Birds -->
     <div class="day-elements contents">
@@ -182,58 +198,62 @@
 
         <!-- JAJAN CATALOG VIEW -->
         <div id="jajan-view" class="view-section hidden w-full max-w-4xl mx-auto font-mono max-h-[75vh] overflow-y-auto px-2 py-4">
-            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 justify-center"></div>
+            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5 justify-center"></div>
         </div>
 
         <!-- CONTACT VIEW -->
         <div id="contact-view" class="view-section hidden w-full max-w-xl mx-auto font-mono text-center">
-            <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[2.5rem] p-6 sm:p-8 shadow-2xl border border-white/50 dark:border-slate-800 relative pt-12 sm:pt-8">
+            <div class="futuristic-card rounded-[2.5rem] p-6 sm:p-9 relative pt-10 sm:pt-9 overflow-hidden">
                 
-                <a href="admin.html" title="Admin Panel" class="absolute top-4 right-4 sm:top-6 sm:right-6 w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-500 flex items-center justify-center border border-sky-200 dark:border-slate-700 transition-all shadow-sm z-20">
-                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <div class="absolute -top-16 -right-16 w-36 h-36 bg-sky-400/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-16 -left-16 w-36 h-36 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                <a href="admin.html" title="Admin Panel" class="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 rounded-2xl bg-sky-500/10 hover:bg-sky-500/25 text-sky-500 dark:text-sky-400 flex items-center justify-center border border-sky-300/30 dark:border-sky-500/30 transition-all shadow-md hover:scale-105 z-20">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
                 </a>
 
-                <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2 uppercase tracking-tight">Hubungi Kami</h2>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mb-6">Pilih salah satu platform di bawah untuk terhubung langsung dengan admin Deepa Store.</p>
+                <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white mb-6 uppercase tracking-wider font-futuristic">Hubungi Kami</h2>
                 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                    <a href="https://wa.me/6281234567890" target="_blank" class="flex items-center gap-3.5 p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/50 hover:border-emerald-400 transition-all text-left group">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-md">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <a href="https://wa.me/6281234567890" target="_blank" class="platform-item flex items-center gap-4 p-4 rounded-2xl bg-emerald-500/10 dark:bg-emerald-950/20 border border-emerald-500/30 hover:border-emerald-400 hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all text-left group">
+                        <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform">
                             <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
                         </div>
                         <div>
                             <div class="text-xs font-bold text-slate-900 dark:text-white">WhatsApp</div>
-                            <div class="text-[10px] text-slate-500 dark:text-slate-400">Chat Admin Cepat</div>
+                            <div class="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">Chat Admin Cepat</div>
                         </div>
                     </a>
 
-                    <a href="https://instagram.com/deepastore" target="_blank" class="flex items-center gap-3.5 p-4 rounded-2xl bg-pink-50 dark:bg-pink-950/30 border border-pink-200 dark:border-pink-900/50 hover:border-pink-400 transition-all text-left group">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white flex items-center justify-center shrink-0 shadow-md">
+                    <a href="https://instagram.com/deepastore" target="_blank" class="platform-item flex items-center gap-4 p-4 rounded-2xl bg-pink-500/10 dark:bg-pink-950/20 border border-pink-500/30 hover:border-pink-400 hover:shadow-[0_0_20px_rgba(236,72,153,0.2)] transition-all text-left group">
+                        <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white flex items-center justify-center shrink-0 shadow-lg shadow-pink-500/30 group-hover:scale-110 transition-transform">
                             <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                         </div>
                         <div>
                             <div class="text-xs font-bold text-slate-900 dark:text-white">Instagram</div>
-                            <div class="text-[10px] text-slate-500 dark:text-slate-400">@deepastore</div>
+                            <div class="text-[10px] text-pink-600 dark:text-pink-400 font-medium">@deepastore</div>
                         </div>
                     </a>
 
-                    <a href="https://x.com/deepastore" target="_blank" class="flex items-center gap-3.5 p-4 rounded-2xl bg-slate-100 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-600 transition-all text-left group">
-                        <div class="w-10 h-10 rounded-xl bg-black dark:bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-md border border-slate-800">
+                    <a href="https://x.com/deepastore" target="_blank" class="platform-item flex items-center gap-4 p-4 rounded-2xl bg-slate-500/10 dark:bg-slate-800/30 border border-slate-500/20 hover:border-slate-400 hover:shadow-[0_0_20px_rgba(255,255,255,0.1)] transition-all text-left group">
+                        <div class="w-11 h-11 rounded-xl bg-black dark:bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-lg shadow-black/30 border border-slate-700 group-hover:scale-110 transition-transform">
                             <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                         </div>
                         <div>
                             <div class="text-xs font-bold text-slate-900 dark:text-white">X (Twitter)</div>
-                            <div class="text-[10px] text-slate-500 dark:text-slate-400">@deepastore</div>
+                            <div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">@deepastore</div>
                         </div>
                     </a>
 
-                    <a href="https://deepastore.top" target="_blank" class="flex items-center gap-3.5 p-4 rounded-2xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-900/50 hover:border-indigo-400 transition-all text-left group">
-                        <div class="w-10 h-10 rounded-xl bg-indigo-500 text-white flex items-center justify-center shrink-0 shadow-md">
+                    <a href="https://deepastore.top" target="_blank" class="platform-item flex items-center gap-4 p-4 rounded-2xl bg-sky-500/10 dark:bg-sky-950/20 border border-sky-500/30 hover:border-sky-400 hover:shadow-[0_0_20px_rgba(56,189,248,0.2)] transition-all text-left group">
+                        <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-sky-600 to-indigo-600 text-white flex items-center justify-center shrink-0 shadow-lg shadow-sky-500/30 group-hover:scale-110 transition-transform">
                             <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zM4 12c0-.968.182-1.895.512-2.75h3.045c-.195.856-.307 1.765-.307 2.75s.112 1.894.307 2.75H4.512C4.182 13.895 4 12.968 4 12zm2.072 4.75h3.195c.571 1.253 1.343 2.373 2.269 3.298C7.94 19.349 6.368 18.283 6.072 16.75zm3.195-9.5H6.072c.296-1.533 1.868-2.599 5.464-3.298-.926.925-1.698 2.045-2.269 3.298zm2.733 9.75c-.88-.946-1.611-2.072-2.135-3.25h4.27c-.524 1.178-1.255 2.304-2.135 3.25zm0-10c.88.946 1.611 2.072 2.135 3.25H9.805c.524-1.178 1.255-2.304 2.135-3.25zm3.928 6.75c0-.985-.112-1.894-.307-2.75h3.045c.33.855.512 1.782.512 2.75s-.182 1.895-.512 2.75h-3.045c.195-.856.307-1.765.307-2.75zm.307-4.75h3.195c-.296-1.533-1.868-2.599-5.464-3.298.926.925 1.698 2.045 2.269 3.298zm2.269 6.75h-3.195c.571 1.253 1.343 2.373 2.269 3.298 1.596-.599 3.168-1.665 3.464-3.198z"/></svg>
                         </div>
                         <div>
                             <div class="text-xs font-bold text-slate-900 dark:text-white">Website</div>
-                            <div class="text-[10px] text-slate-500 dark:text-slate-400">deepastore.top</div>
+                            <div class="text-[10px] text-sky-600 dark:text-sky-400 font-medium">deepastore.top</div>
                         </div>
                     </a>
                 </div>
@@ -242,7 +262,7 @@
 
     </div>
 
-    <!-- PRODUCT VARIANT MODAL POP-UP (Menampilkan Deskripsi Produk) -->
+    <!-- PRODUCT VARIANT MODAL POP-UP -->
     <div id="product-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 hidden">
         <div id="modal-box" class="bg-sky-50 dark:bg-slate-900 w-full max-w-lg rounded-[2.5rem] sm:rounded-[3rem] p-6 sm:p-8 shadow-2xl border border-sky-200 dark:border-slate-800 relative font-mono modal-enter max-h-[90vh] overflow-y-auto">
             
@@ -258,10 +278,7 @@
                 </div>
             </div>
 
-            <!-- Deskripsi Produk yang Disesuaikan dengan Admin Dashboard -->
-            <p id="modal-desc" class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
-                <!-- Deskripsi dinamis dari database admin -->
-            </p>
+            <p id="modal-desc" class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mb-6 leading-relaxed"></p>
 
             <div class="mb-5">
                 <label class="block text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-widest mb-2.5">Pilih Paket</label>
@@ -359,32 +376,33 @@
 
             activeProducts.forEach(p => {
                 const card = document.createElement('div');
-                card.className = "bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[2rem] p-6 shadow-xl relative flex flex-col justify-between border border-white/50 dark:border-slate-800 transition-all duration-300 hover:-translate-y-1";
+                // Tampilan kartu dipertipis (padding lebih kecil: p-4 sm:p-5, border-radius compact)
+                card.className = "bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[1.75rem] p-4 sm:p-5 shadow-xl relative flex flex-col justify-between border border-white/50 dark:border-slate-800 transition-all duration-300 hover:-translate-y-1";
                 
-                let mediaHTML = `<span class="font-bold text-sky-600 text-xl">${p.name.charAt(0)}</span>`;
-                let mediaContainerClass = "w-16 h-16 shrink-0 bg-sky-100 dark:bg-slate-800 rounded-2xl shadow-md flex items-center justify-center p-0 overflow-hidden border border-slate-200 dark:border-slate-700";
+                let mediaHTML = `<span class="font-bold text-sky-600 text-lg">${p.name.charAt(0)}</span>`;
+                let mediaContainerClass = "w-12 h-12 sm:w-14 sm:h-14 shrink-0 bg-sky-100 dark:bg-slate-800 rounded-xl shadow-md flex items-center justify-center p-0 overflow-hidden border border-slate-200 dark:border-slate-700";
                 
                 if (p.image) {
                     mediaHTML = `<img src="${p.image}" class="w-full h-full object-cover">`;
                 }
 
                 card.innerHTML = `
-                    <div class="absolute top-4 right-5 text-amber-400 text-lg">★</div>
+                    <div class="absolute top-3 right-4 text-amber-400 text-sm">★</div>
                     
-                    <div class="flex items-center gap-4 mb-6">
+                    <div class="flex items-center gap-3.5 mb-4">
                         <div class="${mediaContainerClass}">
                             ${mediaHTML}
                         </div>
                         <div>
-                            <h3 class="font-mono font-bold text-lg text-slate-900 dark:text-white tracking-tight">${p.name}</h3>
-                            <span class="inline-block bg-sky-100 dark:bg-sky-950 text-sky-600 dark:text-sky-300 text-[10px] font-mono uppercase px-2 py-0.5 rounded-full my-1 tracking-wider">${p.category}</span>
+                            <h3 class="font-mono font-bold text-base sm:text-lg text-slate-900 dark:text-white tracking-tight leading-snug">${p.name}</h3>
+                            <span class="inline-block bg-sky-100 dark:bg-sky-950 text-sky-600 dark:text-sky-300 text-[9px] font-mono uppercase px-2 py-0.5 rounded-full my-0.5 tracking-wider">${p.category}</span>
                             <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 tracking-wider">Mulai <span class="font-bold text-slate-900 dark:text-white">Rp${p.price.toLocaleString('id-ID')}</span></div>
                         </div>
                     </div>
 
-                    <button onclick='openProductModal(${JSON.stringify(p)})' class="w-full py-3.5 bg-sky-200 hover:bg-sky-300 dark:bg-sky-950/70 dark:hover:bg-sky-900 text-sky-900 dark:text-sky-200 font-mono font-bold text-xs uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 transition-colors">
+                    <button onclick='openProductModal(${JSON.stringify(p)})' class="w-full py-2.5 sm:py-3 bg-sky-200 hover:bg-sky-300 dark:bg-sky-950/70 dark:hover:bg-sky-900 text-sky-900 dark:text-sky-200 font-mono font-bold text-[11px] uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 transition-colors">
                         Pilih Varian 
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
                     </button>
                 `;
                 grid.appendChild(card);
@@ -468,8 +486,6 @@
             selectedProductData.name = product.name;
             document.getElementById('modal-title').textContent = product.name;
             document.getElementById('modal-category').textContent = product.category;
-            
-            // Masukkan deskripsi dari admin dashboard ke dalam modal pop-up
             document.getElementById('modal-desc').textContent = product.desc || 'Tidak ada deskripsi produk.';
 
             const initialPrice = product.price || 3000;
