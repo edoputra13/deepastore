@@ -53,7 +53,6 @@
     <div id="login-modal" onclick="handleOutsideClick(event)" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
         <div id="login-box" class="bg-white/90 dark:bg-slate-900/95 backdrop-blur-xl w-full max-w-sm rounded-[2.5rem] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.4)] border border-white/20 dark:border-slate-800 font-mono text-center modal-popup-animation relative overflow-hidden">
             
-            <!-- Glow Accent -->
             <div class="absolute -top-12 -right-12 w-32 h-32 bg-sky-500/20 rounded-full blur-2xl pointer-events-none"></div>
             <div class="absolute -bottom-12 -left-12 w-32 h-32 bg-indigo-500/20 rounded-full blur-2xl pointer-events-none"></div>
 
@@ -69,7 +68,6 @@
                     <label class="block font-bold mb-1.5 text-slate-700 dark:text-slate-300 uppercase text-[10px] tracking-wider">Username Admin</label>
                     <input type="text" id="login-username" required autocomplete="off" class="w-full p-3.5 rounded-2xl bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white text-xs transition-all shadow-inner" placeholder="Masukkan username...">
                 </div>
-                <!-- Pesan Error Keamanan -->
                 <div id="login-error" class="text-rose-500 text-[10px] hidden font-bold text-center bg-rose-500/10 py-2 rounded-xl">Lah lu bukan admin ege</div>
                 
                 <button type="submit" class="w-full py-4 bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 text-white font-bold uppercase tracking-widest rounded-2xl shadow-lg shadow-sky-500/25 transition-all">
@@ -79,9 +77,8 @@
         </div>
     </div>
 
-    <!-- PROTECTED DASHBOARD CONTENT (Sembunyikan Total jika Belum Login) -->
+    <!-- PROTECTED DASHBOARD CONTENT -->
     <div id="admin-dashboard-content" class="hidden flex-1 flex flex-col">
-        <!-- Header / Navbar Admin -->
         <header class="w-full p-3 sm:p-5 flex justify-between items-center z-50 font-mono text-xs uppercase tracking-widest bg-white/10 dark:bg-black/20 backdrop-blur-md border-b border-white/20 dark:border-white/10">
             <div class="flex items-center gap-2.5">
                 <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-sky-500/20 dark:bg-slate-800 text-sky-500 flex items-center justify-center border border-sky-300/30 dark:border-slate-700 shrink-0 shadow-inner">
@@ -101,10 +98,7 @@
             </div>
         </header>
 
-        <!-- Main Container Admin -->
         <main class="flex-1 max-w-5xl w-full mx-auto p-3 sm:p-6 lg:p-8 font-mono">
-            
-            <!-- Top Stats / Info -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
                 <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/50 dark:border-slate-800 shadow-xl">
                     <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Total Produk Aktif</div>
@@ -123,7 +117,6 @@
                 </div>
             </div>
 
-            <!-- Tabel Daftar Produk -->
             <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 shadow-2xl border border-white/50 dark:border-slate-800">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-2">
                     <h2 class="text-sm sm:text-lg font-bold text-slate-900 dark:text-white uppercase tracking-tight">Kelola Katalog Produk</h2>
@@ -142,13 +135,10 @@
                                 <th class="pb-3 font-bold text-right">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody id="product-table-body" class="divide-y divide-slate-100 dark:divide-slate-800/60">
-                            <!-- Data dirender via JavaScript -->
-                        </tbody>
+                        <tbody id="product-table-body" class="divide-y divide-slate-100 dark:divide-slate-800/60"></tbody>
                     </table>
                 </div>
             </div>
-
         </main>
     </div>
 
@@ -184,8 +174,8 @@
                     <input type="file" id="input-image" accept="image/*" class="w-full p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[11px]">
                 </div>
                 <div>
-                    <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[10px]">Deskripsi Singkat</label>
-                    <textarea id="input-desc" class="w-full p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-400 text-slate-900 dark:text-white text-xs" rows="2" placeholder="Streaming film & series..."></textarea>
+                    <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[10px]">Deskripsi Produk</label>
+                    <textarea id="input-desc" class="w-full p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-400 text-slate-900 dark:text-white text-xs" rows="3" placeholder="Tuliskan deskripsi produk di sini..."></textarea>
                 </div>
 
                 <button onclick="saveProduct()" class="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold uppercase tracking-widest rounded-xl shadow-lg shadow-emerald-500/30 transition-all mt-2 text-xs">
@@ -195,29 +185,23 @@
         </div>
     </div>
 
-    <!-- Script Keamanan Ketat & Sesi Admin -->
     <script>
         const CORRECT_ADMIN_USER = "edoputra28*";
 
-        // Cek Keamanan Ketat Saat Halaman Dimuat
         window.addEventListener('DOMContentLoaded', () => {
             const loggedAdmin = localStorage.getItem('deepa_admin_user');
-            
             if (loggedAdmin === CORRECT_ADMIN_USER) {
-                // Jika sudah login sah: Buka dashboard & sembunyikan modal
                 document.getElementById('login-modal').classList.add('hidden');
                 document.getElementById('admin-dashboard-content').classList.remove('hidden');
                 document.getElementById('admin-user-display').textContent = `Admin: ${loggedAdmin}`;
                 renderAdminTable();
             } else {
-                // Jika BELUM / GAGAL login: Kunci total dashboard, paksa tampilkan modal login
                 document.getElementById('login-modal').classList.remove('hidden');
                 document.getElementById('admin-dashboard-content').classList.add('hidden');
                 localStorage.removeItem('deepa_admin_user');
             }
         });
 
-        // Fitur Auto-Close: Klik luar hanya menutup modal, namun jika belum login, modal akan tetap terkunci/muncul kembali
         function handleOutsideClick(event) {
             const loginBox = document.getElementById('login-box');
             const loggedAdmin = localStorage.getItem('deepa_admin_user');
@@ -226,7 +210,6 @@
                 if (loggedAdmin === CORRECT_ADMIN_USER) {
                     document.getElementById('login-modal').classList.add('hidden');
                 } else {
-                    // Jika belum login, beri efek getar kecil atau biarkan modal tetap terbuka agar tidak bisa lolos
                     const errorElement = document.getElementById('login-error');
                     errorElement.textContent = "Harap masukkan username admin yang valid!";
                     errorElement.classList.remove('hidden');
@@ -240,7 +223,6 @@
             const errorElement = document.getElementById('login-error');
 
             if (usernameInput === CORRECT_ADMIN_USER) {
-                // Login Berhasil: Set sesi, sembunyikan modal, tampilkan dashboard admin
                 localStorage.setItem('deepa_admin_user', usernameInput);
                 document.getElementById('login-modal').classList.add('hidden');
                 document.getElementById('admin-dashboard-content').classList.remove('hidden');
@@ -248,7 +230,6 @@
                 errorElement.classList.add('hidden');
                 renderAdminTable();
             } else {
-                // Login Gagal: Hapus sesi, tampilkan pesan error, dashboard tetap tersembunyi
                 localStorage.removeItem('deepa_admin_user');
                 errorElement.textContent = "Lah lu bukan admin ege";
                 errorElement.classList.remove('hidden');
@@ -266,7 +247,6 @@
             document.getElementById('login-modal').classList.remove('hidden');
         }
 
-        // Tema Dark/Light otomatis berdasarkan jam
         function updateTheme() {
             const hour = new Date().getHours();
             if (hour >= 6 && hour < 18) {
@@ -277,7 +257,6 @@
         }
         updateTheme();
 
-        // Database Produk Lokal (Local Storage)
         let products = JSON.parse(localStorage.getItem('deepa_products')) || [
             { id: 1, name: 'Netflix', category: 'Hiburan', price: 3000, stock: 15, isArchived: false, image: '', desc: 'Streaming film & series favorit dengan kualitas HD/4K.' },
             { id: 2, name: 'Disney+', category: 'Hiburan', price: 3000, stock: 15, isArchived: false, image: '', desc: 'Nonton ribuan film Disney, Pixar, Marvel, & Star Wars sepuasnya.' }
@@ -300,11 +279,8 @@
                 const isOutOfStock = p.stock <= 0;
                 const isArchived = p.isArchived || isOutOfStock;
 
-                if (isArchived) {
-                    archivedCount++;
-                } else {
-                    activeCount++;
-                }
+                if (isArchived) archivedCount++;
+                else activeCount++;
 
                 const tr = document.createElement('tr');
                 tr.className = `border-b border-slate-100 dark:border-slate-800/60 transition-all ${isArchived ? 'opacity-60 bg-rose-50/50 dark:bg-rose-950/10' : ''}`;
@@ -375,7 +351,7 @@
                 document.getElementById('input-category').value = products[index].category;
                 document.getElementById('input-price').value = products[index].price;
                 document.getElementById('input-stock').value = products[index].stock;
-                document.getElementById('input-desc').value = products[index].desc;
+                document.getElementById('input-desc').value = products[index].desc || '';
                 currentImageBase64 = products[index].image || '';
             } else {
                 document.getElementById('modal-heading').textContent = "Tambah Produk Baru";
@@ -398,7 +374,7 @@
             const category = document.getElementById('input-category').value.trim();
             const price = parseInt(document.getElementById('input-price').value) || 0;
             const stock = parseInt(document.getElementById('input-stock').value) || 0;
-            const desc = document.getElementById('input-desc').value;
+            const desc = document.getElementById('input-desc').value.trim();
 
             if (!name) {
                 alert('Nama produk wajib diisi!');
