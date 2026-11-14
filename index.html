@@ -208,7 +208,7 @@
                 <div class="absolute -top-16 -right-16 w-36 h-36 bg-sky-400/20 rounded-full blur-3xl pointer-events-none"></div>
                 <div class="absolute -bottom-16 -left-16 w-36 h-36 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
-                <!-- Admin Quick Link Button (Tanpa Shadow, Menyatu Dgn Card) -->
+                <!-- Admin Quick Link Button -->
                 <a href="admin.html" title="Admin Panel" class="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 rounded-2xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-500 dark:text-sky-400 flex items-center justify-center border border-sky-300/30 dark:border-sky-500/30 transition-all hover:scale-105 z-20">
                     <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
                         <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
@@ -318,7 +318,7 @@
 
     <!-- Script Utama -->
     <script>
-        const NEON_DATA_API_URL = "https://ep-billowing-shadow-bbbzzr6h.apirest.c-15.us-east-1.aws.neon.tech/neondb/rest/v1";
+        const NEON_DATA_API_URL = "https://ep-billowing-shadow-bbbzzr6h.rt.c-15.us-east-1.aws.neon.tech/products";
         const apiHeaders = {
             "Content-Type": "application/json",
             "Prefer": "return=representation"
@@ -370,7 +370,7 @@
 
             let products = [];
             try {
-                const response = await fetch(`${NEON_DATA_API_URL}/products?select=*`, {
+                const response = await fetch(`${NEON_DATA_API_URL}?select=*`, {
                     method: "GET",
                     headers: apiHeaders
                 });
