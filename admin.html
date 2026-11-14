@@ -120,7 +120,7 @@
             <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 shadow-2xl border border-white/50 dark:border-slate-800">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-2">
                     <h2 class="text-sm sm:text-lg font-bold text-slate-900 dark:text-white uppercase tracking-tight">Kelola Katalog Produk</h2>
-                    <span class="text-[10px] text-slate-500 dark:text-slate-400">Database Serverless (Neon API)</span>
+                    <span class="text-[10px] text-slate-500 dark:text-slate-400">Neon Data API Serverless</span>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -179,16 +179,20 @@
                 </div>
 
                 <button onclick="saveProductViaAPI()" class="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold uppercase tracking-widest rounded-xl shadow-lg shadow-emerald-500/30 transition-all mt-2 text-xs">
-                    Simpan Perubahan ke API
+                    Simpan Perubahan ke Neon API
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Script Integrasi API -->
+    <!-- Script Integrasi Neon Data API -->
     <script>
         const CORRECT_ADMIN_USER = "edoputra28*";
-        const API_BASE_URL = "/api/products"; // Ganti dengan endpoint server API backend Anda
+        const NEON_DATA_API_URL = "https://ep-billowing-shadow-bbbzzr6h.apirest.c-15.us-east-1.aws.neon.tech/neondb/rest/v1";
+        const apiHeaders = {
+            "Content-Type": "application/json",
+            "Prefer": "return=representation"
+        };
 
         let products = [];
 
@@ -261,16 +265,18 @@
         }
         updateTheme();
 
-        // 1. Fetch / Ambil Data dari API Serverless (Neon DB)
+        // 1. Fetch / Ambil Data dari Neon Data API
         async function fetchProductsFromAPI() {
             try {
-                const response = await fetch(API_BASE_URL);
-                if (!response.ok) throw new Error('Gagal mengambil data dari API server');
+                const response = await fetch(`${NEON_DATA_API_URL}/products?select=*`, {
+                    method: "GET",
+                    headers: apiHeaders
+                });
+                if (!response.ok) throw new Error('Gagal mengambil data dari Neon Data API');
                 products = await response.json();
                 renderAdminTable();
             } catch (error) {
-                console.warn('Gagal terhubung ke API backend, menggunakan data fallback lokal:', error);
-                // Fallback otomatis jika API belum aktif saat testing lokal
+                console.warn('Gagal terhubung ke Neon Data API, menggunakan fallback lokal:', error);
                 products = JSON.parse(localStorage.getItem('deepa_products')) || [
                     { id: 1, name: 'Netflix', category: 'Hiburan', price: 3000, stock: 15, isArchived: false, image: '', desc: 'Streaming film & series favorit dengan kualitas HD/4K.' },
                     { id: 2, name: 'Disney+', category: 'Hiburan', price: 3000, stock: 15, isArchived: false, image: '', desc: 'Nonton ribuan film Disney, Pixar, Marvel, & Star Wars sepuasnya.' }
@@ -338,7 +344,7 @@
 
             if (index > -1) {
                 const p = products[index];
-                document.getElementById('modal-heading').textContent = "Edit Produk via API";
+                document.getElementById('modal-heading').textContent = "Edit Produk via Neon API";
                 document.getElementById('edit-id').value = p.id;
                 document.getElementById('input-name').value = p.name;
                 document.getElementById('input-category').value = p.category;
@@ -347,7 +353,7 @@
                 document.getElementById('input-image').value = p.image || '';
                 document.getElementById('input-desc').value = p.desc || '';
             } else {
-                document.getElementById('modal-heading').textContent = "Tambah Produk Baru via API";
+                document.getElementById('modal-heading').textContent = "Tambah Produk Baru via Neon API";
                 document.getElementById('edit-id').value = '';
                 document.getElementById('input-name').value = '';
                 document.getElementById('input-category').value = 'Hiburan';
@@ -362,7 +368,7 @@
             document.getElementById('admin-modal').classList.add('hidden');
         }
 
-        // 2. Simpan atau Perbarui Produk melalui API (POST / PUT)
+        // 2. Simpan atau Perbarui Produk melalui Neon Data API (POST / PATCH)
         async function saveProductViaAPI() {
             const id = document.getElementById('edit-id').value;
             const name = document.getElementById('input-name').value.trim();
@@ -382,29 +388,25 @@
             try {
                 let response;
                 if (id) {
-                    // Update produk yang sudah ada (PUT)
-                    response = await fetch(`${API_BASE_URL}/${id}`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
+                    response = await fetch(`${NEON_DATA_API_URL}/products?id=eq.${id}`, {
+                        method: 'PATCH',
+                        headers: apiHeaders,
                         body: JSON.stringify(productPayload)
                     });
                 } else {
-                    // Tambah produk baru (POST)
-                    response = await fetch(API_BASE_URL, {
+                    response = await fetch(`${NEON_DATA_API_URL}/products`, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: apiHeaders,
                         body: JSON.stringify(productPayload)
                     });
                 }
 
-                if (!response.ok) throw new Error('Gagal menyimpan ke server API');
+                if (!response.ok) throw new Error('Gagal menyimpan ke Neon Data API');
                 
                 closeProductModal();
-                fetchProductsFromAPI(); // Refresh data dari server
+                fetchProductsFromAPI();
             } catch (error) {
-                console.warn('API belum merespons, menyimpan ke localStorage sebagai simulasi fallback:', error);
-                
-                // Fallback simulasi localStorage jika server API belum dinyalakan
+                console.warn('Gagal API, menyimpan ke localStorage fallback:', error);
                 if (id) {
                     const idx = products.findIndex(p => p.id == id);
                     if (idx > -1) products[idx] = { ...products[idx], ...productPayload };
@@ -418,38 +420,37 @@
             }
         }
 
-        // 3. Arsipkan Produk via API
+        // 3. Arsipkan Produk via Neon Data API
         async function toggleArchiveAPI(id, index) {
             try {
                 const currentStatus = products[index].isArchived;
-                const response = await fetch(`${API_BASE_URL}/${id}/archive`, {
+                const response = await fetch(`${NEON_DATA_API_URL}/products?id=eq.${id}`, {
                     method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: apiHeaders,
                     body: JSON.stringify({ isArchived: !currentStatus })
                 });
 
-                if (!response.ok) throw new Error('Gagal memperbarui status arsip via API');
+                if (!response.ok) throw new Error('Gagal memperbarui status arsip');
                 fetchProductsFromAPI();
             } catch (error) {
-                // Fallback lokal
                 products[index].isArchived = !products[index].isArchived;
                 localStorage.setItem('deepa_products', JSON.stringify(products));
                 renderAdminTable();
             }
         }
 
-        // 4. Hapus Produk via API (DELETE)
+        // 4. Hapus Produk via Neon Data API (DELETE)
         async function deleteProductAPI(id) {
             if (confirm(`Yakin ingin menghapus produk ID #${id}?`)) {
                 try {
-                    const response = await fetch(`${API_BASE_URL}/${id}`, {
-                        method: 'DELETE'
+                    const response = await fetch(`${NEON_DATA_API_URL}/products?id=eq.${id}`, {
+                        method: 'DELETE',
+                        headers: apiHeaders
                     });
 
-                    if (!response.ok) throw new Error('Gagal menghapus produk dari server API');
+                    if (!response.ok) throw new Error('Gagal menghapus produk');
                     fetchProductsFromAPI();
                 } catch (error) {
-                    // Fallback lokal
                     products = products.filter(p => p.id !== id);
                     localStorage.setItem('deepa_products', JSON.stringify(products));
                     renderAdminTable();
