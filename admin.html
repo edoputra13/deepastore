@@ -49,7 +49,7 @@
     <div id="bg-day" class="bg-layer fixed inset-0 bg-gradient-to-b from-blue-400 to-blue-200 opacity-100 dark:opacity-0 -z-30"></div>
     <div id="bg-night" class="bg-layer fixed inset-0 bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 opacity-0 dark:opacity-100 -z-30"></div>
 
-    <!-- MODAL LOGIN ADMIN (Desain Keren & Auto-Close jika Klik Sembarang di Luar Box) -->
+    <!-- MODAL LOGIN ADMIN -->
     <div id="login-modal" onclick="handleOutsideClick(event)" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/75 backdrop-blur-md p-4">
         <div id="login-box" class="bg-white/90 dark:bg-slate-900/95 backdrop-blur-xl w-full max-w-sm rounded-[2.5rem] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.4)] border border-white/20 dark:border-slate-800 font-mono text-center modal-popup-animation relative overflow-hidden">
             
@@ -69,7 +69,7 @@
                     <label class="block font-bold mb-1.5 text-slate-700 dark:text-slate-300 uppercase text-[10px] tracking-wider">Username Admin</label>
                     <input type="text" id="login-username" required class="w-full p-3.5 rounded-2xl bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white text-xs transition-all shadow-inner" placeholder="Masukkan username...">
                 </div>
-                <div id="login-error" class="text-rose-500 text-[10px] hidden font-bold text-center bg-rose-500/10 py-2 rounded-xl">Username salah! Gunakan: edoputra28*</div>
+                <div id="login-error" class="text-rose-500 text-[10px] hidden font-bold text-center bg-rose-500/10 py-2 rounded-xl">Lah lu bukan admin ege</div>
                 <button type="submit" class="w-full py-4 bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 text-white font-bold uppercase tracking-widest rounded-2xl shadow-lg shadow-sky-500/25 transition-all">
                     Masuk Dashboard
                 </button>
@@ -209,7 +209,7 @@
         function handleOutsideClick(event) {
             const loginBox = document.getElementById('login-box');
             if (!loginBox.contains(event.target)) {
-                window.location.href = 'index.html'; // Kembali ke toko jika user batal login
+                window.location.href = 'index.html'; 
             }
         }
 
