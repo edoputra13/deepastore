@@ -21,10 +21,10 @@ export default async function handler(req, res) {
 
     // 2. TAMBAH PRODUK BARU (POST)
     if (req.method === 'POST') {
-      const { name, category, price, stock, image } = req.body;
+      const { name, category, price, stock, image, description } = req.body;
       const rows = await sql`
-        INSERT INTO products (name, category, price, stock, image)
-        VALUES (${name}, ${category}, ${Number(price)}, ${Number(stock)}, ${image || ''})
+        INSERT INTO products (name, category, price, stock, image, description)
+        VALUES (${name}, ${category}, ${Number(price)}, ${Number(stock)}, ${image || ''}, ${description || ''})
         RETURNING *
       `;
       return res.status(201).json(rows);
@@ -38,10 +38,15 @@ export default async function handler(req, res) {
 
       if (!id) return res.status(400).json({ error: 'ID produk tidak ditemukan' });
 
-      const { name, category, price, stock, image } = req.body;
+      const { name, category, price, stock, image, description } = req.body;
       const rows = await sql`
         UPDATE products
-        SET name = ${name}, category = ${category}, price = ${Number(price)}, stock = ${Number(stock)}, image = ${image || ''}
+        SET name = ${name}, 
+            category = ${category}, 
+            price = ${Number(price)}, 
+            stock = ${Number(stock)}, 
+            image = ${image || ''}, 
+            description = ${description || ''}
         WHERE id = ${Number(id)}
         RETURNING *
       `;
