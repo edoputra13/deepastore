@@ -47,7 +47,7 @@
     <div id="bg-day" class="bg-layer fixed inset-0 bg-gradient-to-b from-blue-400 to-blue-200 opacity-100 dark:opacity-0 -z-30"></div>
     <div id="bg-night" class="bg-layer fixed inset-0 bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 opacity-0 dark:opacity-100 -z-30"></div>
 
-    <!-- MODAL LOGIN ADMIN -->
+    <!-- MODAL LOGIN & UBAH PASSWORD ADMIN -->
     <div id="login-modal" onclick="handleOutsideClick(event)" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
         <div id="login-box" class="bg-white/90 dark:bg-slate-900/95 backdrop-blur-xl w-full max-w-sm rounded-[2.5rem] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.4)] border border-white/20 dark:border-slate-800 font-mono text-center modal-popup-animation relative overflow-hidden">
             
@@ -58,19 +58,83 @@
                 <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
             </div>
             
-            <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-1 uppercase tracking-tight font-futuristic">Admin Access</h2>
-            <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-6">Autentikasi keamanan Deepa Store.</p>
+            <h2 id="auth-title" class="text-lg font-bold text-slate-900 dark:text-white mb-1 uppercase tracking-tight font-futuristic">Admin Access</h2>
+            <p id="auth-subtitle" class="text-[11px] text-slate-500 dark:text-slate-400 mb-6">Autentikasi keamanan Deepa Store.</p>
             
-            <form onsubmit="handleLogin(event)" class="space-y-4 text-left text-xs">
+            <!-- FORM LOGIN -->
+            <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4 text-left text-xs">
                 <div>
                     <label class="block font-bold mb-1.5 text-slate-700 dark:text-slate-300 uppercase text-[10px] tracking-wider">Username Admin</label>
                     <input type="text" id="login-username" required autocomplete="off" class="w-full p-3.5 rounded-2xl bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white text-xs transition-all shadow-inner" placeholder="Masukkan username...">
                 </div>
-                <div id="login-error" class="text-rose-500 text-[10px] hidden font-bold text-center bg-rose-500/10 py-2 rounded-xl">Lah lu bukan admin ege</div>
+
+                <div>
+                    <label class="block font-bold mb-1.5 text-slate-700 dark:text-slate-300 uppercase text-[10px] tracking-wider">Password Admin</label>
+                    <div class="relative">
+                        <input type="password" id="login-password" required autocomplete="off" class="w-full p-3.5 pr-11 rounded-2xl bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white text-xs transition-all shadow-inner" placeholder="Masukkan password...">
+                        <button type="button" onclick="togglePassVisibility('login-password', this)" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-sky-500 transition-colors" title="Tampilkan/Sembunyikan">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="login-error" class="text-rose-500 text-[10px] hidden font-bold text-center bg-rose-500/10 py-2 px-3 rounded-xl"></div>
+                <div id="login-success" class="text-emerald-600 dark:text-emerald-400 text-[10px] hidden font-bold text-center bg-emerald-500/10 py-2 px-3 rounded-xl"></div>
                 
                 <button type="submit" class="w-full py-4 bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 text-white font-bold uppercase tracking-widest rounded-2xl shadow-lg shadow-sky-500/25 transition-all">
                     Masuk Dashboard
                 </button>
+
+                <div class="pt-1 text-center">
+                    <button type="button" onclick="switchAuthMode('change-password')" class="text-[11px] font-bold text-sky-600 dark:text-sky-400 hover:underline transition-all">
+                        Ubah Password Admin
+                    </button>
+                </div>
+            </form>
+
+            <!-- FORM UBAH PASSWORD -->
+            <form id="change-password-form" onsubmit="handleChangePassword(event)" class="hidden space-y-3.5 text-left text-xs">
+                <div>
+                    <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[10px] tracking-wider">Username Admin</label>
+                    <input type="text" id="cp-username" required autocomplete="off" class="w-full p-3 rounded-2xl bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white text-xs transition-all shadow-inner" placeholder="deepastoreid">
+                </div>
+
+                <div>
+                    <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[10px] tracking-wider">Password Lama</label>
+                    <div class="relative">
+                        <input type="password" id="cp-old-password" required autocomplete="off" class="w-full p-3 pr-10 rounded-2xl bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white text-xs transition-all shadow-inner" placeholder="Masukkan password lama...">
+                        <button type="button" onclick="togglePassVisibility('cp-old-password', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-sky-500">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[10px] tracking-wider">Password Baru</label>
+                    <div class="relative">
+                        <input type="password" id="cp-new-password" required autocomplete="off" class="w-full p-3 pr-10 rounded-2xl bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white text-xs transition-all shadow-inner" placeholder="Masukkan password baru...">
+                        <button type="button" onclick="togglePassVisibility('cp-new-password', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-sky-500">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[10px] tracking-wider">Konfirmasi Password Baru</label>
+                    <input type="password" id="cp-confirm-password" required autocomplete="off" class="w-full p-3 rounded-2xl bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white text-xs transition-all shadow-inner" placeholder="Ulangi password baru...">
+                </div>
+
+                <div id="cp-error" class="text-rose-500 text-[10px] hidden font-bold text-center bg-rose-500/10 py-2 px-3 rounded-xl"></div>
+
+                <button type="submit" class="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold uppercase tracking-widest rounded-2xl shadow-lg shadow-emerald-500/25 transition-all">
+                    Simpan Password Baru
+                </button>
+
+                <div class="pt-1 text-center">
+                    <button type="button" onclick="switchAuthMode('login')" class="text-[11px] font-bold text-slate-500 dark:text-slate-400 hover:text-sky-500 transition-all">
+                        ← Kembali ke Login
+                    </button>
+                </div>
             </form>
         </div>
     </div>
@@ -195,9 +259,15 @@
         </div>
     </div>
 
-    <!-- Script Integrasi API -->
+    <!-- Script Integrasi API & Autentikasi -->
     <script>
-        const CORRECT_ADMIN_USER = "edoputra28*";
+        const ADMIN_USERNAME = "deepastoreid";
+        const DEFAULT_ADMIN_PASSWORD = "edoputra28*";
+
+        function getAdminPassword() {
+            return localStorage.getItem('deepa_admin_password') || DEFAULT_ADMIN_PASSWORD;
+        }
+
         const PROXY_API_URL = "/api/products";
         const apiHeaders = {
             "Content-Type": "application/json",
@@ -208,7 +278,7 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             const loggedAdmin = localStorage.getItem('deepa_admin_user');
-            if (loggedAdmin === CORRECT_ADMIN_USER) {
+            if (loggedAdmin === ADMIN_USERNAME) {
                 document.getElementById('login-modal').classList.add('hidden');
                 document.getElementById('admin-dashboard-content').classList.remove('hidden');
                 document.getElementById('admin-user-display').textContent = `Admin: ${loggedAdmin}`;
@@ -220,17 +290,57 @@
             }
         });
 
+        function togglePassVisibility(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.classList.add('text-sky-500');
+            } else {
+                input.type = 'password';
+                btn.classList.remove('text-sky-500');
+            }
+        }
+
+        function switchAuthMode(mode) {
+            const loginForm = document.getElementById('login-form');
+            const cpForm = document.getElementById('change-password-form');
+            const title = document.getElementById('auth-title');
+            const subtitle = document.getElementById('auth-subtitle');
+
+            document.getElementById('login-error').classList.add('hidden');
+            document.getElementById('login-success').classList.add('hidden');
+            document.getElementById('cp-error').classList.add('hidden');
+
+            if (mode === 'change-password') {
+                loginForm.classList.add('hidden');
+                cpForm.classList.remove('hidden');
+                title.textContent = "Ubah Password";
+                subtitle.textContent = "Perbarui kata sandi akses admin.";
+                document.getElementById('cp-username').value = document.getElementById('login-username').value || '';
+                document.getElementById('cp-old-password').value = '';
+                document.getElementById('cp-new-password').value = '';
+                document.getElementById('cp-confirm-password').value = '';
+            } else {
+                cpForm.classList.add('hidden');
+                loginForm.classList.remove('hidden');
+                title.textContent = "Admin Access";
+                subtitle.textContent = "Autentikasi keamanan Deepa Store.";
+            }
+        }
+
         function handleOutsideClick(event) {
             const loginBox = document.getElementById('login-box');
             const loggedAdmin = localStorage.getItem('deepa_admin_user');
 
             if (!loginBox.contains(event.target)) {
-                if (loggedAdmin === CORRECT_ADMIN_USER) {
+                if (loggedAdmin === ADMIN_USERNAME) {
                     document.getElementById('login-modal').classList.add('hidden');
                 } else {
                     const errorElement = document.getElementById('login-error');
-                    errorElement.textContent = "Harap masukkan username admin yang valid!";
-                    errorElement.classList.remove('hidden');
+                    if (!document.getElementById('login-form').classList.contains('hidden')) {
+                        errorElement.textContent = "Harap masukkan username dan password yang valid!";
+                        errorElement.classList.remove('hidden');
+                    }
                 }
             }
         }
@@ -238,9 +348,13 @@
         function handleLogin(e) {
             e.preventDefault();
             const usernameInput = document.getElementById('login-username').value.trim();
+            const passwordInput = document.getElementById('login-password').value;
             const errorElement = document.getElementById('login-error');
+            const successElement = document.getElementById('login-success');
 
-            if (usernameInput === CORRECT_ADMIN_USER) {
+            successElement.classList.add('hidden');
+
+            if (usernameInput === ADMIN_USERNAME && passwordInput === getAdminPassword()) {
                 localStorage.setItem('deepa_admin_user', usernameInput);
                 document.getElementById('login-modal').classList.add('hidden');
                 document.getElementById('admin-dashboard-content').classList.remove('hidden');
@@ -249,18 +363,63 @@
                 fetchProductsFromAPI();
             } else {
                 localStorage.removeItem('deepa_admin_user');
-                errorElement.textContent = "Lah lu bukan admin ege";
+                errorElement.textContent = "Username atau password salah! Lah lu bukan admin ege";
                 errorElement.classList.remove('hidden');
                 document.getElementById('admin-dashboard-content').classList.add('hidden');
-                document.getElementById('login-username').value = '';
-                document.getElementById('login-username').focus();
+                document.getElementById('login-password').value = '';
+                document.getElementById('login-password').focus();
             }
+        }
+
+        function handleChangePassword(e) {
+            e.preventDefault();
+            const usernameInput = document.getElementById('cp-username').value.trim();
+            const oldPassInput = document.getElementById('cp-old-password').value;
+            const newPassInput = document.getElementById('cp-new-password').value;
+            const confirmPassInput = document.getElementById('cp-confirm-password').value;
+            const cpError = document.getElementById('cp-error');
+
+            if (usernameInput !== ADMIN_USERNAME) {
+                cpError.textContent = "Username admin tidak valid!";
+                cpError.classList.remove('hidden');
+                return;
+            }
+
+            if (oldPassInput !== getAdminPassword()) {
+                cpError.textContent = "Password lama tidak sesuai!";
+                cpError.classList.remove('hidden');
+                return;
+            }
+
+            if (newPassInput.length < 4) {
+                cpError.textContent = "Password baru minimal 4 karakter!";
+                cpError.classList.remove('hidden');
+                return;
+            }
+
+            if (newPassInput !== confirmPassInput) {
+                cpError.textContent = "Konfirmasi password baru tidak cocok!";
+                cpError.classList.remove('hidden');
+                return;
+            }
+
+            localStorage.setItem('deepa_admin_password', newPassInput);
+            switchAuthMode('login');
+
+            document.getElementById('login-username').value = ADMIN_USERNAME;
+            document.getElementById('login-password').value = '';
+            const loginSuccess = document.getElementById('login-success');
+            loginSuccess.textContent = "Password berhasil diperbarui! Silakan login.";
+            loginSuccess.classList.remove('hidden');
         }
 
         function handleLogout() {
             localStorage.removeItem('deepa_admin_user');
             document.getElementById('login-username').value = '';
+            document.getElementById('login-password').value = '';
             document.getElementById('login-error').classList.add('hidden');
+            document.getElementById('login-success').classList.add('hidden');
+            switchAuthMode('login');
             document.getElementById('admin-dashboard-content').classList.add('hidden');
             document.getElementById('login-modal').classList.remove('hidden');
         }
