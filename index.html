@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEEPA STORE</title>
+    <title>Deepa Store - Selected Work</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -205,7 +205,14 @@
                 </div>
             </div>
 
-            <p id="modal-desc" class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">Layanan digital siap pakai kualitas terbaik dari Deepa Store.</p>
+            <!-- Ringkasan Deskripsi + Tombol Lihat Semua -->
+            <div class="mb-6 bg-white/60 dark:bg-slate-800/50 border border-sky-100 dark:border-slate-700/70 rounded-2xl p-3.5">
+                <p id="modal-desc" class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line">Layanan digital siap pakai kualitas terbaik dari Deepa Store.</p>
+                <button id="toggle-desc-btn" onclick="toggleDescription()" class="hidden mt-2 text-[11px] font-bold text-sky-600 dark:text-sky-400 hover:underline inline-flex items-center gap-1 focus:outline-none">
+                    <span id="toggle-desc-text">Lihat semua</span>
+                    <svg id="toggle-desc-icon" class="w-3.5 h-3.5 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+            </div>
 
             <div class="mb-5">
                 <label class="block text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-widest mb-2.5">Pilih Paket</label>
@@ -216,7 +223,7 @@
 
             <div class="mb-6">
                 <label class="block text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-widest mb-2.5">Pilih Durasi</label>
-                <div id="duration-options" class="flex flex-wrap gap-2.5">
+                <div id="duration-options" class="flex flex-wrap gap-2">
                     <!-- Diisi dinamis oleh JS -->
                 </div>
             </div>
@@ -328,7 +335,7 @@
                             </div>
                         </div>
 
-                        <button onclick='openProductModal(${JSON.stringify(p)})' class="w-full py-2.5 sm:py-3 bg-sky-200 hover:bg-sky-300 dark:bg-sky-950/70 dark:hover:bg-sky-900 text-sky-900 dark:text-sky-200 font-mono font-bold text-[11px] uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 transition-colors">
+                        <button onclick='openProductModal(${JSON.stringify(p).replace(/'/g, "'")})' class="w-full py-2.5 sm:py-3 bg-sky-200 hover:bg-sky-300 dark:bg-sky-950/70 dark:hover:bg-sky-900 text-sky-900 dark:text-sky-200 font-mono font-bold text-[11px] uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 transition-colors">
                             Pilih Varian 
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
                         </button>
@@ -414,20 +421,66 @@
             rawPrice: 3000
         };
 
+        // Variabel kontrol ringkasan deskripsi
+        let currentFullDesc = '';
+        let currentShortDesc = '';
+        let isDescExpanded = false;
+
+        function toggleDescription() {
+            const descElement = document.getElementById('modal-desc');
+            const toggleText = document.getElementById('toggle-desc-text');
+            const toggleIcon = document.getElementById('toggle-desc-icon');
+
+            isDescExpanded = !isDescExpanded;
+            if (isDescExpanded) {
+                descElement.textContent = currentFullDesc;
+                toggleText.textContent = 'Sembunyikan';
+                toggleIcon.style.transform = 'rotate(180deg)';
+            } else {
+                descElement.textContent = currentShortDesc;
+                toggleText.textContent = 'Lihat semua';
+                toggleIcon.style.transform = 'rotate(0deg)';
+            }
+        }
+
         function openProductModal(product) {
             selectedProductData.name = product.name;
             document.getElementById('modal-title').textContent = product.name;
             document.getElementById('modal-category').textContent = product.category;
             
+            // Pengaturan deskripsi ringkas + "Lihat semua"
             const descElement = document.getElementById('modal-desc');
-            if (descElement) {
-                descElement.textContent = product.description || "Layanan digital siap pakai kualitas terbaik dari Deepa Store.";
+            const toggleBtn = document.getElementById('toggle-desc-btn');
+            const toggleText = document.getElementById('toggle-desc-text');
+            const toggleIcon = document.getElementById('toggle-desc-icon');
+
+            currentFullDesc = (product.description || "Layanan digital siap pakai kualitas terbaik dari Deepa Store.").trim();
+            isDescExpanded = false;
+            toggleIcon.style.transform = 'rotate(0deg)';
+
+            const maxChars = 100;
+            const lines = currentFullDesc.split('\n');
+
+            if (currentFullDesc.length > maxChars || lines.length > 2) {
+                if (lines.length > 2) {
+                    currentShortDesc = lines.slice(0, 2).join('\n').slice(0, maxChars).trim() + '...';
+                } else {
+                    currentShortDesc = currentFullDesc.slice(0, maxChars).trim() + '...';
+                }
+                descElement.textContent = currentShortDesc;
+                toggleText.textContent = 'Lihat semua';
+                toggleBtn.classList.remove('hidden');
+            } else {
+                currentShortDesc = currentFullDesc;
+                descElement.textContent = currentFullDesc;
+                toggleBtn.classList.add('hidden');
             }
 
-            // Ambil harga spesifik per durasi dari database (dengan fallback jika masih 0)
+            // Ambil harga spesifik per durasi (1H, 3H, 7H, 1B)
             const price1d = Number(product.price) || 3000;
             const price3d = Number(product.price_3d) > 0 ? Number(product.price_3d) : (price1d * 2);
             const price7d = Number(product.price_7d) > 0 ? Number(product.price_7d) : (price1d * 4);
+            const price1m = Number(product.price_1m) > 0 ? Number(product.price_1m) : (price1d * 10);
 
             selectedProductData.duration = '1 Hari';
             selectedProductData.rawPrice = price1d;
@@ -436,9 +489,10 @@
 
             const durationContainer = document.getElementById('duration-options');
             durationContainer.innerHTML = `
-                <button onclick="selectDuration('1 Hari', ${price1d}, this)" class="duration-btn px-4 py-2 text-xs font-bold rounded-full border border-pink-400 bg-pink-400 text-white shadow-md transition-all">1 Hari</button>
-                <button onclick="selectDuration('3 Hari', ${price3d}, this)" class="duration-btn px-4 py-2 text-xs font-bold rounded-full border border-sky-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-sky-400 transition-all">3 Hari</button>
-                <button onclick="selectDuration('7 Hari', ${price7d}, this)" class="duration-btn px-4 py-2 text-xs font-bold rounded-full border border-sky-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-sky-400 transition-all">7 Hari</button>
+                <button onclick="selectDuration('1 Hari', ${price1d}, this)" class="duration-btn px-3.5 py-2 text-xs font-bold rounded-full border border-pink-400 bg-pink-400 text-white shadow-md transition-all">1 Hari</button>
+                <button onclick="selectDuration('3 Hari', ${price3d}, this)" class="duration-btn px-3.5 py-2 text-xs font-bold rounded-full border border-sky-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-sky-400 transition-all">3 Hari</button>
+                <button onclick="selectDuration('7 Hari', ${price7d}, this)" class="duration-btn px-3.5 py-2 text-xs font-bold rounded-full border border-sky-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-sky-400 transition-all">7 Hari</button>
+                <button onclick="selectDuration('1 Bulan', ${price1m}, this)" class="duration-btn px-3.5 py-2 text-xs font-bold rounded-full border border-sky-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-sky-400 transition-all">1 Bulan</button>
             `;
 
             const iconContainer = document.getElementById('modal-icon-container');
@@ -461,9 +515,9 @@
 
         function selectDuration(durationName, priceValue, btn) {
             document.querySelectorAll('.duration-btn').forEach(b => {
-                b.className = "duration-btn px-4 py-2 text-xs font-bold rounded-full border border-sky-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-sky-400 transition-all";
+                b.className = "duration-btn px-3.5 py-2 text-xs font-bold rounded-full border border-sky-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-sky-400 transition-all";
             });
-            btn.className = "duration-btn px-4 py-2 text-xs font-bold rounded-full border border-pink-400 bg-pink-400 text-white shadow-md transition-all";
+            btn.className = "duration-btn px-3.5 py-2 text-xs font-bold rounded-full border border-pink-400 bg-pink-400 text-white shadow-md transition-all";
 
             selectedProductData.duration = durationName;
             selectedProductData.rawPrice = priceValue;
