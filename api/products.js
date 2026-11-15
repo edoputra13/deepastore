@@ -1,7 +1,7 @@
 import { neon } from '@neondatabase/serverless';
 
 export default async function handler(req, res) {
-  const DATABASE_URL = process.env.DATABASE_URL || "PASTE_CONNECTION_STRING_NEON_ANDA_DI_SINI";
+  const DATABASE_URL = process.env.DATABASE_URL || "postgresql://neondb_owner:npg_Zm5eHBzal6xh@ep-billowing-shadow-bbbzzr6h.c-15.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require";
   const sql = neon(DATABASE_URL);
 
   res.setHeader('Access-Control-Allow-Origin', '*');
