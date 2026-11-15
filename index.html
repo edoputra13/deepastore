@@ -31,24 +31,6 @@
     <style>
         .bg-layer { transition: opacity 1.5s ease-in-out; }
         
-        @keyframes flyRight {
-            0% { transform: translateX(-10vw) translateY(0) scale(var(--s, 1)); }
-            25% { transform: translateX(20vw) translateY(-3vh) scale(var(--s, 1)); }
-            75% { transform: translateX(80vw) translateY(2vh) scale(var(--s, 1)); }
-            100% { transform: translateX(110vw) translateY(0) scale(var(--s, 1)); }
-        }
-        .bird {
-            position: fixed;
-            animation: flyRight linear infinite;
-            z-index: 15;
-            pointer-events: none;
-            will-change: transform;
-        }
-        .bird-1 { top: 25%; animation-duration: 25s; animation-delay: 0s; --s: 1; }
-        .bird-2 { top: 40%; animation-duration: 35s; animation-delay: -10s; --s: 0.6; }
-        .bird-3 { top: 15%; animation-duration: 28s; animation-delay: -15s; --s: 0.8; }
-        .bird-4 { top: 30%; animation-duration: 40s; animation-delay: -5s; --s: 0.5; }
-
         @keyframes twinkle {
             0%, 100% { opacity: 0.2; transform: scale(0.8); }
             50% { opacity: 1; transform: scale(1.2); }
@@ -58,25 +40,6 @@
             50% { box-shadow: 0 0 40px rgba(255, 255, 255, 0.35), inset -12px 6px 15px rgba(0, 0, 0, 0.6); }
         }
 
-        .night-element { position: fixed; z-index: 15; pointer-events: none; }
-        .realistic-moon {
-            top: 10%; right: 12%; width: 70px; height: 70px; border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #ffffff 0%, #e2e8f0 60%, #cbd5e1 100%);
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.25), inset -14px 8px 18px rgba(0, 0, 0, 0.55);
-            animation: moonGlow 4s ease-in-out infinite;
-        }
-        .realistic-moon::after {
-            content: ''; position: absolute; top: 15px; left: 20px; width: 14px; height: 14px;
-            background: rgba(0, 0, 0, 0.12); border-radius: 50%;
-            box-shadow: 18px 20px 0 -2px rgba(0, 0, 0, 0.1), 8px 30px 0 -4px rgba(0, 0, 0, 0.08);
-        }
-
-        .star-1 { top: 20%; left: 15%; animation: twinkle 3s ease-in-out infinite; }
-        .star-2 { top: 35%; left: 75%; animation: twinkle 2.2s ease-in-out infinite 0.5s; }
-        .star-3 { top: 15%; left: 45%; animation: twinkle 4s ease-in-out infinite 1s; }
-        .star-4 { top: 60%; left: 25%; animation: twinkle 2.8s ease-in-out infinite 0.3s; }
-        .star-5 { top: 50%; left: 85%; animation: twinkle 3.5s ease-in-out infinite 1.5s; }
-        
         .curtain { transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1); }
         .curtain-up { transform: translateY(-100%); }
         .curtain-down { transform: translateY(100%); }
@@ -110,21 +73,15 @@
         }
 
         .platform-item {
-            position: relative;
-            overflow: hidden;
+            position: relative; overflow: hidden;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .platform-item::before {
-            content: '';
-            position: absolute;
-            inset: 0;
+            content: ''; position: absolute; inset: 0;
             background: linear-gradient(120deg, transparent, rgba(56, 189, 248, 0.1), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s ease;
+            transform: translateX(-100%); transition: transform 0.6s ease;
         }
-        .platform-item:hover::before {
-            transform: translateX(100%);
-        }
+        .platform-item:hover::before { transform: translateX(100%); }
 
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -260,12 +217,12 @@
             <div class="flex items-center gap-4 mb-4">
                 <div id="modal-icon-container" class="w-16 h-16 shrink-0 bg-white dark:bg-slate-800 rounded-2xl shadow-md flex items-center justify-center overflow-hidden border border-sky-100 dark:border-slate-700"></div>
                 <div>
-                    <h3 id="modal-title" class="font-mono font-bold text-2xl text-slate-900 dark:text-white tracking-tight">Netflix</h3>
-                    <span id="modal-category" class="inline-block bg-sky-200/70 dark:bg-sky-950 text-sky-700 dark:text-sky-300 text-[10px] font-mono uppercase px-2.5 py-0.5 rounded-full my-1 tracking-wider">Hiburan</span>
+                    <h3 id="modal-title" class="font-mono font-bold text-2xl text-slate-900 dark:text-white tracking-tight">Produk</h3>
+                    <span id="modal-category" class="inline-block bg-sky-200/70 dark:bg-sky-950 text-sky-700 dark:text-sky-300 text-[10px] font-mono uppercase px-2.5 py-0.5 rounded-full my-1 tracking-wider">Kategori</span>
                 </div>
             </div>
 
-            <p id="modal-desc" class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">Layanan digital siap pakai kualitas terbaik.</p>
+            <p id="modal-desc" class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">Layanan digital siap pakai kualitas terbaik dari Deepa Store.</p>
 
             <div class="mb-5">
                 <label class="block text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-widest mb-2.5">Pilih Paket</label>
@@ -298,9 +255,9 @@
         </div>
     </div>
 
-    <!-- Script Utama -->
+    <!-- Script Utama (Menggunakan proxy API Vercel /api/products) -->
     <script>
-        const NEON_DATA_API_URL = "https://ep-billowing-shadow-bbbzzr6h.rt.c-15.us-east-1.aws.neon.tech/products";
+        const PROXY_API_URL = "/api/products";
         const apiHeaders = {
             "Content-Type": "application/json",
             "Prefer": "return=representation"
@@ -348,51 +305,56 @@
 
         async function fetchAndRenderProducts() {
             const grid = document.getElementById('product-grid');
-            grid.innerHTML = `<div class="col-span-2 text-center text-xs text-slate-400 py-12">Memuat katalog dari Neon Data API...</div>`;
+            grid.innerHTML = `<div class="col-span-2 text-center text-xs text-slate-400 py-12">Memuat katalog dari database...</div>`;
 
-            const response = await fetch(`${NEON_DATA_API_URL}?select=*`, {
-                method: "GET",
-                headers: apiHeaders
-            });
-            if (!response.ok) throw new Error('Gagal mengambil data dari Neon Data API');
-            
-            const products = await response.json();
-            grid.innerHTML = '';
-            const activeProducts = products.filter(p => p.stock > 0);
-
-            if (activeProducts.length === 0) {
-                grid.innerHTML = `<div class="col-span-2 text-center text-xs text-slate-400 py-12">Belum ada produk aktif atau stok habis.</div>`;
-                return;
-            }
-
-            activeProducts.forEach(p => {
-                const card = document.createElement('div');
-                card.className = "bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[1.75rem] p-4 sm:p-5 shadow-xl relative flex flex-col justify-between border border-white/50 dark:border-slate-800 transition-all duration-300 hover:-translate-y-1";
+            try {
+                const response = await fetch(`${PROXY_API_URL}?select=*`, {
+                    method: "GET",
+                    headers: apiHeaders
+                });
+                if (!response.ok) throw new Error('Gagal mengambil data produk');
                 
-                let mediaHTML = `<span class="font-bold text-sky-600 text-lg">${p.name.charAt(0)}</span>`;
-                let mediaContainerClass = "w-12 h-12 sm:w-14 sm:h-14 shrink-0 bg-sky-100 dark:bg-slate-800 rounded-xl shadow-md flex items-center justify-center p-0 overflow-hidden border border-slate-200 dark:border-slate-700";
-                
-                card.innerHTML = `
-                    <div class="absolute top-3 right-4 text-amber-400 text-sm">★</div>
+                const products = await response.json();
+                grid.innerHTML = '';
+                const activeProducts = products.filter(p => p.stock > 0);
+
+                if (activeProducts.length === 0) {
+                    grid.innerHTML = `<div class="col-span-2 text-center text-xs text-slate-400 py-12">Belum ada produk aktif atau stok habis.</div>`;
+                    return;
+                }
+
+                activeProducts.forEach(p => {
+                    const card = document.createElement('div');
+                    card.className = "bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[1.75rem] p-4 sm:p-5 shadow-xl relative flex flex-col justify-between border border-white/50 dark:border-slate-800 transition-all duration-300 hover:-translate-y-1";
                     
-                    <div class="flex items-center gap-3.5 mb-4">
-                        <div class="${mediaContainerClass}">
-                            ${mediaHTML}
+                    let mediaHTML = `<span class="font-bold text-sky-600 text-lg">${p.name.charAt(0)}</span>`;
+                    let mediaContainerClass = "w-12 h-12 sm:w-14 sm:h-14 shrink-0 bg-sky-100 dark:bg-slate-800 rounded-xl shadow-md flex items-center justify-center p-0 overflow-hidden border border-slate-200 dark:border-slate-700";
+                    
+                    card.innerHTML = `
+                        <div class="absolute top-3 right-4 text-amber-400 text-sm">★</div>
+                        
+                        <div class="flex items-center gap-3.5 mb-4">
+                            <div class="${mediaContainerClass}">
+                                ${mediaHTML}
+                            </div>
+                            <div>
+                                <h3 class="font-mono font-bold text-base sm:text-lg text-slate-900 dark:text-white tracking-tight leading-snug">${p.name}</h3>
+                                <span class="inline-block bg-sky-100 dark:bg-sky-950 text-sky-600 dark:text-sky-300 text-[9px] font-mono uppercase px-2 py-0.5 rounded-full my-0.5 tracking-wider">${p.category}</span>
+                                <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 tracking-wider">Mulai <span class="font-bold text-slate-900 dark:text-white">Rp${Number(p.price).toLocaleString('id-ID')}</span></div>
+                            </div>
                         </div>
-                        <div>
-                            <h3 class="font-mono font-bold text-base sm:text-lg text-slate-900 dark:text-white tracking-tight leading-snug">${p.name}</h3>
-                            <span class="inline-block bg-sky-100 dark:bg-sky-950 text-sky-600 dark:text-sky-300 text-[9px] font-mono uppercase px-2 py-0.5 rounded-full my-0.5 tracking-wider">${p.category}</span>
-                            <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 tracking-wider">Mulai <span class="font-bold text-slate-900 dark:text-white">Rp${Number(p.price).toLocaleString('id-ID')}</span></div>
-                        </div>
-                    </div>
 
-                    <button onclick='openProductModal(${JSON.stringify(p)})' class="w-full py-2.5 sm:py-3 bg-sky-200 hover:bg-sky-300 dark:bg-sky-950/70 dark:hover:bg-sky-900 text-sky-900 dark:text-sky-200 font-mono font-bold text-[11px] uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 transition-colors">
-                        Pilih Varian 
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                    </button>
-                `;
-                grid.appendChild(card);
-            });
+                        <button onclick='openProductModal(${JSON.stringify(p)})' class="w-full py-2.5 sm:py-3 bg-sky-200 hover:bg-sky-300 dark:bg-sky-950/70 dark:hover:bg-sky-900 text-sky-900 dark:text-sky-200 font-mono font-bold text-[11px] uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 transition-colors">
+                            Pilih Varian 
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+                    `;
+                    grid.appendChild(card);
+                });
+            } catch (err) {
+                console.error(err);
+                grid.innerHTML = `<div class="col-span-2 text-center text-xs text-rose-400 py-12">Gagal memuat katalog produk. Periksa koneksi API Anda.</div>`;
+            }
         }
 
         const textToType = "HELLO, CUSTOMER";
@@ -461,7 +423,7 @@
         }
 
         let selectedProductData = {
-            name: 'Netflix',
+            name: 'Produk',
             packet: '1P 1U',
             duration: '1 Hari',
             price: 'Rp3.000',
@@ -472,7 +434,6 @@
             selectedProductData.name = product.name;
             document.getElementById('modal-title').textContent = product.name;
             document.getElementById('modal-category').textContent = product.category;
-            document.getElementById('modal-desc').textContent = 'Layanan digital siap pakai kualitas terbaik.';
 
             const initialPrice = product.price || 3000;
             selectedProductData.duration = '1 Hari';
@@ -509,11 +470,9 @@
 
             selectedProductData.duration = durationName;
             selectedProductData.rawPrice = priceValue;
-            
-            const formattedPrice = "Rp" + Number(priceValue).toLocaleString('id-ID');
-            selectedProductData.price = formattedPrice;
+            selectedProductData.price = "Rp" + Number(priceValue).toLocaleString('id-ID');
 
-            document.getElementById('modal-price').textContent = formattedPrice;
+            document.getElementById('modal-price').textContent = selectedProductData.price;
         }
 
         function buyViaWhatsApp() {
@@ -526,9 +485,7 @@
 
         window.onclick = function(event) {
             const modal = document.getElementById('product-modal');
-            if (event.target === modal) {
-                closeProductModal();
-            }
+            if (event.target === modal) closeProductModal();
         }
     </script>
 </body>
