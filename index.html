@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deepa Store - Selected Work</title>
+    <title>DEEPA STORE</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -217,9 +217,7 @@
             <div class="mb-6">
                 <label class="block text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-widest mb-2.5">Pilih Durasi</label>
                 <div id="duration-options" class="flex flex-wrap gap-2.5">
-                    <button onclick="selectDuration('1 Hari', 3000, this)" class="duration-btn px-4 py-2 text-xs font-bold rounded-full border border-pink-400 bg-pink-400 text-white shadow-md transition-all">1 Hari</button>
-                    <button onclick="selectDuration('3 Hari', 6000, this)" class="duration-btn px-4 py-2 text-xs font-bold rounded-full border border-sky-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-sky-400 transition-all">3 Hari</button>
-                    <button onclick="selectDuration('7 Hari', 12000, this)" class="duration-btn px-4 py-2 text-xs font-bold rounded-full border border-sky-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-sky-400 transition-all">7 Hari</button>
+                    <!-- Diisi dinamis oleh JS -->
                 </div>
             </div>
 
@@ -421,23 +419,26 @@
             document.getElementById('modal-title').textContent = product.name;
             document.getElementById('modal-category').textContent = product.category;
             
-            // Menampilkan deskripsi produk di modal
             const descElement = document.getElementById('modal-desc');
             if (descElement) {
                 descElement.textContent = product.description || "Layanan digital siap pakai kualitas terbaik dari Deepa Store.";
             }
 
-            const initialPrice = product.price || 3000;
+            // Ambil harga spesifik per durasi dari database (dengan fallback jika masih 0)
+            const price1d = Number(product.price) || 3000;
+            const price3d = Number(product.price_3d) > 0 ? Number(product.price_3d) : (price1d * 2);
+            const price7d = Number(product.price_7d) > 0 ? Number(product.price_7d) : (price1d * 4);
+
             selectedProductData.duration = '1 Hari';
-            selectedProductData.rawPrice = initialPrice;
-            selectedProductData.price = "Rp" + Number(initialPrice).toLocaleString('id-ID');
+            selectedProductData.rawPrice = price1d;
+            selectedProductData.price = "Rp" + price1d.toLocaleString('id-ID');
             document.getElementById('modal-price').textContent = selectedProductData.price;
 
             const durationContainer = document.getElementById('duration-options');
             durationContainer.innerHTML = `
-                <button onclick="selectDuration('1 Hari', ${initialPrice}, this)" class="duration-btn px-4 py-2 text-xs font-bold rounded-full border border-pink-400 bg-pink-400 text-white shadow-md transition-all">1 Hari</button>
-                <button onclick="selectDuration('3 Hari', ${initialPrice * 2}, this)" class="duration-btn px-4 py-2 text-xs font-bold rounded-full border border-sky-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-sky-400 transition-all">3 Hari</button>
-                <button onclick="selectDuration('7 Hari', ${initialPrice * 4}, this)" class="duration-btn px-4 py-2 text-xs font-bold rounded-full border border-sky-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-sky-400 transition-all">7 Hari</button>
+                <button onclick="selectDuration('1 Hari', ${price1d}, this)" class="duration-btn px-4 py-2 text-xs font-bold rounded-full border border-pink-400 bg-pink-400 text-white shadow-md transition-all">1 Hari</button>
+                <button onclick="selectDuration('3 Hari', ${price3d}, this)" class="duration-btn px-4 py-2 text-xs font-bold rounded-full border border-sky-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-sky-400 transition-all">3 Hari</button>
+                <button onclick="selectDuration('7 Hari', ${price7d}, this)" class="duration-btn px-4 py-2 text-xs font-bold rounded-full border border-sky-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-sky-400 transition-all">7 Hari</button>
             `;
 
             const iconContainer = document.getElementById('modal-icon-container');
