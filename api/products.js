@@ -1,41 +1,69 @@
+import { neon } from '@neondatabase/serverless';
+
 export default async function handler(req, res) {
-  // Set header CORS agar diizinkan oleh browser
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  // Ganti teks di dalam tanda kutip dengan Connection String PostgreSQL dari dashboard Neon Anda
+  const DATABASE_URL = process.env.DATABASE_URL || "postgresql://neondb_owner:npg_Zm5eHBzal6xh@ep-billowing-shadow-bbbzzr6h.c-15.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require";
+  const sql = neon(DATABASE_URL);
+
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Prefer'
-  );
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Prefer');
 
   if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+    return res.status(200).end();
   }
 
-  const NEON_API_URL = "https://ep-billowing-shadow-bbbzzr6h.rt.c-15.us-east-1.aws.neon.tech/products";
-
   try {
-    const { search } = req.url ? new URL(req.url, `http://${req.headers.host}`) : { search: '' };
-    const targetUrl = `${NEON_API_URL}${search}`;
-
-    const fetchOptions = {
-      method: req.method,
-      headers: {
-        "Content-Type": "application/json",
-        "Prefer": "return=representation"
-      },
-    };
-
-    if (['POST', 'PATCH', 'PUT'].includes(req.method)) {
-      fetchOptions.body = JSON.stringify(req.body);
+    // 1. AMBIL SEMUA PRODUK (GET)
+    if (req.method === 'GET') {
+      const rows = await sql`SELECT * FROM products ORDER BY id ASC`;
+      return res.status(200).json(rows);
     }
 
-    const response = await fetch(targetUrl, fetchOptions);
-    const data = await response.text();
+    // 2. TAMBAH PRODUK BARU (POST)
+    if (req.method === 'POST') {
+      const { name, category, price, stock } = req.body;
+      const rows = await sql`
+        INSERT INTO products (name, category, price, stock)
+        VALUES (${name}, ${category}, ${Number(price)}, ${Number(stock)})
+        RETURNING *
+      `;
+      return res.status(201).json(rows);
+    }
 
-    res.status(response.status).send(data);
+    // 3. EDIT PRODUK (PATCH)
+    if (req.method === 'PATCH') {
+      const url = new URL(req.url, `http://${req.headers.host}`);
+      const idParam = url.searchParams.get('id'); // format: eq.1
+      const id = idParam ? idParam.replace('eq.', '') : null;
+
+      if (!id) return res.status(400).json({ error: 'ID produk tidak ditemukan' });
+
+      const { name, category, price, stock } = req.body;
+      const rows = await sql`
+        UPDATE products
+        SET name = ${name}, category = ${category}, price = ${Number(price)}, stock = ${Number(stock)}
+        WHERE id = ${Number(id)}
+        RETURNING *
+      `;
+      return res.status(200).json(rows);
+    }
+
+    // 4. HAPUS PRODUK (DELETE)
+    if (req.method === 'DELETE') {
+      const url = new URL(req.url, `http://${req.headers.host}`);
+      const idParam = url.searchParams.get('id'); // format: eq.1
+      const id = idParam ? idParam.replace('eq.', '') : null;
+
+      if (!id) return res.status(400).json({ error: 'ID produk tidak ditemukan' });
+
+      await sql`DELETE FROM products WHERE id = ${Number(id)}`;
+      return res.status(200).json({ success: true });
+    }
+
+    return res.status(405).json({ error: 'Method tidak didukung' });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Database Error:', error);
+    return res.status(500).json({ error: error.message });
   }
 }
