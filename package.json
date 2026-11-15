@@ -1,28 +1,8 @@
 {
   "name": "deepa-store",
   "version": "1.0.0",
-  "description": "DEEPA STORE - Online digital storefront offering subscription accounts and digital services with Neon Serverless Database.",
-  "main": "index.html",
-  "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
-  },
-  "keywords": [
-    "deepa store",
-    "digital storefront",
-    "neon database",
-    "serverless postgres",
-    "ecommerce"
-  ],
-  "author": "Edo Putra",
-  "license": "ISC",
+  "type": "module",
   "dependencies": {
-    "@neondatabase/serverless": "^0.9.0",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "cors": "^2.8.5"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.0"
+    "@neondatabase/serverless": "^0.10.4"
   }
 }
