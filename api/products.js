@@ -1,8 +1,7 @@
 import { neon } from '@neondatabase/serverless';
 
 export default async function handler(req, res) {
-  // Ganti teks di dalam tanda kutip dengan Connection String PostgreSQL dari dashboard Neon Anda
-  const DATABASE_URL = process.env.DATABASE_URL || "postgresql://neondb_owner:npg_Zm5eHBzal6xh@ep-billowing-shadow-bbbzzr6h.c-15.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require";
+  const DATABASE_URL = process.env.DATABASE_URL || "PASTE_CONNECTION_STRING_NEON_ANDA_DI_SINI";
   const sql = neon(DATABASE_URL);
 
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -22,10 +21,10 @@ export default async function handler(req, res) {
 
     // 2. TAMBAH PRODUK BARU (POST)
     if (req.method === 'POST') {
-      const { name, category, price, stock } = req.body;
+      const { name, category, price, stock, image } = req.body;
       const rows = await sql`
-        INSERT INTO products (name, category, price, stock)
-        VALUES (${name}, ${category}, ${Number(price)}, ${Number(stock)})
+        INSERT INTO products (name, category, price, stock, image)
+        VALUES (${name}, ${category}, ${Number(price)}, ${Number(stock)}, ${image || ''})
         RETURNING *
       `;
       return res.status(201).json(rows);
@@ -34,15 +33,15 @@ export default async function handler(req, res) {
     // 3. EDIT PRODUK (PATCH)
     if (req.method === 'PATCH') {
       const url = new URL(req.url, `http://${req.headers.host}`);
-      const idParam = url.searchParams.get('id'); // format: eq.1
+      const idParam = url.searchParams.get('id');
       const id = idParam ? idParam.replace('eq.', '') : null;
 
       if (!id) return res.status(400).json({ error: 'ID produk tidak ditemukan' });
 
-      const { name, category, price, stock } = req.body;
+      const { name, category, price, stock, image } = req.body;
       const rows = await sql`
         UPDATE products
-        SET name = ${name}, category = ${category}, price = ${Number(price)}, stock = ${Number(stock)}
+        SET name = ${name}, category = ${category}, price = ${Number(price)}, stock = ${Number(stock)}, image = ${image || ''}
         WHERE id = ${Number(id)}
         RETURNING *
       `;
@@ -52,7 +51,7 @@ export default async function handler(req, res) {
     // 4. HAPUS PRODUK (DELETE)
     if (req.method === 'DELETE') {
       const url = new URL(req.url, `http://${req.headers.host}`);
-      const idParam = url.searchParams.get('id'); // format: eq.1
+      const idParam = url.searchParams.get('id');
       const id = idParam ? idParam.replace('eq.', '') : null;
 
       if (!id) return res.status(400).json({ error: 'ID produk tidak ditemukan' });
