@@ -255,7 +255,7 @@
         </div>
     </div>
 
-    <!-- Script Utama (Menggunakan proxy API Vercel /api/products) -->
+    <!-- Script Utama -->
     <script>
         const PROXY_API_URL = "/api/products";
         const apiHeaders = {
@@ -328,6 +328,9 @@
                     card.className = "bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[1.75rem] p-4 sm:p-5 shadow-xl relative flex flex-col justify-between border border-white/50 dark:border-slate-800 transition-all duration-300 hover:-translate-y-1";
                     
                     let mediaHTML = `<span class="font-bold text-sky-600 text-lg">${p.name.charAt(0)}</span>`;
+                    if (p.image) {
+                        mediaHTML = `<img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">`;
+                    }
                     let mediaContainerClass = "w-12 h-12 sm:w-14 sm:h-14 shrink-0 bg-sky-100 dark:bg-slate-800 rounded-xl shadow-md flex items-center justify-center p-0 overflow-hidden border border-slate-200 dark:border-slate-700";
                     
                     card.innerHTML = `
@@ -449,7 +452,11 @@
             `;
 
             const iconContainer = document.getElementById('modal-icon-container');
-            iconContainer.innerHTML = `<span class="font-bold text-lg text-sky-600">${product.name.charAt(0)}</span>`;
+            if (product.image) {
+                iconContainer.innerHTML = `<img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover">`;
+            } else {
+                iconContainer.innerHTML = `<span class="font-bold text-lg text-sky-600">${product.name.charAt(0)}</span>`;
+            }
 
             const modal = document.getElementById('product-modal');
             const modalBox = document.getElementById('modal-box');
