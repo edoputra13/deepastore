@@ -21,10 +21,19 @@ export default async function handler(req, res) {
 
     // 2. TAMBAH PRODUK BARU (POST)
     if (req.method === 'POST') {
-      const { name, category, price, stock, image, description } = req.body;
+      const { name, category, price, price_3d, price_7d, stock, image, description } = req.body;
       const rows = await sql`
-        INSERT INTO products (name, category, price, stock, image, description)
-        VALUES (${name}, ${category}, ${Number(price)}, ${Number(stock)}, ${image || ''}, ${description || ''})
+        INSERT INTO products (name, category, price, price_3d, price_7d, stock, image, description)
+        VALUES (
+          ${name}, 
+          ${category}, 
+          ${Number(price)}, 
+          ${Number(price_3d) || Number(price) * 2}, 
+          ${Number(price_7d) || Number(price) * 4}, 
+          ${Number(stock)}, 
+          ${image || ''}, 
+          ${description || ''}
+        )
         RETURNING *
       `;
       return res.status(201).json(rows);
@@ -38,12 +47,14 @@ export default async function handler(req, res) {
 
       if (!id) return res.status(400).json({ error: 'ID produk tidak ditemukan' });
 
-      const { name, category, price, stock, image, description } = req.body;
+      const { name, category, price, price_3d, price_7d, stock, image, description } = req.body;
       const rows = await sql`
         UPDATE products
         SET name = ${name}, 
             category = ${category}, 
             price = ${Number(price)}, 
+            price_3d = ${Number(price_3d) || Number(price) * 2},
+            price_7d = ${Number(price_7d) || Number(price) * 4},
             stock = ${Number(stock)}, 
             image = ${image || ''}, 
             description = ${description || ''}
