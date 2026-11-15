@@ -38,9 +38,7 @@
             0% { transform: scale(0.9); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
-        .modal-popup-animation {
-            animation: popupScale 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
+        .modal-popup-animation { animation: popupScale 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     </style>
 </head>
 <body class="antialiased overflow-x-hidden font-sans select-none text-slate-800 dark:text-slate-200 min-h-screen flex flex-col">
@@ -116,7 +114,7 @@
             <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 shadow-2xl border border-white/50 dark:border-slate-800">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-2">
                     <h2 class="text-sm sm:text-lg font-bold text-slate-900 dark:text-white uppercase tracking-tight">Kelola Katalog Produk</h2>
-                    <span class="text-[10px] text-slate-500 dark:text-slate-400">Neon Data API (5 Kolom Utama)</span>
+                    <span class="text-[10px] text-slate-500 dark:text-slate-400">Database (5 Kolom Utama)</span>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -166,16 +164,16 @@
                 </div>
 
                 <button onclick="saveProductViaAPI()" class="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold uppercase tracking-widest rounded-xl shadow-lg shadow-emerald-500/30 transition-all mt-2 text-xs">
-                    Simpan Perubahan ke Neon API
+                    Simpan Perubahan ke Database
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Script Integrasi Strict Neon Data API (5 Kolom) -->
+    <!-- Script Integrasi API (Menggunakan proxy API Vercel /api/products) -->
     <script>
         const CORRECT_ADMIN_USER = "edoputra28*";
-        const NEON_DATA_API_URL = "https://ep-billowing-shadow-bbbzzr6h.rt.c-15.us-east-1.aws.neon.tech/products";
+        const PROXY_API_URL = "/api/products";
         const apiHeaders = {
             "Content-Type": "application/json",
             "Prefer": "return=representation"
@@ -252,19 +250,18 @@
         }
         updateTheme();
 
-        // 1. Fetch / Ambil Data dari Neon Data API Murni
         async function fetchProductsFromAPI() {
             try {
-                const response = await fetch(`${NEON_DATA_API_URL}?select=*`, {
+                const response = await fetch(`${PROXY_API_URL}?select=*`, {
                     method: "GET",
                     headers: apiHeaders
                 });
-                if (!response.ok) throw new Error('Gagal mengambil data dari Neon Data API');
+                if (!response.ok) throw new Error('Gagal mengambil data produk');
                 products = await response.json();
                 renderAdminTable();
             } catch (error) {
-                console.error('Kesalahan koneksi Neon Data API:', error);
-                alert('Gagal memuat data dari database Neon. Pastikan koneksi dan endpoint aktif.');
+                console.error('Kesalahan koneksi API:', error);
+                alert('Gagal memuat data dari database.');
             }
         }
 
@@ -312,14 +309,14 @@
 
             if (index > -1) {
                 const p = products[index];
-                document.getElementById('modal-heading').textContent = "Edit Produk via Neon API";
+                document.getElementById('modal-heading').textContent = "Edit Produk";
                 document.getElementById('edit-id').value = p.id;
                 document.getElementById('input-name').value = p.name;
                 document.getElementById('input-category').value = p.category;
                 document.getElementById('input-price').value = p.price;
                 document.getElementById('input-stock').value = p.stock;
             } else {
-                document.getElementById('modal-heading').textContent = "Tambah Produk Baru via Neon API";
+                document.getElementById('modal-heading').textContent = "Tambah Produk Baru";
                 document.getElementById('edit-id').value = '';
                 document.getElementById('input-name').value = '';
                 document.getElementById('input-category').value = 'Hiburan';
@@ -332,7 +329,6 @@
             document.getElementById('admin-modal').classList.add('hidden');
         }
 
-        // 2. Simpan atau Perbarui Produk (Hanya 5 Kolom: name, category, price, stock)
         async function saveProductViaAPI() {
             const id = document.getElementById('edit-id').value;
             const name = document.getElementById('input-name').value.trim();
@@ -350,34 +346,33 @@
             try {
                 let response;
                 if (id) {
-                    response = await fetch(`${NEON_DATA_API_URL}?id=eq.${id}`, {
+                    response = await fetch(`${PROXY_API_URL}?id=eq.${id}`, {
                         method: 'PATCH',
                         headers: apiHeaders,
                         body: JSON.stringify(productPayload)
                     });
                 } else {
-                    response = await fetch(NEON_DATA_API_URL, {
+                    response = await fetch(PROXY_API_URL, {
                         method: 'POST',
                         headers: apiHeaders,
                         body: JSON.stringify(productPayload)
                     });
                 }
 
-                if (!response.ok) throw new Error('Gagal menyimpan ke Neon Data API');
+                if (!response.ok) throw new Error('Gagal menyimpan ke database');
                 
                 closeProductModal();
                 fetchProductsFromAPI();
             } catch (error) {
                 console.error('Gagal menyimpan data:', error);
-                alert('Gagal menyimpan perubahan ke database Neon.');
+                alert('Gagal menyimpan perubahan ke database.');
             }
         }
 
-        // 3. Hapus Produk via Neon Data API Murni (DELETE)
         async function deleteProductAPI(id) {
             if (confirm(`Yakin ingin menghapus produk ID #${id}?`)) {
                 try {
-                    const response = await fetch(`${NEON_DATA_API_URL}?id=eq.${id}`, {
+                    const response = await fetch(`${PROXY_API_URL}?id=eq.${id}`, {
                         method: 'DELETE',
                         headers: apiHeaders
                     });
