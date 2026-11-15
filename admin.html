@@ -123,7 +123,7 @@
                             <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-400 uppercase tracking-wider text-[10px] sm:text-xs">
                                 <th class="pb-3 font-bold">Produk</th>
                                 <th class="pb-3 font-bold">Kategori</th>
-                                <th class="pb-3 font-bold">Harga (1H / 3H / 7H)</th>
+                                <th class="pb-3 font-bold">Harga (1H / 3H / 7H / 1B)</th>
                                 <th class="pb-3 font-bold">Stok</th>
                                 <th class="pb-3 font-bold text-right">Aksi</th>
                             </tr>
@@ -159,8 +159,8 @@
                     <textarea id="input-description" rows="2" class="w-full p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-400 text-slate-900 dark:text-white text-xs resize-none" placeholder="Tuliskan deskripsi atau detail layanan..."></textarea>
                 </div>
                 
-                <!-- Pengaturan Harga Per Durasi -->
-                <div class="grid grid-cols-3 gap-2">
+                <!-- Pengaturan Harga Per Durasi (1H, 3H, 7H, 1B) -->
+                <div class="grid grid-cols-2 gap-2.5">
                     <div>
                         <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[9px]">Harga 1 Hari</label>
                         <input type="number" id="input-price" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-400 text-slate-900 dark:text-white text-xs" placeholder="3000">
@@ -172,6 +172,10 @@
                     <div>
                         <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[9px]">Harga 7 Hari</label>
                         <input type="number" id="input-price-7d" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-400 text-slate-900 dark:text-white text-xs" placeholder="12000">
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[9px]">Harga 1 Bulan</label>
+                        <input type="number" id="input-price-1m" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-400 text-slate-900 dark:text-white text-xs" placeholder="30000">
                     </div>
                 </div>
 
@@ -305,6 +309,7 @@
                 const p1 = Number(p.price) || 0;
                 const p3 = Number(p.price_3d) > 0 ? Number(p.price_3d) : (p1 * 2);
                 const p7 = Number(p.price_7d) > 0 ? Number(p.price_7d) : (p1 * 4);
+                const p1m = Number(p.price_1m) > 0 ? Number(p.price_1m) : (p1 * 10);
 
                 tr.innerHTML = `
                     <td class="py-3 sm:py-4 font-bold text-slate-900 dark:text-white flex items-center gap-3">
@@ -319,6 +324,7 @@
                         <div>1H: Rp${p1.toLocaleString('id-ID')}</div>
                         <div>3H: Rp${p3.toLocaleString('id-ID')}</div>
                         <div>7H: Rp${p7.toLocaleString('id-ID')}</div>
+                        <div>1B: Rp${p1m.toLocaleString('id-ID')}</div>
                     </td>
                     <td class="py-3 sm:py-4">
                         <span class="px-2.5 py-1 rounded-full text-[9px] sm:text-[10px] font-bold ${p.stock <= 0 ? 'bg-rose-100 text-rose-600 dark:bg-rose-950 dark:text-rose-400' : 'bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400'}">
@@ -349,6 +355,7 @@
                 document.getElementById('input-price').value = p.price;
                 document.getElementById('input-price-3d').value = p.price_3d || (p.price * 2);
                 document.getElementById('input-price-7d').value = p.price_7d || (p.price * 4);
+                document.getElementById('input-price-1m').value = p.price_1m || (p.price * 10);
                 document.getElementById('input-stock').value = p.stock;
                 document.getElementById('input-image').value = p.image || '';
             } else {
@@ -360,6 +367,7 @@
                 document.getElementById('input-price').value = '';
                 document.getElementById('input-price-3d').value = '';
                 document.getElementById('input-price-7d').value = '';
+                document.getElementById('input-price-1m').value = '';
                 document.getElementById('input-stock').value = '10';
                 document.getElementById('input-image').value = '';
             }
@@ -377,6 +385,7 @@
             const price = parseInt(document.getElementById('input-price').value) || 0;
             const price_3d = parseInt(document.getElementById('input-price-3d').value) || (price * 2);
             const price_7d = parseInt(document.getElementById('input-price-7d').value) || (price * 4);
+            const price_1m = parseInt(document.getElementById('input-price-1m').value) || (price * 10);
             const stock = parseInt(document.getElementById('input-stock').value) || 0;
             const image = document.getElementById('input-image').value.trim();
 
@@ -385,7 +394,7 @@
                 return;
             }
 
-            const productPayload = { name, category, description, price, price_3d, price_7d, stock, image };
+            const productPayload = { name, category, description, price, price_3d, price_7d, price_1m, stock, image };
 
             try {
                 let response;
