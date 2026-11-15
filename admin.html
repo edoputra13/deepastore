@@ -114,7 +114,7 @@
             <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 shadow-2xl border border-white/50 dark:border-slate-800">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-2">
                     <h2 class="text-sm sm:text-lg font-bold text-slate-900 dark:text-white uppercase tracking-tight">Kelola Katalog Produk</h2>
-                    <span class="text-[10px] text-slate-500 dark:text-slate-400">Database (5 Kolom Utama)</span>
+                    <span class="text-[10px] text-slate-500 dark:text-slate-400">Neon PostgreSQL Serverless</span>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -162,6 +162,10 @@
                     <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[10px]">Jumlah Stok</label>
                     <input type="number" id="input-stock" class="w-full p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-400 text-slate-900 dark:text-white text-xs" placeholder="10">
                 </div>
+                <div>
+                    <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[10px]">URL Foto Produk</label>
+                    <input type="text" id="input-image" class="w-full p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-400 text-slate-900 dark:text-white text-xs" placeholder="https://contoh.com/logo.png">
+                </div>
 
                 <button onclick="saveProductViaAPI()" class="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold uppercase tracking-widest rounded-xl shadow-lg shadow-emerald-500/30 transition-all mt-2 text-xs">
                     Simpan Perubahan ke Database
@@ -170,7 +174,7 @@
         </div>
     </div>
 
-    <!-- Script Integrasi API (Menggunakan proxy API Vercel /api/products) -->
+    <!-- Script Integrasi API -->
     <script>
         const CORRECT_ADMIN_USER = "edoputra28*";
         const PROXY_API_URL = "/api/products";
@@ -277,6 +281,9 @@
                 tr.className = `border-b border-slate-100 dark:border-slate-800/60 transition-all`;
                 
                 let thumbHtml = `<div class="w-9 h-9 rounded-xl bg-sky-100 dark:bg-slate-800 flex items-center justify-center font-bold text-sky-600 text-xs shadow-inner">${p.name.charAt(0)}</div>`;
+                if (p.image) {
+                    thumbHtml = `<img src="${p.image}" alt="${p.name}" class="w-9 h-9 rounded-xl object-cover shadow-sm border border-slate-200 dark:border-slate-700">`;
+                }
 
                 tr.innerHTML = `
                     <td class="py-3 sm:py-4 font-bold text-slate-900 dark:text-white flex items-center gap-3">
@@ -315,6 +322,7 @@
                 document.getElementById('input-category').value = p.category;
                 document.getElementById('input-price').value = p.price;
                 document.getElementById('input-stock').value = p.stock;
+                document.getElementById('input-image').value = p.image || '';
             } else {
                 document.getElementById('modal-heading').textContent = "Tambah Produk Baru";
                 document.getElementById('edit-id').value = '';
@@ -322,6 +330,7 @@
                 document.getElementById('input-category').value = 'Hiburan';
                 document.getElementById('input-price').value = '';
                 document.getElementById('input-stock').value = '10';
+                document.getElementById('input-image').value = '';
             }
         }
 
@@ -335,13 +344,14 @@
             const category = document.getElementById('input-category').value.trim();
             const price = parseInt(document.getElementById('input-price').value) || 0;
             const stock = parseInt(document.getElementById('input-stock').value) || 0;
+            const image = document.getElementById('input-image').value.trim();
 
             if (!name) {
                 alert('Nama produk wajib diisi!');
                 return;
             }
 
-            const productPayload = { name, category, price, stock };
+            const productPayload = { name, category, price, stock, image };
 
             try {
                 let response;
