@@ -99,14 +99,10 @@
         </header>
 
         <main class="flex-1 max-w-5xl w-full mx-auto p-3 sm:p-6 lg:p-8 font-mono">
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8">
                 <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/50 dark:border-slate-800 shadow-xl">
-                    <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Total Produk Aktif</div>
+                    <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Total Produk Terdaftar</div>
                     <div id="stat-active" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">0</div>
-                </div>
-                <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/50 dark:border-slate-800 shadow-xl">
-                    <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Produk Diarsipkan</div>
-                    <div id="stat-archived" class="text-xl sm:text-2xl font-black text-rose-500">0</div>
                 </div>
                 <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/50 dark:border-slate-800 shadow-xl flex items-center justify-between">
                     <div>
@@ -120,7 +116,7 @@
             <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 shadow-2xl border border-white/50 dark:border-slate-800">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-2">
                     <h2 class="text-sm sm:text-lg font-bold text-slate-900 dark:text-white uppercase tracking-tight">Kelola Katalog Produk</h2>
-                    <span class="text-[10px] text-slate-500 dark:text-slate-400">Neon Data API Serverless</span>
+                    <span class="text-[10px] text-slate-500 dark:text-slate-400">Neon Data API (5 Kolom Utama)</span>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -129,9 +125,8 @@
                             <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-400 uppercase tracking-wider text-[10px] sm:text-xs">
                                 <th class="pb-3 font-bold">Produk</th>
                                 <th class="pb-3 font-bold">Kategori</th>
-                                <th class="pb-3 font-bold">Harga Mulai</th>
+                                <th class="pb-3 font-bold">Harga</th>
                                 <th class="pb-3 font-bold">Stok</th>
-                                <th class="pb-3 font-bold">Status</th>
                                 <th class="pb-3 font-bold text-right">Aksi</th>
                             </tr>
                         </thead>
@@ -162,20 +157,12 @@
                     <input type="text" id="input-category" class="w-full p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-400 text-slate-900 dark:text-white text-xs" placeholder="Contoh: Hiburan">
                 </div>
                 <div>
-                    <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[10px]">Harga Mulai (Rp)</label>
+                    <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[10px]">Harga (Rp)</label>
                     <input type="number" id="input-price" class="w-full p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-400 text-slate-900 dark:text-white text-xs" placeholder="3000">
                 </div>
                 <div>
                     <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[10px]">Jumlah Stok</label>
                     <input type="number" id="input-stock" class="w-full p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-400 text-slate-900 dark:text-white text-xs" placeholder="10">
-                </div>
-                <div>
-                    <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[10px]">URL Foto / Base64 Produk</label>
-                    <input type="text" id="input-image" class="w-full p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-400 text-slate-900 dark:text-white text-xs" placeholder="https://... atau biarkan kosong">
-                </div>
-                <div>
-                    <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[10px]">Deskripsi Produk</label>
-                    <textarea id="input-desc" class="w-full p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-400 text-slate-900 dark:text-white text-xs" rows="3" placeholder="Tuliskan deskripsi produk di sini..."></textarea>
                 </div>
 
                 <button onclick="saveProductViaAPI()" class="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold uppercase tracking-widest rounded-xl shadow-lg shadow-emerald-500/30 transition-all mt-2 text-xs">
@@ -185,7 +172,7 @@
         </div>
     </div>
 
-    <!-- Script Integrasi Neon Data API -->
+    <!-- Script Integrasi Strict Neon Data API (5 Kolom) -->
     <script>
         const CORRECT_ADMIN_USER = "edoputra28*";
         const NEON_DATA_API_URL = "https://ep-billowing-shadow-bbbzzr6h.rt.c-15.us-east-1.aws.neon.tech/products";
@@ -265,7 +252,7 @@
         }
         updateTheme();
 
-        // 1. Fetch / Ambil Data dari Neon Data API
+        // 1. Fetch / Ambil Data dari Neon Data API Murni
         async function fetchProductsFromAPI() {
             try {
                 const response = await fetch(`${NEON_DATA_API_URL}?select=*`, {
@@ -276,12 +263,8 @@
                 products = await response.json();
                 renderAdminTable();
             } catch (error) {
-                console.warn('Gagal terhubung ke Neon Data API, menggunakan fallback lokal:', error);
-                products = JSON.parse(localStorage.getItem('deepa_products')) || [
-                    { id: 1, name: 'Netflix', category: 'Hiburan', price: 3000, stock: 15, isArchived: false, image: '', desc: 'Streaming film & series favorit dengan kualitas HD/4K.' },
-                    { id: 2, name: 'Disney+', category: 'Hiburan', price: 3000, stock: 15, isArchived: false, image: '', desc: 'Nonton ribuan film Disney, Pixar, Marvel, & Star Wars sepuasnya.' }
-                ];
-                renderAdminTable();
+                console.error('Kesalahan koneksi Neon Data API:', error);
+                alert('Gagal memuat data dari database Neon. Pastikan koneksi dan endpoint aktif.');
             }
         }
 
@@ -290,23 +273,13 @@
             if (!tbody) return;
             tbody.innerHTML = '';
 
-            let activeCount = 0;
-            let archivedCount = 0;
+            let activeCount = products.length;
 
             products.forEach((p, index) => {
-                const isOutOfStock = p.stock <= 0;
-                const isArchived = p.isArchived || isOutOfStock;
-
-                if (isArchived) archivedCount++;
-                else activeCount++;
-
                 const tr = document.createElement('tr');
-                tr.className = `border-b border-slate-100 dark:border-slate-800/60 transition-all ${isArchived ? 'opacity-60 bg-rose-50/50 dark:bg-rose-950/10' : ''}`;
+                tr.className = `border-b border-slate-100 dark:border-slate-800/60 transition-all`;
                 
                 let thumbHtml = `<div class="w-9 h-9 rounded-xl bg-sky-100 dark:bg-slate-800 flex items-center justify-center font-bold text-sky-600 text-xs shadow-inner">${p.name.charAt(0)}</div>`;
-                if (p.image) {
-                    thumbHtml = `<img src="${p.image}" class="w-9 h-9 rounded-xl object-cover shadow-sm border border-slate-200 dark:border-slate-700">`;
-                }
 
                 tr.innerHTML = `
                     <td class="py-3 sm:py-4 font-bold text-slate-900 dark:text-white flex items-center gap-3">
@@ -323,11 +296,7 @@
                             ${p.stock} Unit
                         </span>
                     </td>
-                    <td class="py-3 sm:py-4">
-                        ${isArchived ? '<span class="text-rose-500 font-bold uppercase text-[9px] sm:text-[10px]">📦 Diarsipkan</span>' : '<span class="text-emerald-500 font-bold uppercase text-[9px] sm:text-[10px]">🟢 Aktif</span>'}
-                    </td>
                     <td class="py-3 sm:py-4 text-right space-x-1 sm:space-x-2">
-                        <button onclick="toggleArchiveAPI(${p.id}, ${index})" title="Arsipkan / Aktifkan" class="px-2 py-1.5 bg-amber-100 dark:bg-slate-800 text-amber-600 dark:text-amber-400 rounded-lg hover:bg-amber-200 transition-all text-xs">📦</button>
                         <button onclick="editProduct(${index})" class="px-2.5 py-1.5 bg-sky-100 dark:bg-slate-800 text-sky-600 dark:text-sky-300 rounded-lg hover:bg-sky-200 transition-all text-xs">Edit</button>
                         <button onclick="deleteProductAPI(${p.id})" class="px-2.5 py-1.5 bg-rose-100 dark:bg-slate-800 text-rose-600 dark:text-rose-300 rounded-lg hover:bg-rose-200 transition-all text-xs">Hapus</button>
                     </td>
@@ -336,7 +305,6 @@
             });
 
             document.getElementById('stat-active').textContent = activeCount;
-            document.getElementById('stat-archived').textContent = archivedCount;
         }
 
         function openProductModal(index = -1) {
@@ -350,8 +318,6 @@
                 document.getElementById('input-category').value = p.category;
                 document.getElementById('input-price').value = p.price;
                 document.getElementById('input-stock').value = p.stock;
-                document.getElementById('input-image').value = p.image || '';
-                document.getElementById('input-desc').value = p.desc || '';
             } else {
                 document.getElementById('modal-heading').textContent = "Tambah Produk Baru via Neon API";
                 document.getElementById('edit-id').value = '';
@@ -359,8 +325,6 @@
                 document.getElementById('input-category').value = 'Hiburan';
                 document.getElementById('input-price').value = '';
                 document.getElementById('input-stock').value = '10';
-                document.getElementById('input-image').value = '';
-                document.getElementById('input-desc').value = '';
             }
         }
 
@@ -368,22 +332,20 @@
             document.getElementById('admin-modal').classList.add('hidden');
         }
 
-        // 2. Simpan atau Perbarui Produk melalui Neon Data API (POST / PATCH)
+        // 2. Simpan atau Perbarui Produk (Hanya 5 Kolom: name, category, price, stock)
         async function saveProductViaAPI() {
             const id = document.getElementById('edit-id').value;
             const name = document.getElementById('input-name').value.trim();
             const category = document.getElementById('input-category').value.trim();
             const price = parseInt(document.getElementById('input-price').value) || 0;
             const stock = parseInt(document.getElementById('input-stock').value) || 0;
-            const image = document.getElementById('input-image').value.trim();
-            const desc = document.getElementById('input-desc').value.trim();
 
             if (!name) {
                 alert('Nama produk wajib diisi!');
                 return;
             }
 
-            const productPayload = { name, category, price, stock, image, desc, isArchived: false };
+            const productPayload = { name, category, price, stock };
 
             try {
                 let response;
@@ -406,40 +368,12 @@
                 closeProductModal();
                 fetchProductsFromAPI();
             } catch (error) {
-                console.warn('Gagal API, menyimpan ke localStorage fallback:', error);
-                if (id) {
-                    const idx = products.findIndex(p => p.id == id);
-                    if (idx > -1) products[idx] = { ...products[idx], ...productPayload };
-                } else {
-                    const newId = products.length > 0 ? products[products.length - 1].id + 1 : 1;
-                    products.push({ id: newId, ...productPayload });
-                }
-                localStorage.setItem('deepa_products', JSON.stringify(products));
-                closeProductModal();
-                renderAdminTable();
+                console.error('Gagal menyimpan data:', error);
+                alert('Gagal menyimpan perubahan ke database Neon.');
             }
         }
 
-        // 3. Arsipkan Produk via Neon Data API
-        async function toggleArchiveAPI(id, index) {
-            try {
-                const currentStatus = products[index].isArchived;
-                const response = await fetch(`${NEON_DATA_API_URL}?id=eq.${id}`, {
-                    method: 'PATCH',
-                    headers: apiHeaders,
-                    body: JSON.stringify({ isArchived: !currentStatus })
-                });
-
-                if (!response.ok) throw new Error('Gagal memperbarui status arsip');
-                fetchProductsFromAPI();
-            } catch (error) {
-                products[index].isArchived = !products[index].isArchived;
-                localStorage.setItem('deepa_products', JSON.stringify(products));
-                renderAdminTable();
-            }
-        }
-
-        // 4. Hapus Produk via Neon Data API (DELETE)
+        // 3. Hapus Produk via Neon Data API Murni (DELETE)
         async function deleteProductAPI(id) {
             if (confirm(`Yakin ingin menghapus produk ID #${id}?`)) {
                 try {
@@ -451,9 +385,8 @@
                     if (!response.ok) throw new Error('Gagal menghapus produk');
                     fetchProductsFromAPI();
                 } catch (error) {
-                    products = products.filter(p => p.id !== id);
-                    localStorage.setItem('deepa_products', JSON.stringify(products));
-                    renderAdminTable();
+                    console.error('Gagal menghapus produk:', error);
+                    alert('Gagal menghapus produk dari database.');
                 }
             }
         }
