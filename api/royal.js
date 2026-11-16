@@ -1,6 +1,10 @@
-import { neon } from '@neondatabase/serverless';
+const { neon } = require('@neondatabase/serverless');
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
+    if (!process.env.DATABASE_URL) {
+        return res.status(500).json({ error: 'DATABASE_URL belum diatur di Vercel Environment Variables' });
+    }
+
     const sql = neon(process.env.DATABASE_URL);
     const { action } = req.query;
 
@@ -126,4 +130,4 @@ export default async function handler(req, res) {
     } catch (err) {
         return res.status(500).json({ error: err.message });
     }
-}
+};
