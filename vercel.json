@@ -1,6 +1,16 @@
 {
   "rewrites": [
-    { "source": "/jajan", "destination": "/index.html" },
-    { "source": "/contact", "destination": "/index.html" }
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/((?!api/|admin\\.html).*)",
+      "destination": "/index.html"
+    }
   ]
 }
