@@ -162,7 +162,7 @@
 
         <main class="flex-1 max-w-5xl w-full mx-auto p-3 sm:p-6 lg:p-8 font-mono space-y-6">
             
-            <!-- BARIS 1: STATISTIK & GENERATOR STAMP TRANSAKSI -->
+            <!-- BARIS 1: STATISTIK & GENERATOR KODE REDEEM DEEPA -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <!-- Kolom Kiri: Statistik & Tambah Produk -->
                 <div class="space-y-4">
@@ -180,21 +180,21 @@
                     </div>
                 </div>
 
-                <!-- Kolom Kanan: Generator Kode Royal Stamp Card (3 Hari) -->
+                <!-- Kolom Kanan: Generator Kode Royal Stamp Card (3 Hari - DEEPA-XXXXXX) -->
                 <div class="bg-white/85 dark:bg-slate-900/85 backdrop-blur-md p-4 sm:p-5 rounded-xl border border-white/50 dark:border-slate-800 shadow-xl flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-1">
-                            <h3 class="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">Generator Stamp Transaksi</h3>
+                            <h3 class="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">Generator Kode DEEPA</h3>
                             <span class="px-2 py-0.5 rounded-md bg-amber-500/15 text-amber-600 dark:text-amber-400 text-[9px] font-bold">Expired 3 Hari</span>
                         </div>
                         <p class="text-[10px] text-slate-500 dark:text-slate-400 mb-3">
-                            Generate 1 kode stamp setiap transaksi customer untuk ditukarkan di halaman About.
+                            Generate 1 kode redeem berawalan <b>DEEPA-</b> per transaksi untuk ditukarkan member di halaman About.
                         </p>
 
                         <div class="flex flex-col sm:flex-row gap-2 text-xs">
                             <input type="text" id="stamp-customer-name" autocomplete="off" placeholder="Catatan/Username Pembeli (opsional)" class="w-full px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white">
                             <button onclick="generateTransactionStamp()" id="btn-gen-stamp" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white font-bold text-[11px] uppercase tracking-wider rounded-lg shadow-md transition-all whitespace-nowrap">
-                                Generate Stamp
+                                Generate Kode
                             </button>
                         </div>
                     </div>
@@ -202,7 +202,7 @@
                     <div id="stamp-result-box" class="hidden mt-3 p-3 bg-sky-500/10 border border-sky-500/30 rounded-lg text-left text-xs">
                         <div class="flex items-center justify-between gap-2">
                             <div>
-                                <div class="text-[9px] text-slate-500 dark:text-slate-400 uppercase font-bold">Kode Stamp (1 Transaksi):</div>
+                                <div class="text-[9px] text-slate-500 dark:text-slate-400 uppercase font-bold">Kode Redeem (1 Transaksi):</div>
                                 <div id="output-stamp-code" class="text-sm font-black text-sky-600 dark:text-sky-400 select-all tracking-wider"></div>
                             </div>
                             <button onclick="copyGeneratedStamp()" class="px-2.5 py-1.5 bg-sky-500 hover:bg-sky-600 text-white text-[10px] font-bold rounded-lg transition-all">
@@ -248,17 +248,17 @@
                 </div>
             </div>
 
-            <!-- BARIS 3: RIWAYAT KODE STAMP YANG DIGENERATE -->
+            <!-- BARIS 3: RIWAYAT KODE REDEEM YANG DIGENERATE -->
             <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-xl p-4 sm:p-5 shadow-xl border border-white/50 dark:border-slate-800">
                 <div class="flex justify-between items-center mb-3">
-                    <h2 class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white uppercase tracking-tight">Riwayat Kode Royal Stamp</h2>
+                    <h2 class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white uppercase tracking-tight">Riwayat Kode Redeem DEEPA</h2>
                     <button onclick="clearExpiredStamps()" class="text-[10px] text-rose-500 hover:underline font-bold">Hapus yang Expired</button>
                 </div>
                 <div class="overflow-x-auto max-h-48">
                     <table class="w-full text-left text-xs whitespace-nowrap">
                         <thead>
                             <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-400 uppercase text-[10px]">
-                                <th class="pb-2 font-bold">Kode Stamp</th>
+                                <th class="pb-2 font-bold">Kode Redeem</th>
                                 <th class="pb-2 font-bold">Catatan / Diklaim Oleh</th>
                                 <th class="pb-2 font-bold">Batas Waktu (3 Hari)</th>
                                 <th class="pb-2 font-bold text-right">Status</th>
@@ -353,7 +353,7 @@
         </div>
     </div>
 
-    <!-- Script Integrasi Full Neon PostgreSQL -->
+    <!-- Script Integrasi Full Neon PostgreSQL via /api/products -->
     <script>
         const ADMIN_USERNAME = "deepastoreid";
         const DEFAULT_ADMIN_PASSWORD = "edoputra28*";
@@ -363,7 +363,7 @@
         }
 
         const PROXY_API_URL = "/api/products";
-        const ROYAL_API_URL = "/api/royal";
+        const ROYAL_API_URL = "/api/products";
         const apiHeaders = {
             "Content-Type": "application/json",
             "Prefer": "return=representation"
@@ -493,12 +493,12 @@
         }
 
         // ==========================================
-        // GENERATOR KODE ROYAL STAMP (NEON DB)
+        // GENERATOR KODE REDEEM DEEPA-XXXXXX (NEON DB)
         // ==========================================
         async function generateTransactionStamp() {
             const customer = document.getElementById('stamp-customer-name').value.trim() || "Customer";
             const randomCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-            const stampCode = `STAMP-${randomCode}`;
+            const stampCode = `DEEPA-${randomCode}`;
 
             const now = new Date();
             const expiryDate = new Date(now.getTime() + (3 * 24 * 60 * 60 * 1000));
@@ -518,7 +518,7 @@
                     })
                 });
                 const data = await res.json();
-                if (!res.ok) throw new Error(data.error || 'Gagal generate stamp');
+                if (!res.ok) throw new Error(data.error || 'Gagal generate kode');
 
                 document.getElementById('output-stamp-code').textContent = stampCode;
                 document.getElementById('output-stamp-expiry').textContent = `Expired pada: ${expiryDate.toLocaleString('id-ID')}`;
@@ -530,7 +530,7 @@
                 alert(err.message);
             } finally {
                 btn.disabled = false;
-                btn.textContent = "Generate Stamp";
+                btn.textContent = "Generate Kode";
             }
         }
 
@@ -545,7 +545,7 @@
         async function renderStampHistory() {
             const tbody = document.getElementById('stamp-history-body');
             if (!tbody) return;
-            tbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-slate-400 text-[10px]">Memuat riwayat stamp...</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-slate-400 text-[10px]">Memuat riwayat kode...</td></tr>`;
 
             try {
                 const res = await fetch(`${ROYAL_API_URL}?action=get_stamps`);
@@ -553,7 +553,7 @@
                 tbody.innerHTML = '';
 
                 if (allStamps.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-slate-400 text-[10px]">Belum ada kode stamp yang digenerate.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-slate-400 text-[10px]">Belum ada kode redeem yang digenerate.</td></tr>`;
                     return;
                 }
 
@@ -581,7 +581,7 @@
                     tbody.appendChild(tr);
                 });
             } catch (err) {
-                tbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-rose-500 text-[10px]">Gagal memuat riwayat stamp dari Neon.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-rose-500 text-[10px]">Gagal memuat riwayat kode dari Neon.</td></tr>`;
             }
         }
 
@@ -590,7 +590,7 @@
                 await fetch(`${ROYAL_API_URL}?action=clear_expired`, { method: 'DELETE' });
                 renderStampHistory();
             } catch (err) {
-                alert('Gagal menghapus stamp expired');
+                alert('Gagal menghapus kode expired');
             }
         }
 
