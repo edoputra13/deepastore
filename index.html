@@ -67,17 +67,17 @@
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             border: 1px solid rgba(255, 255, 255, 0.7);
-            box-shadow: 0 25px 50px -12px rgba(14, 165, 233, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            box-shadow: 0 20px 40px -12px rgba(14, 165, 233, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.9);
         }
         .dark .royal-card-frame {
             background: linear-gradient(145deg, rgba(15, 23, 42, 0.94) 0%, rgba(30, 27, 75, 0.9) 100%);
             border: 1px solid rgba(251, 191, 36, 0.25);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(251, 191, 36, 0.15);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(251, 191, 36, 0.15);
         }
 
         .stamp-badge-active {
             background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
-            box-shadow: 0 6px 15px -3px rgba(245, 158, 11, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 10px -2px rgba(245, 158, 11, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.5);
         }
 
         .platform-item {
@@ -146,150 +146,140 @@
             </h1>
         </main>
 
-        <!-- 2. ABOUT VIEW (LOGIN MEMBER & ROYAL STAMP CARD PER AKUN) -->
-        <section id="about-view" class="view-section hidden w-full max-w-[460px] mx-auto font-mono max-h-[82vh] overflow-y-auto py-2 px-1">
+        <!-- 2. ABOUT VIEW (LOGIN MEMBER RAMPING & ROYAL STAMP CARD TIPIS) -->
+        <section id="about-view" class="view-section hidden w-full mx-auto font-mono max-h-[82vh] overflow-y-auto py-2 px-1">
             
-            <!-- A. GERBANG LOGIN MEMBER (MUNCUL JIKA BELUM LOGIN) -->
-            <div id="member-auth-card" class="royal-card-frame rounded-2xl p-5 sm:p-6 relative overflow-hidden text-center">
-                <div class="absolute -top-14 -right-14 w-32 h-32 bg-amber-400/20 rounded-full blur-3xl pointer-events-none"></div>
-                <div class="absolute -bottom-14 -left-14 w-32 h-32 bg-sky-500/20 rounded-full blur-3xl pointer-events-none"></div>
+            <!-- A. GERBANG LOGIN MEMBER (KECIL & TIPIS) -->
+            <div id="member-auth-card" class="royal-card-frame max-w-[330px] mx-auto rounded-2xl p-4 sm:p-5 relative overflow-hidden text-center">
+                <div class="absolute -top-12 -right-12 w-24 h-24 bg-amber-400/20 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="absolute -bottom-12 -left-12 w-24 h-24 bg-sky-500/20 rounded-full blur-2xl pointer-events-none"></div>
 
-                <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-amber-500 to-yellow-500 text-white flex items-center justify-center mx-auto mb-3 shadow-md shadow-amber-500/30">
-                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-amber-500 to-yellow-500 text-white flex items-center justify-center mx-auto mb-2.5 shadow-md shadow-amber-500/30">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
                         <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>
                     </svg>
                 </div>
 
-                <h2 class="text-base sm:text-lg font-black text-slate-900 dark:text-white uppercase tracking-wider font-futuristic mb-1">Royal Member Access</h2>
-                <p class="text-[10px] text-slate-500 dark:text-slate-400 mb-4 leading-relaxed">
-                    Masuk menggunakan username & password dari Admin untuk mengakses Royal Stamp Card pribadi Anda.
+                <h2 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider font-futuristic mb-0.5">Member Access</h2>
+                <p class="text-[9px] text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">
+                    Login untuk membuka Royal Stamp Card Anda.
                 </p>
 
-                <form onsubmit="handleMemberLogin(event)" class="space-y-3 text-left text-xs">
+                <form onsubmit="handleMemberLogin(event)" class="space-y-2.5 text-left text-xs">
                     <div>
-                        <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[10px] tracking-wider">Username Member</label>
-                        <input type="text" id="member-login-user" required autocomplete="off" placeholder="Masukkan username..." class="w-full px-3 py-2.5 rounded-xl bg-white/90 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:border-amber-500 text-slate-900 dark:text-white">
+                        <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[9px] tracking-wider">Username</label>
+                        <input type="text" id="member-login-user" required autocomplete="off" placeholder="Username..." class="w-full px-3 py-2 rounded-lg bg-white/90 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 text-[11px] focus:outline-none focus:border-amber-500 text-slate-900 dark:text-white">
                     </div>
 
                     <div>
-                        <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[10px] tracking-wider">Password</label>
+                        <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[9px] tracking-wider">Password</label>
                         <div class="relative">
-                            <input type="password" id="member-login-pass" required autocomplete="off" placeholder="Masukkan password..." class="w-full px-3 py-2.5 pr-9 rounded-xl bg-white/90 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:border-amber-500 text-slate-900 dark:text-white">
-                            <button type="button" onclick="toggleMemberPass('member-login-pass', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-amber-500 transition-colors">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            <input type="password" id="member-login-pass" required autocomplete="off" placeholder="Password..." class="w-full px-3 py-2 pr-8 rounded-lg bg-white/90 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 text-[11px] focus:outline-none focus:border-amber-500 text-slate-900 dark:text-white">
+                            <button type="button" onclick="toggleMemberPass('member-login-pass', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-amber-500 transition-colors">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                             </button>
                         </div>
                     </div>
 
-                    <div id="member-login-error" class="text-rose-500 text-[10px] hidden font-bold text-center bg-rose-500/10 py-1.5 px-2.5 rounded-lg"></div>
+                    <div id="member-login-error" class="text-rose-500 text-[9px] hidden font-bold text-center bg-rose-500/10 py-1 px-2 rounded-lg"></div>
 
-                    <button type="submit" class="w-full py-3 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white font-bold uppercase tracking-widest rounded-xl shadow-md shadow-amber-500/25 transition-all text-[11px]">
-                        Masuk ke Royal Card
+                    <button type="submit" id="member-login-btn" class="w-full py-2.5 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white font-bold uppercase tracking-widest rounded-lg shadow-md shadow-amber-500/25 transition-all text-[10px]">
+                        Masuk Royal Card
                     </button>
                 </form>
 
-                <div class="mt-4 pt-3 border-t border-slate-200/70 dark:border-slate-700/70 text-[10px] text-slate-500 dark:text-slate-400">
-                    Belum punya akun member? 
+                <div class="mt-3 pt-2.5 border-t border-slate-200/70 dark:border-slate-700/70 text-[9px] text-slate-500 dark:text-slate-400">
+                    Belum punya akun? 
                     <a href="https://wa.me/6281717622225?text=Halo%20Admin%20Deepa%20Store,%20saya%20ingin%20membuat%20akun%20member%20Royal%20Stamp%20Card." target="_blank" class="text-sky-600 dark:text-sky-400 font-bold hover:underline">Minta ke Admin</a>
                 </div>
             </div>
 
-            <!-- B. ROYAL STAMP CARD PRIBADI MEMBER (MUNCUL SETELAH LOGIN) -->
-            <div id="member-stamp-dashboard" class="hidden royal-card-frame rounded-2xl p-5 sm:p-6 relative overflow-hidden">
-                <!-- Dekorasi Glow Halus -->
-                <div class="absolute -top-16 -right-16 w-36 h-36 bg-amber-400/20 rounded-full blur-3xl pointer-events-none"></div>
-                <div class="absolute -bottom-16 -left-16 w-36 h-36 bg-sky-500/20 rounded-full blur-3xl pointer-events-none"></div>
+            <!-- B. ROYAL STAMP CARD PRIBADI MEMBER (TIPIS & COMPACT) -->
+            <div id="member-stamp-dashboard" class="hidden royal-card-frame max-w-[400px] mx-auto rounded-2xl p-4 sm:p-5 relative overflow-hidden">
+                <div class="absolute -top-14 -right-14 w-28 h-28 bg-amber-400/20 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="absolute -bottom-14 -left-14 w-28 h-28 bg-sky-500/20 rounded-full blur-2xl pointer-events-none"></div>
 
-                <!-- Header Kartu Royal + Info Akun + Tombol Ubah Password & Logout -->
-                <div class="flex items-center justify-between gap-2 mb-3.5 pb-3 border-b border-slate-200/70 dark:border-slate-700/70">
-                    <div class="flex items-center gap-2.5 text-left min-w-0">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-yellow-400 text-white flex items-center justify-center shadow-md shadow-amber-500/30 shrink-0">
-                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                <!-- Header Kartu Royal -->
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-200/70 dark:border-slate-700/70">
+                    <div class="flex items-center gap-2 text-left min-w-0">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-amber-500 to-yellow-400 text-white flex items-center justify-center shadow-sm shadow-amber-500/30 shrink-0">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
                                 <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>
                             </svg>
                         </div>
                         <div class="min-w-0">
-                            <div class="flex items-center gap-1.5">
-                                <h2 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider font-futuristic truncate">Royal Card</h2>
-                                <span class="px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-600 dark:text-amber-400 text-[8px] font-bold uppercase border border-amber-500/30 shrink-0">VIP</span>
+                            <div class="flex items-center gap-1">
+                                <h2 class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-wider font-futuristic truncate">Royal Card</h2>
+                                <span class="px-1 py-0.2 rounded bg-amber-500/15 text-amber-600 dark:text-amber-400 text-[7px] font-bold uppercase border border-amber-500/30 shrink-0">VIP</span>
                             </div>
-                            <p class="text-[10px] text-slate-600 dark:text-slate-300 font-bold truncate">
+                            <p class="text-[9px] text-slate-600 dark:text-slate-300 font-bold truncate">
                                 @<span id="active-member-username">member</span>
                             </p>
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-1.5 shrink-0">
-                        <button onclick="toggleMemberChangePassModal(true)" title="Ubah Password" class="px-2 py-1.5 rounded-lg bg-sky-500/15 hover:bg-sky-500/25 text-sky-600 dark:text-sky-400 text-[9px] font-bold border border-sky-400/30 transition-all">
+                    <div class="flex items-center gap-1 shrink-0">
+                        <button onclick="toggleMemberChangePassModal(true)" title="Ubah Password" class="px-2 py-1 rounded-md bg-sky-500/15 hover:bg-sky-500/25 text-sky-600 dark:text-sky-400 text-[8px] font-bold border border-sky-400/30 transition-all">
                             Ubah Pass
                         </button>
-                        <button onclick="handleMemberLogout()" title="Keluar Akun" class="px-2 py-1.5 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 text-rose-500 text-[9px] font-bold border border-rose-400/30 transition-all">
+                        <button onclick="handleMemberLogout()" title="Keluar Akun" class="px-2 py-1 rounded-md bg-rose-500/15 hover:bg-rose-500/25 text-rose-500 text-[8px] font-bold border border-rose-400/30 transition-all">
                             Keluar
                         </button>
                     </div>
                 </div>
 
                 <!-- Sub-info & Counter Stamp -->
-                <div class="flex items-center justify-between text-[10px] mb-1.5">
+                <div class="flex items-center justify-between text-[9px] mb-1">
                     <span class="text-slate-500 dark:text-slate-400 font-bold uppercase">Progres Stamp</span>
                     <span class="font-black text-slate-900 dark:text-white">
-                        <span id="stamp-count-text" class="text-amber-500 text-xs">0</span><span class="text-slate-400">/10</span>
+                        <span id="stamp-count-text" class="text-amber-500 text-[11px]">0</span><span class="text-slate-400">/10</span>
                     </span>
                 </div>
 
-                <!-- Progress Bar -->
-                <div class="w-full h-1.5 bg-slate-200/80 dark:bg-slate-800 rounded-full overflow-hidden mb-4">
+                <!-- Progress Bar Tipis -->
+                <div class="w-full h-1 bg-slate-200/80 dark:bg-slate-800 rounded-full overflow-hidden mb-3">
                     <div id="stamp-progress-bar" class="h-full bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600 rounded-full transition-all duration-500" style="width: 0%;"></div>
                 </div>
 
-                <!-- Grid 10 Slot Ikon Foto Mini Stamp -->
-                <div id="stamp-grid" class="grid grid-cols-5 gap-2 sm:gap-2.5 mb-4"></div>
+                <!-- Grid 10 Slot Ikon Foto Mini Stamp (Ramping) -->
+                <div id="stamp-grid" class="grid grid-cols-5 gap-1.5 sm:gap-2 mb-3"></div>
 
-                <p class="text-[10px] text-slate-500 dark:text-slate-400 text-center mb-3.5 leading-relaxed">
-                    Dapatkan <span class="font-bold text-slate-700 dark:text-slate-200">1 kode stamp</span> di setiap transaksi. Kumpulkan 10 lencana untuk klaim hadiah eksklusif!
+                <p class="text-[9px] text-slate-500 dark:text-slate-400 text-center mb-2.5 leading-snug">
+                    1 kode stamp per transaksi. Kumpulkan 10 lencana untuk klaim hadiah!
                 </p>
 
                 <!-- Form Input Klaim Kode Stamp -->
-                <div class="space-y-2 text-xs">
-                    <div class="flex flex-col sm:flex-row gap-2">
-                        <input type="text" id="claim-stamp-input" autocomplete="off" placeholder="MASUKKAN KODE (STAMP-XXXXXX)" class="w-full px-3 py-2.5 rounded-xl bg-white/90 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 text-[11px] uppercase tracking-wider focus:outline-none focus:border-amber-500 text-slate-900 dark:text-white shadow-inner">
-                        <button onclick="claimCustomerStamp()" class="px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold rounded-xl shadow-md shadow-emerald-500/20 transition-all text-[11px] uppercase tracking-wider shrink-0">
+                <div class="space-y-1.5 text-xs">
+                    <div class="flex gap-1.5">
+                        <input type="text" id="claim-stamp-input" autocomplete="off" placeholder="KODE (STAMP-XXXXXX)" class="w-full px-2.5 py-2 rounded-lg bg-white/90 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 text-[10px] uppercase tracking-wider focus:outline-none focus:border-amber-500 text-slate-900 dark:text-white">
+                        <button onclick="claimCustomerStamp()" id="claim-stamp-btn" class="px-3 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold rounded-lg shadow-sm transition-all text-[10px] uppercase tracking-wider shrink-0">
                             Redeem
                         </button>
                     </div>
-                    <div id="stamp-msg" class="text-[10px] font-bold hidden py-2 px-3 rounded-xl text-center"></div>
+                    <div id="stamp-msg" class="text-[9px] font-bold hidden py-1.5 px-2.5 rounded-lg text-center"></div>
                 </div>
 
                 <!-- Tombol Penukaran Hadiah Ketika 10 Stamp Penuh -->
-                <div id="reward-section" class="mt-4 hidden">
-                    <button onclick="redeemStampReward()" class="w-full py-3 bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold uppercase tracking-widest rounded-xl shadow-lg shadow-amber-500/30 text-[11px] transition-all flex items-center justify-center gap-2">
-                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1a2.996 2.996 0 0 0-5.5-1.65l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/></svg>
+                <div id="reward-section" class="mt-3 hidden">
+                    <button onclick="redeemStampReward()" class="w-full py-2.5 bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold uppercase tracking-widest rounded-lg shadow-md shadow-amber-500/30 text-[10px] transition-all flex items-center justify-center gap-1.5">
+                        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1a2.996 2.996 0 0 0-5.5-1.65l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/></svg>
                         Tukarkan 10 Stamp via WhatsApp
                     </button>
                 </div>
 
-                <!-- FORM UBAH PASSWORD MEMBER (INLINE OVERLAY) -->
-                <div id="member-change-pass-panel" class="hidden mt-4 pt-4 border-t border-slate-200/80 dark:border-slate-700/80 text-left">
-                    <div class="flex items-center justify-between mb-2">
-                        <h3 class="text-xs font-bold text-slate-900 dark:text-white uppercase">Ubah Password Akun</h3>
-                        <button type="button" onclick="toggleMemberChangePassModal(false)" class="text-[10px] text-slate-400 hover:text-rose-500 font-bold">Batal ✕</button>
+                <!-- FORM UBAH PASSWORD MEMBER (COMPACT) -->
+                <div id="member-change-pass-panel" class="hidden mt-3 pt-3 border-t border-slate-200/80 dark:border-slate-700/80 text-left">
+                    <div class="flex items-center justify-between mb-1.5">
+                        <h3 class="text-[10px] font-bold text-slate-900 dark:text-white uppercase">Ubah Password</h3>
+                        <button type="button" onclick="toggleMemberChangePassModal(false)" class="text-[9px] text-slate-400 hover:text-rose-500 font-bold">Batal ✕</button>
                     </div>
-                    <form onsubmit="handleMemberChangePassword(event)" class="space-y-2.5 text-xs">
-                        <div>
-                            <label class="block font-bold mb-1 text-[9px] uppercase text-slate-600 dark:text-slate-300">Password Lama</label>
-                            <input type="password" id="member-old-pass" required autocomplete="off" placeholder="Password saat ini..." class="w-full px-3 py-2 rounded-lg bg-white/90 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white">
-                        </div>
-                        <div>
-                            <label class="block font-bold mb-1 text-[9px] uppercase text-slate-600 dark:text-slate-300">Password Baru</label>
-                            <input type="password" id="member-new-pass" required autocomplete="off" placeholder="Minimal 4 karakter..." class="w-full px-3 py-2 rounded-lg bg-white/90 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white">
-                        </div>
-                        <div>
-                            <label class="block font-bold mb-1 text-[9px] uppercase text-slate-600 dark:text-slate-300">Konfirmasi Password Baru</label>
-                            <input type="password" id="member-confirm-pass" required autocomplete="off" placeholder="Ulangi password baru..." class="w-full px-3 py-2 rounded-lg bg-white/90 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white">
-                        </div>
-                        <div id="member-cp-msg" class="text-[10px] font-bold hidden py-1.5 px-2.5 rounded-lg text-center"></div>
-                        <button type="submit" class="w-full py-2.5 bg-sky-500 hover:bg-sky-600 text-white font-bold uppercase tracking-wider rounded-lg text-[10px] shadow transition-all">
-                            Simpan Password Baru
+                    <form onsubmit="handleMemberChangePassword(event)" class="space-y-2 text-xs">
+                        <input type="password" id="member-old-pass" required autocomplete="off" placeholder="Password lama..." class="w-full px-2.5 py-1.5 rounded-lg bg-white/90 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[10px] focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white">
+                        <input type="password" id="member-new-pass" required autocomplete="off" placeholder="Password baru (min 4 karakter)..." class="w-full px-2.5 py-1.5 rounded-lg bg-white/90 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[10px] focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white">
+                        <input type="password" id="member-confirm-pass" required autocomplete="off" placeholder="Konfirmasi password baru..." class="w-full px-2.5 py-1.5 rounded-lg bg-white/90 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[10px] focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white">
+                        <div id="member-cp-msg" class="text-[9px] font-bold hidden py-1 px-2 rounded-lg text-center"></div>
+                        <button type="submit" class="w-full py-2 bg-sky-500 hover:bg-sky-600 text-white font-bold uppercase tracking-wider rounded-lg text-[9px] shadow transition-all">
+                            Simpan Password
                         </button>
                     </form>
                 </div>
@@ -380,7 +370,7 @@
                 </div>
             </div>
 
-            <!-- Ringkasan Deskripsi + Tombol Lihat Semua (Anti-Overflow) -->
+            <!-- Ringkasan Deskripsi + Tombol Lihat Semua -->
             <div class="mb-4 bg-white/60 dark:bg-slate-800/50 border border-sky-100 dark:border-slate-700/70 rounded-lg p-3 overflow-hidden">
                 <p id="modal-desc" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line break-words">Layanan digital siap pakai kualitas terbaik dari Deepa Store.</p>
                 <button id="toggle-desc-btn" onclick="toggleDescription()" class="hidden mt-1.5 text-[10px] font-bold text-sky-600 dark:text-sky-400 hover:underline inline-flex items-center gap-1 focus:outline-none">
@@ -416,28 +406,14 @@
         </div>
     </div>
 
-    <!-- Script Utama -->
+    <!-- Script Utama (Full Neon PostgreSQL Integration) -->
     <script>
         const PROXY_API_URL = "/api/products";
+        const ROYAL_API_URL = "/api/royal";
         const apiHeaders = {
             "Content-Type": "application/json",
             "Prefer": "return=representation"
         };
-
-        const DEFAULT_FALLBACK_PRODUCTS = [
-            {
-                id: 1,
-                name: "NETFLIX",
-                category: "Hiburan",
-                description: "1P 1U, Login menggunakan kode\nKualitas Ultra HD 4K, Anti Hold, Garansi penuh.",
-                price: 3000,
-                price_3d: 6000,
-                price_7d: 12000,
-                price_1m: 30000,
-                stock: 15,
-                image: ""
-            }
-        ];
 
         function updateThemeBasedOnTime() {
             const options = { timeZone: 'Asia/Jakarta', hour: 'numeric', hour12: false };
@@ -491,66 +467,56 @@
             const grid = document.getElementById('product-grid');
             grid.innerHTML = `<div class="col-span-2 text-center text-xs text-slate-400 py-12">Memuat katalog...</div>`;
 
-            let products = [];
-
             try {
                 const response = await fetch(`${PROXY_API_URL}?select=*`, {
                     method: "GET",
                     headers: apiHeaders
                 });
-                const contentType = response.headers.get("content-type") || "";
-                if (!response.ok || !contentType.includes("application/json")) {
-                    throw new Error("Beralih ke cache lokal");
-                }
-                products = await response.json();
-                localStorage.setItem('deepa_products_cache', JSON.stringify(products));
-            } catch (err) {
-                const cached = localStorage.getItem('deepa_products_cache');
-                products = cached ? JSON.parse(cached) : DEFAULT_FALLBACK_PRODUCTS;
-                if (!cached) {
-                    localStorage.setItem('deepa_products_cache', JSON.stringify(products));
-                }
-            }
+                if (!response.ok) throw new Error("Gagal mengambil data produk");
+                const products = await response.json();
 
-            grid.innerHTML = '';
-            const activeProducts = products.filter(p => Number(p.stock) > 0);
+                grid.innerHTML = '';
+                const activeProducts = products.filter(p => Number(p.stock) > 0);
 
-            if (activeProducts.length === 0) {
-                grid.innerHTML = `<div class="col-span-2 text-center text-xs text-slate-400 py-12">Belum ada produk aktif atau stok habis.</div>`;
-                return;
-            }
-
-            activeProducts.forEach(p => {
-                const card = document.createElement('div');
-                card.className = "bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[1.75rem] p-4 sm:p-5 shadow-xl relative flex flex-col justify-between border border-white/50 dark:border-slate-800 transition-all duration-300 hover:-translate-y-1";
-                
-                let mediaHTML = `<span class="font-bold text-sky-600 text-lg">${p.name.charAt(0)}</span>`;
-                if (p.image) {
-                    mediaHTML = `<img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">`;
+                if (activeProducts.length === 0) {
+                    grid.innerHTML = `<div class="col-span-2 text-center text-xs text-slate-400 py-12">Belum ada produk aktif atau stok habis.</div>`;
+                    return;
                 }
-                let mediaContainerClass = "w-12 h-12 sm:w-14 sm:h-14 shrink-0 bg-sky-100 dark:bg-slate-800 rounded-xl shadow-md flex items-center justify-center p-0 overflow-hidden border border-slate-200 dark:border-slate-700";
-                
-                card.innerHTML = `
-                    <div class="absolute top-3 right-4 text-amber-400 text-sm">★</div>
+
+                activeProducts.forEach(p => {
+                    const card = document.createElement('div');
+                    card.className = "bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[1.75rem] p-4 sm:p-5 shadow-xl relative flex flex-col justify-between border border-white/50 dark:border-slate-800 transition-all duration-300 hover:-translate-y-1";
                     
-                    <div class="flex items-center gap-3.5 mb-4">
-                        <div class="${mediaContainerClass}">
-                            ${mediaHTML}
+                    let mediaHTML = `<span class="font-bold text-sky-600 text-lg">${p.name.charAt(0)}</span>`;
+                    if (p.image) {
+                        mediaHTML = `<img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">`;
+                    }
+                    let mediaContainerClass = "w-12 h-12 sm:w-14 sm:h-14 shrink-0 bg-sky-100 dark:bg-slate-800 rounded-xl shadow-md flex items-center justify-center p-0 overflow-hidden border border-slate-200 dark:border-slate-700";
+                    
+                    card.innerHTML = `
+                        <div class="absolute top-3 right-4 text-amber-400 text-sm">★</div>
+                        
+                        <div class="flex items-center gap-3.5 mb-4">
+                            <div class="${mediaContainerClass}">
+                                ${mediaHTML}
+                            </div>
+                            <div>
+                                <h3 class="font-mono font-bold text-base sm:text-lg text-slate-900 dark:text-white tracking-tight leading-snug">${p.name}</h3>
+                                <span class="inline-block bg-sky-100 dark:bg-sky-950 text-sky-600 dark:text-sky-300 text-[9px] font-mono uppercase px-2 py-0.5 rounded-full my-0.5 tracking-wider">${p.category}</span>
+                                <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 tracking-wider">Mulai <span class="font-bold text-slate-900 dark:text-white">Rp${Number(p.price).toLocaleString('id-ID')}</span></div>
+                            </div>
                         </div>
-                        <div>
-                            <h3 class="font-mono font-bold text-base sm:text-lg text-slate-900 dark:text-white tracking-tight leading-snug">${p.name}</h3>
-                            <span class="inline-block bg-sky-100 dark:bg-sky-950 text-sky-600 dark:text-sky-300 text-[9px] font-mono uppercase px-2 py-0.5 rounded-full my-0.5 tracking-wider">${p.category}</span>
-                            <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 tracking-wider">Mulai <span class="font-bold text-slate-900 dark:text-white">Rp${Number(p.price).toLocaleString('id-ID')}</span></div>
-                        </div>
-                    </div>
 
-                    <button onclick='openProductModal(${JSON.stringify(p).replace(/'/g, "'")})' class="w-full py-2.5 sm:py-3 bg-sky-200 hover:bg-sky-300 dark:bg-sky-950/70 dark:hover:bg-sky-900 text-sky-900 dark:text-sky-200 font-mono font-bold text-[11px] uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 transition-colors">
-                        Pilih Varian 
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                    </button>
-                `;
-                grid.appendChild(card);
-            });
+                        <button onclick='openProductModal(${JSON.stringify(p).replace(/'/g, "'")})' class="w-full py-2.5 sm:py-3 bg-sky-200 hover:bg-sky-300 dark:bg-sky-950/70 dark:hover:bg-sky-900 text-sky-900 dark:text-sky-200 font-mono font-bold text-[11px] uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 transition-colors">
+                            Pilih Varian 
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+                    `;
+                    grid.appendChild(card);
+                });
+            } catch (err) {
+                grid.innerHTML = `<div class="col-span-2 text-center text-xs text-rose-500 py-12">Gagal terhubung ke database produk.</div>`;
+            }
         }
 
         const textToType = "HELLO, CUSTOMER";
@@ -627,16 +593,8 @@
         });
 
         // ==========================================
-        // SISTEM AKUN MEMBER & ROYAL STAMP PER USERNAME
+        // SISTEM AKUN MEMBER & ROYAL STAMP (NEON DB)
         // ==========================================
-        function getMemberAccounts() {
-            return JSON.parse(localStorage.getItem('deepa_member_accounts') || '[]');
-        }
-
-        function saveMemberAccounts(accounts) {
-            localStorage.setItem('deepa_member_accounts', JSON.stringify(accounts));
-        }
-
         function getActiveMemberUsername() {
             return localStorage.getItem('deepa_logged_in_member') || '';
         }
@@ -652,47 +610,68 @@
             }
         }
 
-        function checkMemberSession() {
+        async function checkMemberSession() {
             const loggedUser = getActiveMemberUsername();
-            const accounts = getMemberAccounts();
-            const memberObj = accounts.find(acc => acc.username.toLowerCase() === loggedUser.toLowerCase());
-
             const authCard = document.getElementById('member-auth-card');
             const stampDashboard = document.getElementById('member-stamp-dashboard');
 
-            if (memberObj) {
+            if (!loggedUser) {
+                stampDashboard.classList.add('hidden');
+                authCard.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                const res = await fetch(`${ROYAL_API_URL}?action=get_member_profile&username=${encodeURIComponent(loggedUser)}`);
+                if (!res.ok) throw new Error('Sesi berakhir');
+                const memberObj = await res.json();
+
                 authCard.classList.add('hidden');
                 stampDashboard.classList.remove('hidden');
                 document.getElementById('active-member-username').textContent = memberObj.username;
                 renderStampGrid(memberObj.stamps || 0);
-            } else {
+            } catch (err) {
                 localStorage.removeItem('deepa_logged_in_member');
                 stampDashboard.classList.add('hidden');
                 authCard.classList.remove('hidden');
             }
         }
 
-        function handleMemberLogin(e) {
+        async function handleMemberLogin(e) {
             e.preventDefault();
             const userInput = document.getElementById('member-login-user').value.trim();
             const passInput = document.getElementById('member-login-pass').value;
             const errBox = document.getElementById('member-login-error');
+            const btn = document.getElementById('member-login-btn');
 
-            const accounts = getMemberAccounts();
-            const foundMember = accounts.find(acc => acc.username.toLowerCase() === userInput.toLowerCase() && acc.password === passInput);
+            btn.disabled = true;
+            btn.textContent = "Memeriksa...";
+            errBox.classList.add('hidden');
 
-            if (!foundMember) {
-                errBox.textContent = "Username atau password member tidak valid!";
+            try {
+                const res = await fetch(`${ROYAL_API_URL}?action=login_member`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: userInput, password: passInput })
+                });
+                const data = await res.json();
+
+                if (!res.ok) {
+                    throw new Error(data.error || 'Username atau password salah!');
+                }
+
+                localStorage.setItem('deepa_logged_in_member', data.username);
+                document.getElementById('member-login-user').value = '';
+                document.getElementById('member-login-pass').value = '';
+                await checkMemberSession();
+            } catch (err) {
+                errBox.textContent = err.message;
                 errBox.classList.remove('hidden');
                 document.getElementById('member-login-pass').value = '';
-                return;
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Masuk Royal Card";
             }
-
-            errBox.classList.add('hidden');
-            localStorage.setItem('deepa_logged_in_member', foundMember.username);
-            document.getElementById('member-login-user').value = '';
-            document.getElementById('member-login-pass').value = '';
-            checkMemberSession();
         }
 
         function handleMemberLogout() {
@@ -716,7 +695,7 @@
             }
         }
 
-        function handleMemberChangePassword(e) {
+        async function handleMemberChangePassword(e) {
             e.preventDefault();
             const loggedUser = getActiveMemberUsername();
             const oldPass = document.getElementById('member-old-pass').value;
@@ -724,42 +703,44 @@
             const confirmPass = document.getElementById('member-confirm-pass').value;
             const msgBox = document.getElementById('member-cp-msg');
 
-            const accounts = getMemberAccounts();
-            const idx = accounts.findIndex(acc => acc.username.toLowerCase() === loggedUser.toLowerCase());
-
-            if (idx === -1) return;
-
-            if (accounts[idx].password !== oldPass) {
-                msgBox.className = "text-[10px] font-bold py-1.5 px-2.5 rounded-lg text-center bg-rose-500/15 text-rose-500";
-                msgBox.textContent = "Password lama tidak sesuai!";
-                msgBox.classList.remove('hidden');
-                return;
-            }
-
             if (newPass.length < 4) {
-                msgBox.className = "text-[10px] font-bold py-1.5 px-2.5 rounded-lg text-center bg-rose-500/15 text-rose-500";
+                msgBox.className = "text-[9px] font-bold py-1 px-2 rounded-lg text-center bg-rose-500/15 text-rose-500";
                 msgBox.textContent = "Password baru minimal 4 karakter!";
                 msgBox.classList.remove('hidden');
                 return;
             }
 
             if (newPass !== confirmPass) {
-                msgBox.className = "text-[10px] font-bold py-1.5 px-2.5 rounded-lg text-center bg-rose-500/15 text-rose-500";
+                msgBox.className = "text-[9px] font-bold py-1 px-2 rounded-lg text-center bg-rose-500/15 text-rose-500";
                 msgBox.textContent = "Konfirmasi password baru tidak cocok!";
                 msgBox.classList.remove('hidden');
                 return;
             }
 
-            accounts[idx].password = newPass;
-            saveMemberAccounts(accounts);
+            try {
+                const res = await fetch(`${ROYAL_API_URL}?action=change_password`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: loggedUser, oldPassword: oldPass, newPassword: newPass })
+                });
+                const data = await res.json();
 
-            msgBox.className = "text-[10px] font-bold py-1.5 px-2.5 rounded-lg text-center bg-emerald-500/15 text-emerald-600 dark:text-emerald-400";
-            msgBox.textContent = "Password berhasil diperbarui!";
-            msgBox.classList.remove('hidden');
+                if (!res.ok) {
+                    throw new Error(data.error || 'Gagal mengganti password');
+                }
 
-            setTimeout(() => {
-                toggleMemberChangePassModal(false);
-            }, 1200);
+                msgBox.className = "text-[9px] font-bold py-1 px-2 rounded-lg text-center bg-emerald-500/15 text-emerald-600 dark:text-emerald-400";
+                msgBox.textContent = "Password berhasil diperbarui!";
+                msgBox.classList.remove('hidden');
+
+                setTimeout(() => {
+                    toggleMemberChangePassModal(false);
+                }, 1200);
+            } catch (err) {
+                msgBox.className = "text-[9px] font-bold py-1 px-2 rounded-lg text-center bg-rose-500/15 text-rose-500";
+                msgBox.textContent = err.message;
+                msgBox.classList.remove('hidden');
+            }
         }
 
         function renderStampGrid(total = 0) {
@@ -773,25 +754,25 @@
                 const box = document.createElement('div');
 
                 if (isFilled) {
-                    box.className = "aspect-square rounded-xl stamp-badge-active text-white flex flex-col items-center justify-center p-1.5 border border-amber-200/70 transition-all duration-300 scale-100 relative overflow-hidden group";
+                    box.className = "aspect-square rounded-lg stamp-badge-active text-white flex flex-col items-center justify-center p-1 border border-amber-200/70 transition-all duration-300 scale-100 relative overflow-hidden";
                     box.innerHTML = `
-                        <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/25 backdrop-blur-sm flex items-center justify-center shadow-inner">
-                            <svg class="w-4 h-4 fill-current text-white drop-shadow" viewBox="0 0 24 24">
+                        <div class="w-6 h-6 rounded-full bg-white/25 backdrop-blur-sm flex items-center justify-center shadow-inner">
+                            <svg class="w-3.5 h-3.5 fill-current text-white drop-shadow" viewBox="0 0 24 24">
                                 <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>
                             </svg>
                         </div>
-                        <span class="text-[7px] font-bold uppercase tracking-wider mt-1 text-amber-100">STAMPED</span>
+                        <span class="text-[6px] font-bold uppercase tracking-wider mt-0.5 text-amber-100">STAMPED</span>
                     `;
                 } else {
-                    box.className = `aspect-square rounded-xl ${isLastGoal ? 'bg-amber-500/5 border-amber-400/50 text-amber-500/70' : 'bg-slate-100/70 dark:bg-slate-800/50 border-slate-300/80 dark:border-slate-700 text-slate-400/70'} border border-dashed flex flex-col items-center justify-center p-1.5 transition-all`;
+                    box.className = `aspect-square rounded-lg ${isLastGoal ? 'bg-amber-500/5 border-amber-400/50 text-amber-500/70' : 'bg-slate-100/70 dark:bg-slate-800/50 border-slate-300/80 dark:border-slate-700 text-slate-400/70'} border border-dashed flex flex-col items-center justify-center p-1 transition-all`;
                     box.innerHTML = `
-                        <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full ${isLastGoal ? 'bg-amber-500/10' : 'bg-slate-200/60 dark:bg-slate-700/40'} flex items-center justify-center">
+                        <div class="w-6 h-6 rounded-full ${isLastGoal ? 'bg-amber-500/10' : 'bg-slate-200/60 dark:bg-slate-700/40'} flex items-center justify-center">
                             ${isLastGoal 
-                                ? `<svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1a2.996 2.996 0 0 0-5.5-1.65l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/></svg>`
-                                : `<svg class="w-4 h-4 fill-current opacity-60" viewBox="0 0 24 24"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/></svg>`
+                                ? `<svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1a2.996 2.996 0 0 0-5.5-1.65l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/></svg>`
+                                : `<svg class="w-3.5 h-3.5 fill-current opacity-60" viewBox="0 0 24 24"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/></svg>`
                             }
                         </div>
-                        <span class="text-[7px] font-bold uppercase tracking-wider mt-1 opacity-70">${isLastGoal ? 'REWARD' : 'KOSONG'}</span>
+                        <span class="text-[6px] font-bold uppercase tracking-wider mt-0.5 opacity-70">${isLastGoal ? 'REWARD' : 'KOSONG'}</span>
                     `;
                 }
 
@@ -817,86 +798,70 @@
             msgBox.textContent = text;
             
             if (type === "emerald") {
-                msgBox.className = "text-[10px] font-bold py-2 px-3 rounded-xl text-center bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30";
+                msgBox.className = "text-[9px] font-bold py-1.5 px-2.5 rounded-lg text-center bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30";
             } else if (type === "amber") {
-                msgBox.className = "text-[10px] font-bold py-2 px-3 rounded-xl text-center bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30";
+                msgBox.className = "text-[9px] font-bold py-1.5 px-2.5 rounded-lg text-center bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30";
             } else {
-                msgBox.className = "text-[10px] font-bold py-2 px-3 rounded-xl text-center bg-rose-500/15 text-rose-500 border border-rose-500/30";
+                msgBox.className = "text-[9px] font-bold py-1.5 px-2.5 rounded-lg text-center bg-rose-500/15 text-rose-500 border border-rose-500/30";
             }
         }
 
-        function claimCustomerStamp() {
+        async function claimCustomerStamp() {
             const loggedUser = getActiveMemberUsername();
             if (!loggedUser) return;
 
-            const accounts = getMemberAccounts();
-            const memberIdx = accounts.findIndex(acc => acc.username.toLowerCase() === loggedUser.toLowerCase());
-            if (memberIdx === -1) return;
-
             const codeInput = document.getElementById('claim-stamp-input').value.trim().toUpperCase();
-
             if (!codeInput) {
                 showStampMessage("Masukkan kode stamp transaksi terlebih dahulu!", "rose");
                 return;
             }
 
-            let currentStamps = Number(accounts[memberIdx].stamps || 0);
-            if (currentStamps >= 10) {
-                showStampMessage("Royal Card Anda sudah penuh (10/10)! Silakan tukarkan hadiah.", "amber");
-                return;
+            const btn = document.getElementById('claim-stamp-btn');
+            btn.disabled = true;
+            btn.textContent = "...";
+
+            try {
+                const res = await fetch(`${ROYAL_API_URL}?action=claim_stamp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: loggedUser, code: codeInput })
+                });
+                const data = await res.json();
+
+                if (!res.ok) {
+                    throw new Error(data.error || 'Gagal klaim stamp');
+                }
+
+                renderStampGrid(data.stamps);
+                showStampMessage(`Berhasil! +1 Lencana Stamp ditambahkan (${data.stamps}/10).`, "emerald");
+                document.getElementById('claim-stamp-input').value = '';
+            } catch (err) {
+                showStampMessage(err.message, "rose");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Redeem";
             }
-
-            let adminStamps = JSON.parse(localStorage.getItem('deepa_admin_generated_stamps') || '[]');
-            const targetStamp = adminStamps.find(s => s.code === codeInput);
-
-            if (!targetStamp) {
-                showStampMessage("Kode stamp tidak ditemukan atau tidak valid!", "rose");
-                return;
-            }
-
-            if (targetStamp.isRedeemed) {
-                showStampMessage("Kode stamp ini sudah pernah digunakan!", "rose");
-                return;
-            }
-
-            const now = new Date().getTime();
-            const expiryTime = new Date(targetStamp.expiresAt).getTime();
-
-            if (now > expiryTime) {
-                showStampMessage("Kode stamp sudah EXPIRED (melebihi batas 3 hari)!", "rose");
-                return;
-            }
-
-            targetStamp.isRedeemed = true;
-            targetStamp.redeemedBy = loggedUser;
-            targetStamp.redeemedAt = new Date().toISOString();
-            localStorage.setItem('deepa_admin_generated_stamps', JSON.stringify(adminStamps));
-
-            currentStamps += 1;
-            accounts[memberIdx].stamps = currentStamps;
-            saveMemberAccounts(accounts);
-
-            renderStampGrid(currentStamps);
-            showStampMessage(`Berhasil! +1 Lencana Stamp ditambahkan (${currentStamps}/10).`, "emerald");
-            document.getElementById('claim-stamp-input').value = '';
         }
 
-        function redeemStampReward() {
+        async function redeemStampReward() {
             const loggedUser = getActiveMemberUsername();
             if (!loggedUser) return;
-
-            const accounts = getMemberAccounts();
-            const memberIdx = accounts.findIndex(acc => acc.username.toLowerCase() === loggedUser.toLowerCase());
-            if (memberIdx === -1) return;
 
             const phoneNumber = "6281717622225";
             const message = `Halo Deepa Store, akun member *@${loggedUser}* telah mengumpulkan 10/10 Lencana Royal Card. Saya ingin menukarkan hadiah eksklusif saya. Mohon diproses ya kak!`;
             window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
             
-            accounts[memberIdx].stamps = 0;
-            saveMemberAccounts(accounts);
-            renderStampGrid(0);
-            showStampMessage("Penukaran dikirim ke WhatsApp! Kartu stamp akun direset ke 0/10.", "emerald");
+            try {
+                await fetch(`${ROYAL_API_URL}?action=redeem_reward`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: loggedUser })
+                });
+                renderStampGrid(0);
+                showStampMessage("Penukaran dikirim ke WhatsApp! Kartu stamp direset ke 0/10.", "emerald");
+            } catch (err) {
+                showStampMessage("Gagal mereset kartu stamp di database.", "rose");
+            }
         }
 
         // ==========================================
