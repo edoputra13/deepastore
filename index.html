@@ -50,15 +50,15 @@
         }
 
         .futuristic-card {
-            background: rgba(255, 255, 255, 0.75);
+            background: rgba(255, 255, 255, 0.78);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.45);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.6);
         }
         .dark .futuristic-card {
-            background: rgba(15, 23, 42, 0.85);
-            border: 1px solid rgba(56, 189, 248, 0.15);
+            background: rgba(15, 23, 42, 0.88);
+            border: 1px solid rgba(56, 189, 248, 0.18);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(56, 189, 248, 0.1);
         }
 
@@ -73,7 +73,7 @@
         }
         .platform-item:hover::before { transform: translateX(100%); }
 
-        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(150, 150, 150, 0.3); border-radius: 4px; }
     </style>
@@ -102,9 +102,9 @@
         
         <div class="w-full lg:w-1/3 flex justify-center">
             <nav id="main-nav" class="flex items-center gap-4 sm:gap-6 md:gap-8 w-full sm:w-auto justify-center bg-white/20 dark:bg-black/20 backdrop-blur-xl border border-white/30 dark:border-white/10 px-6 sm:px-8 py-2 md:py-2.5 rounded-full shadow-[0_8px_32px_0_rgba(31,38,135,0.1)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.4)] transition-all duration-300 cursor-pointer">
-                <a href="#" onclick="switchView('home')" class="nav-link font-sans text-xs md:text-sm font-medium hover:text-white dark:hover:text-white transition-colors">About</a>
-                <a href="#" onclick="switchView('jajan')" class="nav-link font-sans text-xs md:text-sm font-medium hover:text-white dark:hover:text-white transition-colors">Jajan</a>
-                <a href="#" onclick="switchView('contact')" class="nav-link font-sans text-xs md:text-sm font-medium hover:text-white dark:hover:text-white transition-colors">Contact</a>
+                <a href="javascript:void(0)" onclick="switchView('home')" class="nav-link font-sans text-xs md:text-sm font-medium hover:text-white dark:hover:text-white transition-colors">About</a>
+                <a href="javascript:void(0)" onclick="switchView('jajan')" class="nav-link font-sans text-xs md:text-sm font-medium hover:text-white dark:hover:text-white transition-colors">Jajan</a>
+                <a href="javascript:void(0)" onclick="switchView('contact')" class="nav-link font-sans text-xs md:text-sm font-medium hover:text-white dark:hover:text-white transition-colors">Contact</a>
             </nav>
         </div>
         
@@ -114,17 +114,57 @@
     <div class="lg:hidden absolute bottom-4 left-1/2 -translate-x-1/2 z-50 font-mono text-[9px] uppercase tracking-widest current-date-display opacity-70 pointer-events-none"></div>
 
     <!-- MAIN VIEW CONTAINER -->
-    <div class="relative z-40 flex-1 flex flex-col justify-center items-center w-full h-full px-4 sm:px-6 -translate-y-4">
+    <div class="relative z-40 flex-1 flex flex-col justify-center items-center w-full h-full px-4 sm:px-6 -translate-y-2">
 
-        <!-- HOME VIEW -->
-        <main id="home-view" class="view-section flex flex-col items-center justify-center text-center">
-            <div class="flex items-center gap-1 mb-2 md:mb-4 font-mono text-[10px] sm:text-xs md:text-sm tracking-widest uppercase transition-colors duration-1000 h-6">
+        <!-- HOME / ABOUT VIEW (HERO + ROYAL STAMP CARD) -->
+        <main id="home-view" class="view-section flex flex-col items-center justify-center text-center w-full max-w-2xl max-h-[80vh] overflow-y-auto py-4 px-1">
+            <div class="flex items-center gap-1 mb-1.5 md:mb-3 font-mono text-[10px] sm:text-xs md:text-sm tracking-widest uppercase transition-colors duration-1000 h-5">
                 <span id="typing-text"></span><span class="typing-cursor"></span>
             </div>
             
-            <h1 class="font-futuristic font-black text-4xl sm:text-6xl md:text-8xl lg:text-9xl leading-[1.1] text-center text-[#f8fafc] drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] transition-colors duration-1000 tracking-wide sm:tracking-wider">
+            <h1 class="font-futuristic font-black text-3xl sm:text-5xl md:text-7xl leading-[1.1] text-center text-[#f8fafc] drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] transition-colors duration-1000 tracking-wide sm:tracking-wider mb-5 sm:mb-6">
                 DEEPA STORE
             </h1>
+
+            <!-- ROYAL STAMP CARD (10 STAMP LOYALTY) -->
+            <div class="w-full max-w-[420px] mx-auto font-mono text-center">
+                <div class="futuristic-card rounded-xl p-4 sm:p-5 relative overflow-hidden">
+                    <div class="flex items-center justify-between mb-1.5">
+                        <span class="px-2 py-0.5 rounded-md bg-amber-500/15 text-amber-600 dark:text-amber-400 text-[9px] font-bold uppercase tracking-wider border border-amber-500/30">
+                            Royal Card
+                        </span>
+                        <span class="text-[10px] font-bold text-slate-600 dark:text-slate-300">
+                            Stamp: <span id="stamp-count-text" class="text-sky-600 dark:text-sky-400 font-black">0</span>/10
+                        </span>
+                    </div>
+
+                    <h2 class="text-sm sm:text-base font-black text-slate-900 dark:text-white uppercase tracking-wider font-futuristic mb-1">Royal Stamp Card</h2>
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400 mb-3.5 leading-relaxed">
+                        Kumpulkan 10 stamp dari setiap transaksi untuk ditukarkan dengan hadiah eksklusif!
+                    </p>
+
+                    <!-- Grid 10 Kotak Stamp -->
+                    <div id="stamp-grid" class="grid grid-cols-5 gap-2 mb-3.5"></div>
+
+                    <!-- Input Klaim Kode Stamp Transaksi -->
+                    <div class="space-y-2 text-xs">
+                        <div class="flex gap-2">
+                            <input type="text" id="claim-stamp-input" autocomplete="off" placeholder="KODE STAMP (CONTOH: STAMP-XXXXXX)" class="w-full px-3 py-2 rounded-lg bg-slate-100/90 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 text-[11px] uppercase focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white">
+                            <button onclick="claimCustomerStamp()" class="px-3.5 py-2 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-lg shadow-sm transition-all text-[11px] uppercase tracking-wider shrink-0">
+                                Klaim
+                            </button>
+                        </div>
+                        <div id="stamp-msg" class="text-[10px] font-bold hidden py-1.5 px-2.5 rounded-lg"></div>
+                    </div>
+
+                    <!-- Tombol Penukaran Hadiah Ketika 10 Stamp Terkumpul -->
+                    <div id="reward-section" class="mt-3.5 hidden">
+                        <button onclick="redeemStampReward()" class="w-full py-2.5 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white font-bold uppercase tracking-widest rounded-lg shadow-md shadow-amber-500/20 text-[11px] transition-all">
+                            Tukarkan 10 Stamp via WhatsApp
+                        </button>
+                    </div>
+                </div>
+            </div>
         </main>
 
         <!-- JAJAN CATALOG VIEW -->
@@ -229,9 +269,7 @@
 
             <div class="mb-4">
                 <label class="block text-[10px] font-bold text-slate-800 dark:text-slate-200 uppercase tracking-widest mb-1.5">Pilih Durasi</label>
-                <div id="duration-options" class="flex flex-wrap gap-1.5">
-                    <!-- Diisi dinamis oleh JS -->
-                </div>
+                <div id="duration-options" class="flex flex-wrap gap-1.5"></div>
             </div>
 
             <div class="bg-pink-100/70 dark:bg-slate-800/80 border border-pink-200 dark:border-slate-700 rounded-lg px-4 py-3 flex items-center justify-between mb-4 shadow-sm">
@@ -256,6 +294,21 @@
             "Content-Type": "application/json",
             "Prefer": "return=representation"
         };
+
+        const DEFAULT_FALLBACK_PRODUCTS = [
+            {
+                id: 1,
+                name: "NETFLIX",
+                category: "Hiburan",
+                description: "1P 1U, Login menggunakan kode\nKualitas Ultra HD 4K, Anti Hold, Garansi penuh.",
+                price: 3000,
+                price_3d: 6000,
+                price_7d: 12000,
+                price_1m: 30000,
+                stock: 15,
+                image: ""
+            }
+        ];
 
         function updateThemeBasedOnTime() {
             const options = { timeZone: 'Asia/Jakarta', hour: 'numeric', hour12: false };
@@ -282,6 +335,14 @@
         updateThemeBasedOnTime();
         setInterval(updateThemeBasedOnTime, 60000);
 
+        window.addEventListener('DOMContentLoaded', () => {
+            renderStampGrid();
+            const path = window.location.pathname.replace('/', '');
+            if (path === 'jajan' || path === 'contact') {
+                switchView(path, false);
+            }
+        });
+
         window.addEventListener('load', () => {
             fetchAndRenderProducts(); 
             setTimeout(() => {
@@ -299,59 +360,68 @@
 
         async function fetchAndRenderProducts() {
             const grid = document.getElementById('product-grid');
-            grid.innerHTML = `<div class="col-span-2 text-center text-xs text-slate-400 py-12">Memuat katalog dari database...</div>`;
+            grid.innerHTML = `<div class="col-span-2 text-center text-xs text-slate-400 py-12">Memuat katalog...</div>`;
+
+            let products = [];
 
             try {
                 const response = await fetch(`${PROXY_API_URL}?select=*`, {
                     method: "GET",
                     headers: apiHeaders
                 });
-                if (!response.ok) throw new Error('Gagal mengambil data produk');
-                
-                const products = await response.json();
-                grid.innerHTML = '';
-                const activeProducts = products.filter(p => p.stock > 0);
-
-                if (activeProducts.length === 0) {
-                    grid.innerHTML = `<div class="col-span-2 text-center text-xs text-slate-400 py-12">Belum ada produk aktif atau stok habis.</div>`;
-                    return;
+                const contentType = response.headers.get("content-type") || "";
+                if (!response.ok || !contentType.includes("application/json")) {
+                    throw new Error("Beralih ke cache lokal");
                 }
-
-                activeProducts.forEach(p => {
-                    const card = document.createElement('div');
-                    card.className = "bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[1.75rem] p-4 sm:p-5 shadow-xl relative flex flex-col justify-between border border-white/50 dark:border-slate-800 transition-all duration-300 hover:-translate-y-1";
-                    
-                    let mediaHTML = `<span class="font-bold text-sky-600 text-lg">${p.name.charAt(0)}</span>`;
-                    if (p.image) {
-                        mediaHTML = `<img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">`;
-                    }
-                    let mediaContainerClass = "w-12 h-12 sm:w-14 sm:h-14 shrink-0 bg-sky-100 dark:bg-slate-800 rounded-xl shadow-md flex items-center justify-center p-0 overflow-hidden border border-slate-200 dark:border-slate-700";
-                    
-                    card.innerHTML = `
-                        <div class="absolute top-3 right-4 text-amber-400 text-sm">★</div>
-                        
-                        <div class="flex items-center gap-3.5 mb-4">
-                            <div class="${mediaContainerClass}">
-                                ${mediaHTML}
-                            </div>
-                            <div>
-                                <h3 class="font-mono font-bold text-base sm:text-lg text-slate-900 dark:text-white tracking-tight leading-snug">${p.name}</h3>
-                                <span class="inline-block bg-sky-100 dark:bg-sky-950 text-sky-600 dark:text-sky-300 text-[9px] font-mono uppercase px-2 py-0.5 rounded-full my-0.5 tracking-wider">${p.category}</span>
-                                <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 tracking-wider">Mulai <span class="font-bold text-slate-900 dark:text-white">Rp${Number(p.price).toLocaleString('id-ID')}</span></div>
-                            </div>
-                        </div>
-
-                        <button onclick='openProductModal(${JSON.stringify(p).replace(/'/g, "'")})' class="w-full py-2.5 sm:py-3 bg-sky-200 hover:bg-sky-300 dark:bg-sky-950/70 dark:hover:bg-sky-900 text-sky-900 dark:text-sky-200 font-mono font-bold text-[11px] uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 transition-colors">
-                            Pilih Varian 
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                        </button>
-                    `;
-                    grid.appendChild(card);
-                });
+                products = await response.json();
+                localStorage.setItem('deepa_products_cache', JSON.stringify(products));
             } catch (err) {
-                console.error(err);
-                grid.innerHTML = `<div class="col-span-2 text-center text-xs text-rose-400 py-12">Gagal memuat katalog produk. Periksa koneksi API Anda.</div>`;
+                const cached = localStorage.getItem('deepa_products_cache');
+                products = cached ? JSON.parse(cached) : DEFAULT_FALLBACK_PRODUCTS;
+                if (!cached) {
+                    localStorage.setItem('deepa_products_cache', JSON.stringify(products));
+                }
             }
+
+            grid.innerHTML = '';
+            const activeProducts = products.filter(p => Number(p.stock) > 0);
+
+            if (activeProducts.length === 0) {
+                grid.innerHTML = `<div class="col-span-2 text-center text-xs text-slate-400 py-12">Belum ada produk aktif atau stok habis.</div>`;
+                return;
+            }
+
+            activeProducts.forEach(p => {
+                const card = document.createElement('div');
+                card.className = "bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[1.75rem] p-4 sm:p-5 shadow-xl relative flex flex-col justify-between border border-white/50 dark:border-slate-800 transition-all duration-300 hover:-translate-y-1";
+                
+                let mediaHTML = `<span class="font-bold text-sky-600 text-lg">${p.name.charAt(0)}</span>`;
+                if (p.image) {
+                    mediaHTML = `<img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">`;
+                }
+                let mediaContainerClass = "w-12 h-12 sm:w-14 sm:h-14 shrink-0 bg-sky-100 dark:bg-slate-800 rounded-xl shadow-md flex items-center justify-center p-0 overflow-hidden border border-slate-200 dark:border-slate-700";
+                
+                card.innerHTML = `
+                    <div class="absolute top-3 right-4 text-amber-400 text-sm">★</div>
+                    
+                    <div class="flex items-center gap-3.5 mb-4">
+                        <div class="${mediaContainerClass}">
+                            ${mediaHTML}
+                        </div>
+                        <div>
+                            <h3 class="font-mono font-bold text-base sm:text-lg text-slate-900 dark:text-white tracking-tight leading-snug">${p.name}</h3>
+                            <span class="inline-block bg-sky-100 dark:bg-sky-950 text-sky-600 dark:text-sky-300 text-[9px] font-mono uppercase px-2 py-0.5 rounded-full my-0.5 tracking-wider">${p.category}</span>
+                            <div class="text-[11px] font-mono text-slate-500 dark:text-slate-400 tracking-wider">Mulai <span class="font-bold text-slate-900 dark:text-white">Rp${Number(p.price).toLocaleString('id-ID')}</span></div>
+                        </div>
+                    </div>
+
+                    <button onclick='openProductModal(${JSON.stringify(p).replace(/'/g, "'")})' class="w-full py-2.5 sm:py-3 bg-sky-200 hover:bg-sky-300 dark:bg-sky-950/70 dark:hover:bg-sky-900 text-sky-900 dark:text-sky-200 font-mono font-bold text-[11px] uppercase tracking-widest rounded-xl flex items-center justify-center gap-2 transition-colors">
+                        Pilih Varian 
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
         }
 
         const textToType = "HELLO, CUSTOMER";
@@ -366,8 +436,9 @@
             }
         }
 
-        function switchView(viewName) {
+        function switchView(viewName, updateHistory = true) {
             if (viewName === 'jajan') fetchAndRenderProducts(); 
+            if (viewName === 'home') renderStampGrid();
 
             const homeView = document.getElementById('home-view');
             const jajanView = document.getElementById('jajan-view');
@@ -389,18 +460,28 @@
                 jajanView.classList.add('hidden');
                 contactView.classList.add('hidden');
 
+                let targetUrl = '/';
                 if (viewName === 'jajan') {
                     jajanView.classList.remove('hidden');
                     navLinks[1].classList.add('text-sky-400', 'font-semibold');
                     ambientGlow.style.opacity = '1';
+                    targetUrl = '/jajan';
                 } else if (viewName === 'contact') {
                     contactView.classList.remove('hidden');
                     navLinks[2].classList.add('text-sky-400', 'font-semibold');
                     ambientGlow.style.opacity = '1';
+                    targetUrl = '/contact';
                 } else {
                     homeView.classList.remove('hidden');
                     navLinks[0].classList.add('text-sky-400', 'font-semibold');
                     ambientGlow.style.opacity = '0';
+                    targetUrl = '/';
+                }
+
+                if (updateHistory && window.location.protocol !== 'file:') {
+                    try {
+                        window.history.pushState({ view: viewName }, '', targetUrl);
+                    } catch (e) {}
                 }
 
                 let targetView = homeView;
@@ -419,6 +500,126 @@
             }, 300);
         }
 
+        window.addEventListener('popstate', () => {
+            const path = window.location.pathname.replace('/', '') || 'home';
+            if (['jajan', 'contact', 'home'].includes(path)) {
+                switchView(path, false);
+            }
+        });
+
+        // ==========================================
+        // ROYAL STAMP CARD SYSTEM (10 STAMP)
+        // ==========================================
+        function getStampsCount() {
+            return parseInt(localStorage.getItem('deepa_customer_stamps') || '0', 10);
+        }
+
+        function renderStampGrid() {
+            const total = getStampsCount();
+            const grid = document.getElementById('stamp-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            for (let i = 1; i <= 10; i++) {
+                const isFilled = i <= total;
+                const box = document.createElement('div');
+                box.className = `h-11 rounded-lg flex flex-col items-center justify-center text-[10px] font-bold border transition-all ${
+                    isFilled 
+                    ? 'bg-gradient-to-tr from-sky-500 to-indigo-600 text-white border-sky-400 shadow-sm shadow-sky-500/25' 
+                    : 'bg-slate-100/80 dark:bg-slate-800/60 text-slate-400 border-slate-200 dark:border-slate-700'
+                }`;
+                box.innerHTML = isFilled 
+                    ? `<svg class="w-3.5 h-3.5 fill-current text-amber-300 mb-0.5" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><span class="text-[8px]">#${i}</span>` 
+                    : `<span>${i}</span>`;
+                grid.appendChild(box);
+            }
+
+            const countText = document.getElementById('stamp-count-text');
+            if (countText) countText.textContent = total;
+
+            const rewardSec = document.getElementById('reward-section');
+            if (rewardSec) {
+                if (total >= 10) rewardSec.classList.remove('hidden');
+                else rewardSec.classList.add('hidden');
+            }
+        }
+
+        function showStampMessage(text, type) {
+            const msgBox = document.getElementById('stamp-msg');
+            msgBox.classList.remove('hidden');
+            msgBox.textContent = text;
+            
+            if (type === "emerald") {
+                msgBox.className = "text-[10px] font-bold py-1.5 px-2.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400";
+            } else if (type === "amber") {
+                msgBox.className = "text-[10px] font-bold py-1.5 px-2.5 rounded-lg bg-amber-500/10 text-amber-500";
+            } else {
+                msgBox.className = "text-[10px] font-bold py-1.5 px-2.5 rounded-lg bg-rose-500/10 text-rose-500";
+            }
+        }
+
+        function claimCustomerStamp() {
+            const codeInput = document.getElementById('claim-stamp-input').value.trim().toUpperCase();
+
+            if (!codeInput) {
+                showStampMessage("Masukkan kode stamp transaksi terlebih dahulu!", "rose");
+                return;
+            }
+
+            let currentStamps = getStampsCount();
+            if (currentStamps >= 10) {
+                showStampMessage("Royal Stamp Card Anda sudah penuh (10/10)! Silakan tukarkan hadiah.", "amber");
+                return;
+            }
+
+            let adminStamps = JSON.parse(localStorage.getItem('deepa_admin_generated_stamps') || '[]');
+            const targetStamp = adminStamps.find(s => s.code === codeInput);
+
+            if (!targetStamp) {
+                showStampMessage("Kode stamp tidak ditemukan atau tidak valid!", "rose");
+                return;
+            }
+
+            if (targetStamp.isRedeemed) {
+                showStampMessage("Kode stamp ini sudah pernah digunakan!", "rose");
+                return;
+            }
+
+            // Cek batas waktu 3 hari (Expired)
+            const now = new Date().getTime();
+            const expiryTime = new Date(targetStamp.expiresAt).getTime();
+
+            if (now > expiryTime) {
+                showStampMessage("Kode stamp sudah EXPIRED (melebihi batas 3 hari)!", "rose");
+                return;
+            }
+
+            // Tandai kode sudah di-redeem & tambah +1 stamp
+            targetStamp.isRedeemed = true;
+            targetStamp.redeemedAt = new Date().toISOString();
+            localStorage.setItem('deepa_admin_generated_stamps', JSON.stringify(adminStamps));
+
+            currentStamps += 1;
+            localStorage.setItem('deepa_customer_stamps', String(currentStamps));
+
+            renderStampGrid();
+            showStampMessage(`Berhasil! +1 Stamp ditambahkan (${currentStamps}/10).`, "emerald");
+            document.getElementById('claim-stamp-input').value = '';
+        }
+
+        function redeemStampReward() {
+            const phoneNumber = "6281717622225";
+            const message = "Halo Deepa Store, Royal Stamp Card saya sudah penuh (10/10 Stamp). Saya ingin menukarkan hadiah eksklusif saya. Mohon diproses ya kak!";
+            window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+            
+            localStorage.setItem('deepa_customer_stamps', '0');
+            renderStampGrid();
+            showStampMessage("Penukaran dikirim ke WhatsApp! Kartu stamp direset ke 0/10.", "emerald");
+        }
+
+        // ==========================================
+        // MODAL PRODUK & WHATSAPP CHECKOUT
+        // ==========================================
         let selectedProductData = {
             name: 'Produk',
             packet: '1P 1U',
