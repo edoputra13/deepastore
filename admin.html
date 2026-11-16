@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="transition-colors duration-1000">
+<html lang="id" class="transition-colors duration-1000">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -162,7 +162,7 @@
 
         <main class="flex-1 max-w-5xl w-full mx-auto p-3 sm:p-6 lg:p-8 font-mono space-y-6">
             
-            <!-- BARIS ATAS: STATISTIK & GENERATOR STAMP TRANSAKSI -->
+            <!-- BARIS 1: STATISTIK & GENERATOR STAMP TRANSAKSI -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <!-- Kolom Kiri: Statistik & Tambah Produk -->
                 <div class="space-y-4">
@@ -192,14 +192,13 @@
                         </p>
 
                         <div class="flex flex-col sm:flex-row gap-2 text-xs">
-                            <input type="text" id="stamp-customer-name" autocomplete="off" placeholder="Catatan/Nama Pembeli (opsional)" class="w-full px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white">
+                            <input type="text" id="stamp-customer-name" autocomplete="off" placeholder="Catatan/Username Pembeli (opsional)" class="w-full px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white">
                             <button onclick="generateTransactionStamp()" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white font-bold text-[11px] uppercase tracking-wider rounded-lg shadow-md transition-all whitespace-nowrap">
                                 Generate Stamp
                             </button>
                         </div>
                     </div>
 
-                    <!-- Hasil Generate Kode Stamp -->
                     <div id="stamp-result-box" class="hidden mt-3 p-3 bg-sky-500/10 border border-sky-500/30 rounded-lg text-left text-xs">
                         <div class="flex items-center justify-between gap-2">
                             <div>
@@ -215,7 +214,41 @@
                 </div>
             </div>
 
-            <!-- RIWAYAT KODE STAMP YANG DIGENERATE -->
+            <!-- BARIS 2: KELOLA AKUN MEMBER ROYAL CARD -->
+            <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-xl p-4 sm:p-5 shadow-xl border border-white/50 dark:border-slate-800">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2">
+                    <div>
+                        <h2 class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white uppercase tracking-tight">Akun Member Royal Card</h2>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400">Buat username & password awal agar customer bisa login dan mengumpulkan stamp pribadi.</p>
+                    </div>
+                </div>
+
+                <!-- Form Buat Akun Member Baru -->
+                <form onsubmit="createMemberAccount(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mb-4 text-xs">
+                    <input type="text" id="new-member-user" required autocomplete="off" placeholder="Username (tanpa spasi)..." class="px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white">
+                    <input type="text" id="new-member-pass" required autocomplete="off" placeholder="Password awal..." class="px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white">
+                    <button type="submit" class="py-2 px-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold uppercase tracking-wider rounded-lg text-[11px] shadow transition-all">
+                        + Buat Akun Member
+                    </button>
+                </form>
+
+                <!-- Tabel Daftar Akun Member -->
+                <div class="overflow-x-auto max-h-48">
+                    <table class="w-full text-left text-xs whitespace-nowrap">
+                        <thead>
+                            <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-400 uppercase text-[10px]">
+                                <th class="pb-2 font-bold">Username</th>
+                                <th class="pb-2 font-bold">Password Saat Ini</th>
+                                <th class="pb-2 font-bold">Total Stamp</th>
+                                <th class="pb-2 font-bold text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="member-accounts-body" class="divide-y divide-slate-100 dark:divide-slate-800/60 text-[11px]"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- BARIS 3: RIWAYAT KODE STAMP YANG DIGENERATE -->
             <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-xl p-4 sm:p-5 shadow-xl border border-white/50 dark:border-slate-800">
                 <div class="flex justify-between items-center mb-3">
                     <h2 class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white uppercase tracking-tight">Riwayat Kode Royal Stamp</h2>
@@ -226,7 +259,7 @@
                         <thead>
                             <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-400 uppercase text-[10px]">
                                 <th class="pb-2 font-bold">Kode Stamp</th>
-                                <th class="pb-2 font-bold">Customer</th>
+                                <th class="pb-2 font-bold">Catatan / Diklaim Oleh</th>
                                 <th class="pb-2 font-bold">Batas Waktu (3 Hari)</th>
                                 <th class="pb-2 font-bold text-right">Status</th>
                             </tr>
@@ -236,7 +269,7 @@
                 </div>
             </div>
 
-            <!-- TABEL KELOLA KATALOG PRODUK -->
+            <!-- BARIS 4: TABEL KELOLA KATALOG PRODUK -->
             <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-xl p-4 sm:p-6 shadow-2xl border border-white/50 dark:border-slate-800">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-2">
                     <h2 class="text-sm sm:text-lg font-bold text-slate-900 dark:text-white uppercase tracking-tight">Kelola Katalog Produk</h2>
@@ -285,7 +318,6 @@
                     <textarea id="input-description" rows="2" class="w-full p-2.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-sky-400 text-slate-900 dark:text-white text-xs resize-none" placeholder="Tuliskan deskripsi atau detail layanan..."></textarea>
                 </div>
                 
-                <!-- Pengaturan Harga Per Durasi (1H, 3H, 7H, 1B) -->
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[9px]">Harga 1 Hari</label>
@@ -321,7 +353,7 @@
         </div>
     </div>
 
-    <!-- Script Integrasi API, Stamp Generator & Autentikasi -->
+    <!-- Script Integrasi API, Member Accounts, Stamp Generator & Autentikasi -->
     <script>
         const ADMIN_USERNAME = "deepastoreid";
         const DEFAULT_ADMIN_PASSWORD = "edoputra28*";
@@ -361,12 +393,108 @@
                 document.getElementById('admin-user-display').textContent = `Admin: ${loggedAdmin}`;
                 fetchProductsFromAPI();
                 renderStampHistory();
+                renderMemberAccounts();
             } else {
                 document.getElementById('login-modal').classList.remove('hidden');
                 document.getElementById('admin-dashboard-content').classList.add('hidden');
                 localStorage.removeItem('deepa_admin_user');
             }
         });
+
+        // ==========================================
+        // KELOLA AKUN MEMBER ROYAL CARD
+        // ==========================================
+        function getMemberAccounts() {
+            return JSON.parse(localStorage.getItem('deepa_member_accounts') || '[]');
+        }
+
+        function saveMemberAccounts(accounts) {
+            localStorage.setItem('deepa_member_accounts', JSON.stringify(accounts));
+        }
+
+        function createMemberAccount(e) {
+            e.preventDefault();
+            const username = document.getElementById('new-member-user').value.trim().replace(/\s+/g, '');
+            const password = document.getElementById('new-member-pass').value.trim();
+
+            if (!username || !password) return;
+
+            const accounts = getMemberAccounts();
+            if (accounts.some(acc => acc.username.toLowerCase() === username.toLowerCase())) {
+                alert(`Username "${username}" sudah terdaftar!`);
+                return;
+            }
+
+            accounts.unshift({
+                username: username,
+                password: password,
+                stamps: 0,
+                createdAt: new Date().toISOString()
+            });
+
+            saveMemberAccounts(accounts);
+            document.getElementById('new-member-user').value = '';
+            document.getElementById('new-member-pass').value = '';
+            renderMemberAccounts();
+        }
+
+        function renderMemberAccounts() {
+            const tbody = document.getElementById('member-accounts-body');
+            if (!tbody) return;
+            const accounts = getMemberAccounts();
+            tbody.innerHTML = '';
+
+            if (accounts.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-slate-400 text-[10px]">Belum ada akun member yang dibuat.</td></tr>`;
+                return;
+            }
+
+            accounts.forEach((acc, idx) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="py-2.5 font-bold text-slate-900 dark:text-white">@${acc.username}</td>
+                    <td class="py-2.5 text-slate-600 dark:text-slate-300 select-all">${acc.password}</td>
+                    <td class="py-2.5">
+                        <span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-500/15 text-amber-600 dark:text-amber-400">
+                            ${acc.stamps || 0} / 10 Stamp
+                        </span>
+                    </td>
+                    <td class="py-2.5 text-right space-x-1">
+                        <button onclick="resetMemberPassword(${idx})" class="px-2 py-1 bg-sky-100 dark:bg-slate-800 text-sky-600 dark:text-sky-300 rounded-md text-[10px] hover:bg-sky-200 transition-all">Reset Pass</button>
+                        <button onclick="deleteMemberAccount(${idx})" class="px-2 py-1 bg-rose-100 dark:bg-slate-800 text-rose-600 dark:text-rose-300 rounded-md text-[10px] hover:bg-rose-200 transition-all">Hapus</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function resetMemberPassword(index) {
+            const accounts = getMemberAccounts();
+            const member = accounts[index];
+            if (!member) return;
+
+            const newPass = prompt(`Masukkan password baru untuk member @${member.username}:`);
+            if (newPass && newPass.trim().length >= 4) {
+                accounts[index].password = newPass.trim();
+                saveMemberAccounts(accounts);
+                renderMemberAccounts();
+                alert(`Password @${member.username} berhasil diubah menjadi: ${newPass.trim()}`);
+            } else if (newPass !== null) {
+                alert("Password minimal 4 karakter!");
+            }
+        }
+
+        function deleteMemberAccount(index) {
+            const accounts = getMemberAccounts();
+            const member = accounts[index];
+            if (!member) return;
+
+            if (confirm(`Yakin ingin menghapus akun member @${member.username}?`)) {
+                accounts.splice(index, 1);
+                saveMemberAccounts(accounts);
+                renderMemberAccounts();
+            }
+        }
 
         // ==========================================
         // GENERATOR KODE ROYAL STAMP (3 HARI)
@@ -423,9 +551,11 @@
             allStamps.forEach(s => {
                 const isExpired = now > new Date(s.expiresAt).getTime();
                 let statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">Aktif</span>`;
-                
+                let userLabel = s.customer;
+
                 if (s.isRedeemed) {
-                    statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-sky-100 text-sky-600 dark:bg-sky-950 dark:text-sky-400">Sudah Diklaim</span>`;
+                    statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-sky-100 text-sky-600 dark:bg-sky-950 dark:text-sky-400">Diklaim</span>`;
+                    if (s.redeemedBy) userLabel = `${s.customer} (@${s.redeemedBy})`;
                 } else if (isExpired) {
                     statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-rose-100 text-rose-600 dark:bg-rose-950 dark:text-rose-400">Expired</span>`;
                 }
@@ -433,7 +563,7 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td class="py-2 font-bold text-slate-900 dark:text-white select-all">${s.code}</td>
-                    <td class="py-2 text-slate-600 dark:text-slate-300">${s.customer}</td>
+                    <td class="py-2 text-slate-600 dark:text-slate-300">${userLabel}</td>
                     <td class="py-2 text-slate-500 text-[10px]">${new Date(s.expiresAt).toLocaleString('id-ID')}</td>
                     <td class="py-2 text-right">${statusBadge}</td>
                 `;
@@ -450,7 +580,7 @@
         }
 
         // ==========================================
-        // AUTENTIKASI & UBAH PASSWORD
+        // AUTENTIKASI & UBAH PASSWORD ADMIN
         // ==========================================
         function togglePassVisibility(inputId, btn) {
             const input = document.getElementById(inputId);
@@ -524,6 +654,7 @@
                 errorElement.classList.add('hidden');
                 fetchProductsFromAPI();
                 renderStampHistory();
+                renderMemberAccounts();
             } else {
                 localStorage.removeItem('deepa_admin_user');
                 errorElement.textContent = "Username atau password salah! Lah lu bukan admin ege";
