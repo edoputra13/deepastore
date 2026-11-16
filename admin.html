@@ -47,7 +47,7 @@
     <div id="bg-day" class="bg-layer fixed inset-0 bg-gradient-to-b from-blue-400 to-blue-200 opacity-100 dark:opacity-0 -z-30"></div>
     <div id="bg-night" class="bg-layer fixed inset-0 bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 opacity-0 dark:opacity-100 -z-30"></div>
 
-    <!-- MODAL LOGIN & UBAH PASSWORD ADMIN (TIPIS & SUDUT AGAK LANCIP) -->
+    <!-- MODAL LOGIN & UBAH PASSWORD ADMIN -->
     <div id="login-modal" onclick="handleOutsideClick(event)" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
         <div id="login-box" class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl w-full max-w-[340px] rounded-xl p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.45)] border border-white/25 dark:border-slate-800 font-mono text-center modal-popup-animation relative overflow-hidden">
             
@@ -156,26 +156,88 @@
             <div class="flex items-center gap-2 sm:gap-4">
                 <span id="admin-user-display" class="text-[9px] sm:text-[10px] text-slate-500 dark:text-slate-400 hidden md:inline"></span>
                 <button onclick="handleLogout()" class="px-2.5 sm:px-3 py-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-xl transition-all text-[10px] sm:text-xs">Logout</button>
-                <a href="index.html" class="px-3 sm:px-4 py-1.5 sm:py-2 bg-white/20 dark:bg-slate-800/60 hover:bg-white/40 dark:hover:bg-slate-700 rounded-xl transition-all text-slate-900 dark:text-white text-[10px] sm:text-xs">Lihat Toko</a>
+                <a href="/" class="px-3 sm:px-4 py-1.5 sm:py-2 bg-white/20 dark:bg-slate-800/60 hover:bg-white/40 dark:hover:bg-slate-700 rounded-xl transition-all text-slate-900 dark:text-white text-[10px] sm:text-xs">Lihat Toko</a>
             </div>
         </header>
 
-        <main class="flex-1 max-w-5xl w-full mx-auto p-3 sm:p-6 lg:p-8 font-mono">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8">
-                <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/50 dark:border-slate-800 shadow-xl">
-                    <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Total Produk Terdaftar</div>
-                    <div id="stat-active" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">0</div>
-                </div>
-                <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/50 dark:border-slate-800 shadow-xl flex items-center justify-between">
-                    <div>
-                        <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Aksi Cepat</div>
-                        <div class="text-xs font-bold text-sky-500">Tambah Produk Baru</div>
+        <main class="flex-1 max-w-5xl w-full mx-auto p-3 sm:p-6 lg:p-8 font-mono space-y-6">
+            
+            <!-- BARIS ATAS: STATISTIK & GENERATOR STAMP TRANSAKSI -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <!-- Kolom Kiri: Statistik & Tambah Produk -->
+                <div class="space-y-4">
+                    <div class="bg-white/85 dark:bg-slate-900/85 backdrop-blur-md p-4 sm:p-5 rounded-xl border border-white/50 dark:border-slate-800 shadow-xl">
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Total Produk Terdaftar</div>
+                        <div id="stat-active" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">0</div>
                     </div>
-                    <button onclick="openProductModal()" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-sky-500 text-white font-bold text-lg sm:text-xl flex items-center justify-center shadow-lg shadow-sky-500/30 hover:bg-sky-600 transition-all">+</button>
+
+                    <div class="bg-white/85 dark:bg-slate-900/85 backdrop-blur-md p-4 sm:p-5 rounded-xl border border-white/50 dark:border-slate-800 shadow-xl flex items-center justify-between">
+                        <div>
+                            <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Katalog Toko</div>
+                            <div class="text-xs font-bold text-sky-500">Tambah Produk Baru</div>
+                        </div>
+                        <button onclick="openProductModal()" class="w-10 h-10 rounded-lg bg-sky-500 text-white font-bold text-xl flex items-center justify-center shadow-md shadow-sky-500/30 hover:bg-sky-600 transition-all">+</button>
+                    </div>
+                </div>
+
+                <!-- Kolom Kanan: Generator Kode Royal Stamp Card (3 Hari) -->
+                <div class="bg-white/85 dark:bg-slate-900/85 backdrop-blur-md p-4 sm:p-5 rounded-xl border border-white/50 dark:border-slate-800 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <h3 class="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">Generator Stamp Transaksi</h3>
+                            <span class="px-2 py-0.5 rounded-md bg-amber-500/15 text-amber-600 dark:text-amber-400 text-[9px] font-bold">Expired 3 Hari</span>
+                        </div>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400 mb-3">
+                            Generate 1 kode stamp setiap transaksi customer untuk ditukarkan di halaman About.
+                        </p>
+
+                        <div class="flex flex-col sm:flex-row gap-2 text-xs">
+                            <input type="text" id="stamp-customer-name" autocomplete="off" placeholder="Catatan/Nama Pembeli (opsional)" class="w-full px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white">
+                            <button onclick="generateTransactionStamp()" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white font-bold text-[11px] uppercase tracking-wider rounded-lg shadow-md transition-all whitespace-nowrap">
+                                Generate Stamp
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Hasil Generate Kode Stamp -->
+                    <div id="stamp-result-box" class="hidden mt-3 p-3 bg-sky-500/10 border border-sky-500/30 rounded-lg text-left text-xs">
+                        <div class="flex items-center justify-between gap-2">
+                            <div>
+                                <div class="text-[9px] text-slate-500 dark:text-slate-400 uppercase font-bold">Kode Stamp (1 Transaksi):</div>
+                                <div id="output-stamp-code" class="text-sm font-black text-sky-600 dark:text-sky-400 select-all tracking-wider"></div>
+                            </div>
+                            <button onclick="copyGeneratedStamp()" class="px-2.5 py-1.5 bg-sky-500 hover:bg-sky-600 text-white text-[10px] font-bold rounded-lg transition-all">
+                                Salin Kode
+                            </button>
+                        </div>
+                        <div id="output-stamp-expiry" class="text-[9px] text-rose-500 font-bold mt-1"></div>
+                    </div>
                 </div>
             </div>
 
-            <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 shadow-2xl border border-white/50 dark:border-slate-800">
+            <!-- RIWAYAT KODE STAMP YANG DIGENERATE -->
+            <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-xl p-4 sm:p-5 shadow-xl border border-white/50 dark:border-slate-800">
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white uppercase tracking-tight">Riwayat Kode Royal Stamp</h2>
+                    <button onclick="clearExpiredStamps()" class="text-[10px] text-rose-500 hover:underline font-bold">Hapus yang Expired</button>
+                </div>
+                <div class="overflow-x-auto max-h-48">
+                    <table class="w-full text-left text-xs whitespace-nowrap">
+                        <thead>
+                            <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-400 uppercase text-[10px]">
+                                <th class="pb-2 font-bold">Kode Stamp</th>
+                                <th class="pb-2 font-bold">Customer</th>
+                                <th class="pb-2 font-bold">Batas Waktu (3 Hari)</th>
+                                <th class="pb-2 font-bold text-right">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stamp-history-body" class="divide-y divide-slate-100 dark:divide-slate-800/60 text-[11px]"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TABEL KELOLA KATALOG PRODUK -->
+            <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-xl p-4 sm:p-6 shadow-2xl border border-white/50 dark:border-slate-800">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-2">
                     <h2 class="text-sm sm:text-lg font-bold text-slate-900 dark:text-white uppercase tracking-tight">Kelola Katalog Produk</h2>
                     <span class="text-[10px] text-slate-500 dark:text-slate-400">Neon PostgreSQL Serverless</span>
@@ -259,7 +321,7 @@
         </div>
     </div>
 
-    <!-- Script Integrasi API & Autentikasi -->
+    <!-- Script Integrasi API, Stamp Generator & Autentikasi -->
     <script>
         const ADMIN_USERNAME = "deepastoreid";
         const DEFAULT_ADMIN_PASSWORD = "edoputra28*";
@@ -274,6 +336,21 @@
             "Prefer": "return=representation"
         };
 
+        const DEFAULT_FALLBACK_PRODUCTS = [
+            {
+                id: 1,
+                name: "NETFLIX",
+                category: "Hiburan",
+                description: "1P 1U, Login menggunakan kode\nKualitas Ultra HD 4K, Anti Hold, Garansi penuh.",
+                price: 3000,
+                price_3d: 6000,
+                price_7d: 12000,
+                price_1m: 30000,
+                stock: 15,
+                image: ""
+            }
+        ];
+
         let products = [];
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -283,6 +360,7 @@
                 document.getElementById('admin-dashboard-content').classList.remove('hidden');
                 document.getElementById('admin-user-display').textContent = `Admin: ${loggedAdmin}`;
                 fetchProductsFromAPI();
+                renderStampHistory();
             } else {
                 document.getElementById('login-modal').classList.remove('hidden');
                 document.getElementById('admin-dashboard-content').classList.add('hidden');
@@ -290,6 +368,90 @@
             }
         });
 
+        // ==========================================
+        // GENERATOR KODE ROYAL STAMP (3 HARI)
+        // ==========================================
+        function generateTransactionStamp() {
+            const customer = document.getElementById('stamp-customer-name').value.trim() || "Customer";
+            const randomCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+            const stampCode = `STAMP-${randomCode}`;
+
+            const now = new Date();
+            const expiryDate = new Date(now.getTime() + (3 * 24 * 60 * 60 * 1000));
+
+            const stampData = {
+                code: stampCode,
+                customer: customer,
+                createdAt: now.toISOString(),
+                expiresAt: expiryDate.toISOString(),
+                isRedeemed: false
+            };
+
+            let allStamps = JSON.parse(localStorage.getItem('deepa_admin_generated_stamps') || '[]');
+            allStamps.unshift(stampData);
+            localStorage.setItem('deepa_admin_generated_stamps', JSON.stringify(allStamps));
+
+            document.getElementById('output-stamp-code').textContent = stampCode;
+            document.getElementById('output-stamp-expiry').textContent = `Expired pada: ${expiryDate.toLocaleString('id-ID')}`;
+            document.getElementById('stamp-result-box').classList.remove('hidden');
+            document.getElementById('stamp-customer-name').value = '';
+
+            renderStampHistory();
+        }
+
+        function copyGeneratedStamp() {
+            const code = document.getElementById('output-stamp-code').textContent;
+            if (code) {
+                navigator.clipboard.writeText(code);
+                alert(`Kode ${code} berhasil disalin! Silakan kirimkan ke customer.`);
+            }
+        }
+
+        function renderStampHistory() {
+            const tbody = document.getElementById('stamp-history-body');
+            if (!tbody) return;
+            const allStamps = JSON.parse(localStorage.getItem('deepa_admin_generated_stamps') || '[]');
+            tbody.innerHTML = '';
+
+            if (allStamps.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-slate-400 text-[10px]">Belum ada kode stamp yang digenerate.</td></tr>`;
+                return;
+            }
+
+            const now = new Date().getTime();
+
+            allStamps.forEach(s => {
+                const isExpired = now > new Date(s.expiresAt).getTime();
+                let statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">Aktif</span>`;
+                
+                if (s.isRedeemed) {
+                    statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-sky-100 text-sky-600 dark:bg-sky-950 dark:text-sky-400">Sudah Diklaim</span>`;
+                } else if (isExpired) {
+                    statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-rose-100 text-rose-600 dark:bg-rose-950 dark:text-rose-400">Expired</span>`;
+                }
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="py-2 font-bold text-slate-900 dark:text-white select-all">${s.code}</td>
+                    <td class="py-2 text-slate-600 dark:text-slate-300">${s.customer}</td>
+                    <td class="py-2 text-slate-500 text-[10px]">${new Date(s.expiresAt).toLocaleString('id-ID')}</td>
+                    <td class="py-2 text-right">${statusBadge}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function clearExpiredStamps() {
+            const allStamps = JSON.parse(localStorage.getItem('deepa_admin_generated_stamps') || '[]');
+            const now = new Date().getTime();
+            const validStamps = allStamps.filter(s => !s.isRedeemed && now <= new Date(s.expiresAt).getTime());
+            localStorage.setItem('deepa_admin_generated_stamps', JSON.stringify(validStamps));
+            renderStampHistory();
+        }
+
+        // ==========================================
+        // AUTENTIKASI & UBAH PASSWORD
+        // ==========================================
         function togglePassVisibility(inputId, btn) {
             const input = document.getElementById(inputId);
             if (input.type === 'password') {
@@ -361,6 +523,7 @@
                 document.getElementById('admin-user-display').textContent = `Admin: ${usernameInput}`;
                 errorElement.classList.add('hidden');
                 fetchProductsFromAPI();
+                renderStampHistory();
             } else {
                 localStorage.removeItem('deepa_admin_user');
                 errorElement.textContent = "Username atau password salah! Lah lu bukan admin ege";
@@ -434,19 +597,29 @@
         }
         updateTheme();
 
+        // ==========================================
+        // KELOLA KATALOG PRODUK (API + FALLBACK LOKAL)
+        // ==========================================
         async function fetchProductsFromAPI() {
             try {
                 const response = await fetch(`${PROXY_API_URL}?select=*`, {
                     method: "GET",
                     headers: apiHeaders
                 });
-                if (!response.ok) throw new Error('Gagal mengambil data produk');
+                const contentType = response.headers.get("content-type") || "";
+                if (!response.ok || !contentType.includes("application/json")) {
+                    throw new Error('Beralih ke cache lokal');
+                }
                 products = await response.json();
-                renderAdminTable();
+                localStorage.setItem('deepa_products_cache', JSON.stringify(products));
             } catch (error) {
-                console.error('Kesalahan koneksi API:', error);
-                alert('Gagal memuat data dari database.');
+                const cached = localStorage.getItem('deepa_products_cache');
+                products = cached ? JSON.parse(cached) : DEFAULT_FALLBACK_PRODUCTS;
+                if (!cached) {
+                    localStorage.setItem('deepa_products_cache', JSON.stringify(products));
+                }
             }
+            renderAdminTable();
         }
 
         function renderAdminTable() {
@@ -460,9 +633,9 @@
                 const tr = document.createElement('tr');
                 tr.className = `border-b border-slate-100 dark:border-slate-800/60 transition-all`;
                 
-                let thumbHtml = `<div class="w-9 h-9 rounded-xl bg-sky-100 dark:bg-slate-800 flex items-center justify-center font-bold text-sky-600 text-xs shadow-inner">${p.name.charAt(0)}</div>`;
+                let thumbHtml = `<div class="w-9 h-9 rounded-lg bg-sky-100 dark:bg-slate-800 flex items-center justify-center font-bold text-sky-600 text-xs shadow-inner">${p.name.charAt(0)}</div>`;
                 if (p.image) {
-                    thumbHtml = `<img src="${p.image}" alt="${p.name}" class="w-9 h-9 rounded-xl object-cover shadow-sm border border-slate-200 dark:border-slate-700">`;
+                    thumbHtml = `<img src="${p.image}" alt="${p.name}" class="w-9 h-9 rounded-lg object-cover shadow-sm border border-slate-200 dark:border-slate-700">`;
                 }
 
                 const p1 = Number(p.price) || 0;
@@ -571,13 +744,24 @@
                     });
                 }
 
-                if (!response.ok) throw new Error('Gagal menyimpan ke database');
+                const contentType = response.headers.get("content-type") || "";
+                if (!response.ok || !contentType.includes("application/json")) {
+                    throw new Error('Simpan lokal');
+                }
                 
                 closeProductModal();
                 fetchProductsFromAPI();
             } catch (error) {
-                console.error('Gagal menyimpan data:', error);
-                alert('Gagal menyimpan perubahan ke database.');
+                if (id) {
+                    const idx = products.findIndex(item => String(item.id) === String(id));
+                    if (idx > -1) products[idx] = { ...products[idx], ...productPayload };
+                } else {
+                    const nextId = products.length > 0 ? Math.max(...products.map(item => Number(item.id) || 0)) + 1 : 1;
+                    products.push({ id: nextId, ...productPayload });
+                }
+                localStorage.setItem('deepa_products_cache', JSON.stringify(products));
+                closeProductModal();
+                renderAdminTable();
             }
         }
 
@@ -589,11 +773,12 @@
                         headers: apiHeaders
                     });
 
-                    if (!response.ok) throw new Error('Gagal menghapus produk');
+                    if (!response.ok) throw new Error('Hapus lokal');
                     fetchProductsFromAPI();
                 } catch (error) {
-                    console.error('Gagal menghapus produk:', error);
-                    alert('Gagal menghapus produk dari database.');
+                    products = products.filter(item => String(item.id) !== String(id));
+                    localStorage.setItem('deepa_products_cache', JSON.stringify(products));
+                    renderAdminTable();
                 }
             }
         }
