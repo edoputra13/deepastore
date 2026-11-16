@@ -193,7 +193,7 @@
 
                         <div class="flex flex-col sm:flex-row gap-2 text-xs">
                             <input type="text" id="stamp-customer-name" autocomplete="off" placeholder="Catatan/Username Pembeli (opsional)" class="w-full px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white">
-                            <button onclick="generateTransactionStamp()" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white font-bold text-[11px] uppercase tracking-wider rounded-lg shadow-md transition-all whitespace-nowrap">
+                            <button onclick="generateTransactionStamp()" id="btn-gen-stamp" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white font-bold text-[11px] uppercase tracking-wider rounded-lg shadow-md transition-all whitespace-nowrap">
                                 Generate Stamp
                             </button>
                         </div>
@@ -214,12 +214,12 @@
                 </div>
             </div>
 
-            <!-- BARIS 2: KELOLA AKUN MEMBER ROYAL CARD -->
+            <!-- BARIS 2: KELOLA AKUN MEMBER ROYAL CARD (NEON DB) -->
             <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-xl p-4 sm:p-5 shadow-xl border border-white/50 dark:border-slate-800">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2">
                     <div>
                         <h2 class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white uppercase tracking-tight">Akun Member Royal Card</h2>
-                        <p class="text-[10px] text-slate-500 dark:text-slate-400">Buat username & password awal agar customer bisa login dan mengumpulkan stamp pribadi.</p>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400">Tersinkronisasi langsung dengan Neon PostgreSQL.</p>
                     </div>
                 </div>
 
@@ -227,7 +227,7 @@
                 <form onsubmit="createMemberAccount(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mb-4 text-xs">
                     <input type="text" id="new-member-user" required autocomplete="off" placeholder="Username (tanpa spasi)..." class="px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white">
                     <input type="text" id="new-member-pass" required autocomplete="off" placeholder="Password awal..." class="px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white">
-                    <button type="submit" class="py-2 px-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold uppercase tracking-wider rounded-lg text-[11px] shadow transition-all">
+                    <button type="submit" id="btn-create-member" class="py-2 px-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold uppercase tracking-wider rounded-lg text-[11px] shadow transition-all">
                         + Buat Akun Member
                     </button>
                 </form>
@@ -353,7 +353,7 @@
         </div>
     </div>
 
-    <!-- Script Integrasi API, Member Accounts, Stamp Generator & Autentikasi -->
+    <!-- Script Integrasi Full Neon PostgreSQL -->
     <script>
         const ADMIN_USERNAME = "deepastoreid";
         const DEFAULT_ADMIN_PASSWORD = "edoputra28*";
@@ -363,25 +363,11 @@
         }
 
         const PROXY_API_URL = "/api/products";
+        const ROYAL_API_URL = "/api/royal";
         const apiHeaders = {
             "Content-Type": "application/json",
             "Prefer": "return=representation"
         };
-
-        const DEFAULT_FALLBACK_PRODUCTS = [
-            {
-                id: 1,
-                name: "NETFLIX",
-                category: "Hiburan",
-                description: "1P 1U, Login menggunakan kode\nKualitas Ultra HD 4K, Anti Hold, Garansi penuh.",
-                price: 3000,
-                price_3d: 6000,
-                price_7d: 12000,
-                price_1m: 30000,
-                stock: 15,
-                image: ""
-            }
-        ];
 
         let products = [];
 
@@ -402,129 +388,150 @@
         });
 
         // ==========================================
-        // KELOLA AKUN MEMBER ROYAL CARD
+        // KELOLA AKUN MEMBER ROYAL CARD (NEON DB)
         // ==========================================
-        function getMemberAccounts() {
-            return JSON.parse(localStorage.getItem('deepa_member_accounts') || '[]');
-        }
-
-        function saveMemberAccounts(accounts) {
-            localStorage.setItem('deepa_member_accounts', JSON.stringify(accounts));
-        }
-
-        function createMemberAccount(e) {
+        async function createMemberAccount(e) {
             e.preventDefault();
             const username = document.getElementById('new-member-user').value.trim().replace(/\s+/g, '');
             const password = document.getElementById('new-member-pass').value.trim();
+            const btn = document.getElementById('btn-create-member');
 
             if (!username || !password) return;
 
-            const accounts = getMemberAccounts();
-            if (accounts.some(acc => acc.username.toLowerCase() === username.toLowerCase())) {
-                alert(`Username "${username}" sudah terdaftar!`);
-                return;
+            btn.disabled = true;
+            btn.textContent = "Menyimpan...";
+
+            try {
+                const res = await fetch(`${ROYAL_API_URL}?action=create_member`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Username sudah digunakan!');
+
+                document.getElementById('new-member-user').value = '';
+                document.getElementById('new-member-pass').value = '';
+                renderMemberAccounts();
+            } catch (err) {
+                alert(err.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "+ Buat Akun Member";
             }
-
-            accounts.unshift({
-                username: username,
-                password: password,
-                stamps: 0,
-                createdAt: new Date().toISOString()
-            });
-
-            saveMemberAccounts(accounts);
-            document.getElementById('new-member-user').value = '';
-            document.getElementById('new-member-pass').value = '';
-            renderMemberAccounts();
         }
 
-        function renderMemberAccounts() {
+        async function renderMemberAccounts() {
             const tbody = document.getElementById('member-accounts-body');
             if (!tbody) return;
-            const accounts = getMemberAccounts();
-            tbody.innerHTML = '';
+            tbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-slate-400 text-[10px]">Memuat data member...</td></tr>`;
 
-            if (accounts.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-slate-400 text-[10px]">Belum ada akun member yang dibuat.</td></tr>`;
-                return;
+            try {
+                const res = await fetch(`${ROYAL_API_URL}?action=get_members`);
+                const accounts = await res.json();
+                tbody.innerHTML = '';
+
+                if (accounts.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-slate-400 text-[10px]">Belum ada akun member yang dibuat.</td></tr>`;
+                    return;
+                }
+
+                accounts.forEach(acc => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="py-2.5 font-bold text-slate-900 dark:text-white">@${acc.username}</td>
+                        <td class="py-2.5 text-slate-600 dark:text-slate-300 select-all">${acc.password}</td>
+                        <td class="py-2.5">
+                            <span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-500/15 text-amber-600 dark:text-amber-400">
+                                ${acc.stamps || 0} / 10 Stamp
+                            </span>
+                        </td>
+                        <td class="py-2.5 text-right space-x-1">
+                            <button onclick="resetMemberPassword(${acc.id}, '${acc.username}')" class="px-2 py-1 bg-sky-100 dark:bg-slate-800 text-sky-600 dark:text-sky-300 rounded-md text-[10px] hover:bg-sky-200 transition-all">Reset Pass</button>
+                            <button onclick="deleteMemberAccount(${acc.id}, '${acc.username}')" class="px-2 py-1 bg-rose-100 dark:bg-slate-800 text-rose-600 dark:text-rose-300 rounded-md text-[10px] hover:bg-rose-200 transition-all">Hapus</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (err) {
+                tbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-rose-500 text-[10px]">Gagal memuat data member dari Neon.</td></tr>`;
             }
-
-            accounts.forEach((acc, idx) => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td class="py-2.5 font-bold text-slate-900 dark:text-white">@${acc.username}</td>
-                    <td class="py-2.5 text-slate-600 dark:text-slate-300 select-all">${acc.password}</td>
-                    <td class="py-2.5">
-                        <span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-500/15 text-amber-600 dark:text-amber-400">
-                            ${acc.stamps || 0} / 10 Stamp
-                        </span>
-                    </td>
-                    <td class="py-2.5 text-right space-x-1">
-                        <button onclick="resetMemberPassword(${idx})" class="px-2 py-1 bg-sky-100 dark:bg-slate-800 text-sky-600 dark:text-sky-300 rounded-md text-[10px] hover:bg-sky-200 transition-all">Reset Pass</button>
-                        <button onclick="deleteMemberAccount(${idx})" class="px-2 py-1 bg-rose-100 dark:bg-slate-800 text-rose-600 dark:text-rose-300 rounded-md text-[10px] hover:bg-rose-200 transition-all">Hapus</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
         }
 
-        function resetMemberPassword(index) {
-            const accounts = getMemberAccounts();
-            const member = accounts[index];
-            if (!member) return;
-
-            const newPass = prompt(`Masukkan password baru untuk member @${member.username}:`);
+        async function resetMemberPassword(id, username) {
+            const newPass = prompt(`Masukkan password baru untuk member @${username}:`);
             if (newPass && newPass.trim().length >= 4) {
-                accounts[index].password = newPass.trim();
-                saveMemberAccounts(accounts);
-                renderMemberAccounts();
-                alert(`Password @${member.username} berhasil diubah menjadi: ${newPass.trim()}`);
+                try {
+                    const res = await fetch(`${ROYAL_API_URL}?action=admin_reset_pass`, {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id, newPassword: newPass.trim() })
+                    });
+                    if (!res.ok) throw new Error('Gagal reset password');
+                    renderMemberAccounts();
+                    alert(`Password @${username} berhasil diubah menjadi: ${newPass.trim()}`);
+                } catch (err) {
+                    alert(err.message);
+                }
             } else if (newPass !== null) {
                 alert("Password minimal 4 karakter!");
             }
         }
 
-        function deleteMemberAccount(index) {
-            const accounts = getMemberAccounts();
-            const member = accounts[index];
-            if (!member) return;
-
-            if (confirm(`Yakin ingin menghapus akun member @${member.username}?`)) {
-                accounts.splice(index, 1);
-                saveMemberAccounts(accounts);
-                renderMemberAccounts();
+        async function deleteMemberAccount(id, username) {
+            if (confirm(`Yakin ingin menghapus akun member @${username}?`)) {
+                try {
+                    const res = await fetch(`${ROYAL_API_URL}?action=delete_member&id=${id}`, {
+                        method: 'DELETE'
+                    });
+                    if (!res.ok) throw new Error('Gagal menghapus member');
+                    renderMemberAccounts();
+                } catch (err) {
+                    alert(err.message);
+                }
             }
         }
 
         // ==========================================
-        // GENERATOR KODE ROYAL STAMP (3 HARI)
+        // GENERATOR KODE ROYAL STAMP (NEON DB)
         // ==========================================
-        function generateTransactionStamp() {
+        async function generateTransactionStamp() {
             const customer = document.getElementById('stamp-customer-name').value.trim() || "Customer";
             const randomCode = Math.random().toString(36).substring(2, 8).toUpperCase();
             const stampCode = `STAMP-${randomCode}`;
 
             const now = new Date();
             const expiryDate = new Date(now.getTime() + (3 * 24 * 60 * 60 * 1000));
+            const btn = document.getElementById('btn-gen-stamp');
 
-            const stampData = {
-                code: stampCode,
-                customer: customer,
-                createdAt: now.toISOString(),
-                expiresAt: expiryDate.toISOString(),
-                isRedeemed: false
-            };
+            btn.disabled = true;
+            btn.textContent = "Generating...";
 
-            let allStamps = JSON.parse(localStorage.getItem('deepa_admin_generated_stamps') || '[]');
-            allStamps.unshift(stampData);
-            localStorage.setItem('deepa_admin_generated_stamps', JSON.stringify(allStamps));
+            try {
+                const res = await fetch(`${ROYAL_API_URL}?action=generate_stamp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        code: stampCode,
+                        customer_note: customer,
+                        expires_at: expiryDate.toISOString()
+                    })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Gagal generate stamp');
 
-            document.getElementById('output-stamp-code').textContent = stampCode;
-            document.getElementById('output-stamp-expiry').textContent = `Expired pada: ${expiryDate.toLocaleString('id-ID')}`;
-            document.getElementById('stamp-result-box').classList.remove('hidden');
-            document.getElementById('stamp-customer-name').value = '';
+                document.getElementById('output-stamp-code').textContent = stampCode;
+                document.getElementById('output-stamp-expiry').textContent = `Expired pada: ${expiryDate.toLocaleString('id-ID')}`;
+                document.getElementById('stamp-result-box').classList.remove('hidden');
+                document.getElementById('stamp-customer-name').value = '';
 
-            renderStampHistory();
+                renderStampHistory();
+            } catch (err) {
+                alert(err.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Generate Stamp";
+            }
         }
 
         function copyGeneratedStamp() {
@@ -535,48 +542,56 @@
             }
         }
 
-        function renderStampHistory() {
+        async function renderStampHistory() {
             const tbody = document.getElementById('stamp-history-body');
             if (!tbody) return;
-            const allStamps = JSON.parse(localStorage.getItem('deepa_admin_generated_stamps') || '[]');
-            tbody.innerHTML = '';
+            tbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-slate-400 text-[10px]">Memuat riwayat stamp...</td></tr>`;
 
-            if (allStamps.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-slate-400 text-[10px]">Belum ada kode stamp yang digenerate.</td></tr>`;
-                return;
-            }
+            try {
+                const res = await fetch(`${ROYAL_API_URL}?action=get_stamps`);
+                const allStamps = await res.json();
+                tbody.innerHTML = '';
 
-            const now = new Date().getTime();
-
-            allStamps.forEach(s => {
-                const isExpired = now > new Date(s.expiresAt).getTime();
-                let statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">Aktif</span>`;
-                let userLabel = s.customer;
-
-                if (s.isRedeemed) {
-                    statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-sky-100 text-sky-600 dark:bg-sky-950 dark:text-sky-400">Diklaim</span>`;
-                    if (s.redeemedBy) userLabel = `${s.customer} (@${s.redeemedBy})`;
-                } else if (isExpired) {
-                    statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-rose-100 text-rose-600 dark:bg-rose-950 dark:text-rose-400">Expired</span>`;
+                if (allStamps.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-slate-400 text-[10px]">Belum ada kode stamp yang digenerate.</td></tr>`;
+                    return;
                 }
 
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td class="py-2 font-bold text-slate-900 dark:text-white select-all">${s.code}</td>
-                    <td class="py-2 text-slate-600 dark:text-slate-300">${userLabel}</td>
-                    <td class="py-2 text-slate-500 text-[10px]">${new Date(s.expiresAt).toLocaleString('id-ID')}</td>
-                    <td class="py-2 text-right">${statusBadge}</td>
-                `;
-                tbody.appendChild(tr);
-            });
+                const now = new Date().getTime();
+
+                allStamps.forEach(s => {
+                    const isExpired = now > new Date(s.expires_at).getTime();
+                    let statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">Aktif</span>`;
+                    let userLabel = s.customer_note || 'Customer';
+
+                    if (s.is_redeemed) {
+                        statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-sky-100 text-sky-600 dark:bg-sky-950 dark:text-sky-400">Diklaim</span>`;
+                        if (s.redeemed_by) userLabel = `${userLabel} (@${s.redeemed_by})`;
+                    } else if (isExpired) {
+                        statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-rose-100 text-rose-600 dark:bg-rose-950 dark:text-rose-400">Expired</span>`;
+                    }
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="py-2 font-bold text-slate-900 dark:text-white select-all">${s.code}</td>
+                        <td class="py-2 text-slate-600 dark:text-slate-300">${userLabel}</td>
+                        <td class="py-2 text-slate-500 text-[10px]">${new Date(s.expires_at).toLocaleString('id-ID')}</td>
+                        <td class="py-2 text-right">${statusBadge}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (err) {
+                tbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-rose-500 text-[10px]">Gagal memuat riwayat stamp dari Neon.</td></tr>`;
+            }
         }
 
-        function clearExpiredStamps() {
-            const allStamps = JSON.parse(localStorage.getItem('deepa_admin_generated_stamps') || '[]');
-            const now = new Date().getTime();
-            const validStamps = allStamps.filter(s => !s.isRedeemed && now <= new Date(s.expiresAt).getTime());
-            localStorage.setItem('deepa_admin_generated_stamps', JSON.stringify(validStamps));
-            renderStampHistory();
+        async function clearExpiredStamps() {
+            try {
+                await fetch(`${ROYAL_API_URL}?action=clear_expired`, { method: 'DELETE' });
+                renderStampHistory();
+            } catch (err) {
+                alert('Gagal menghapus stamp expired');
+            }
         }
 
         // ==========================================
@@ -729,7 +744,7 @@
         updateTheme();
 
         // ==========================================
-        // KELOLA KATALOG PRODUK (API + FALLBACK LOKAL)
+        // KELOLA KATALOG PRODUK (NEON DB)
         // ==========================================
         async function fetchProductsFromAPI() {
             try {
@@ -737,20 +752,12 @@
                     method: "GET",
                     headers: apiHeaders
                 });
-                const contentType = response.headers.get("content-type") || "";
-                if (!response.ok || !contentType.includes("application/json")) {
-                    throw new Error('Beralih ke cache lokal');
-                }
+                if (!response.ok) throw new Error('Gagal fetch produk');
                 products = await response.json();
-                localStorage.setItem('deepa_products_cache', JSON.stringify(products));
+                renderAdminTable();
             } catch (error) {
-                const cached = localStorage.getItem('deepa_products_cache');
-                products = cached ? JSON.parse(cached) : DEFAULT_FALLBACK_PRODUCTS;
-                if (!cached) {
-                    localStorage.setItem('deepa_products_cache', JSON.stringify(products));
-                }
+                console.error(error);
             }
-            renderAdminTable();
         }
 
         function renderAdminTable() {
@@ -875,24 +882,12 @@
                     });
                 }
 
-                const contentType = response.headers.get("content-type") || "";
-                if (!response.ok || !contentType.includes("application/json")) {
-                    throw new Error('Simpan lokal');
-                }
+                if (!response.ok) throw new Error('Gagal menyimpan ke Neon Database');
                 
                 closeProductModal();
                 fetchProductsFromAPI();
             } catch (error) {
-                if (id) {
-                    const idx = products.findIndex(item => String(item.id) === String(id));
-                    if (idx > -1) products[idx] = { ...products[idx], ...productPayload };
-                } else {
-                    const nextId = products.length > 0 ? Math.max(...products.map(item => Number(item.id) || 0)) + 1 : 1;
-                    products.push({ id: nextId, ...productPayload });
-                }
-                localStorage.setItem('deepa_products_cache', JSON.stringify(products));
-                closeProductModal();
-                renderAdminTable();
+                alert(error.message);
             }
         }
 
@@ -904,12 +899,10 @@
                         headers: apiHeaders
                     });
 
-                    if (!response.ok) throw new Error('Hapus lokal');
+                    if (!response.ok) throw new Error('Gagal menghapus produk dari Neon Database');
                     fetchProductsFromAPI();
                 } catch (error) {
-                    products = products.filter(item => String(item.id) !== String(id));
-                    localStorage.setItem('deepa_products_cache', JSON.stringify(products));
-                    renderAdminTable();
+                    alert(error.message);
                 }
             }
         }
