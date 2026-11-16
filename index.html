@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="id" class="transition-colors duration-1000">
+<html lang="id" class="transition-colors duration-1000 bg-blue-200 dark:bg-slate-900">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content">
     <title>Deepa Store - Selected Work</title>
     
     <!-- Google Fonts -->
@@ -94,7 +94,7 @@
         ::-webkit-scrollbar-thumb { background: rgba(150, 150, 150, 0.3); border-radius: 4px; }
     </style>
 </head>
-<body class="antialiased overflow-x-hidden font-sans select-none text-slate-800 dark:text-slate-200 h-screen w-screen flex flex-col justify-between overflow-hidden">
+<body class="antialiased overflow-x-hidden font-sans select-none text-slate-800 dark:text-slate-200 min-h-dvh w-full flex flex-col justify-between bg-gradient-to-b from-blue-400 to-blue-200 dark:from-slate-900 dark:via-indigo-950 dark:to-slate-900">
 
     <!-- Loading Screen Curtains -->
     <div id="loader-top" class="fixed top-0 left-0 w-full h-1/2 bg-black z-[100] curtain flex items-end justify-center pb-1 shadow-2xl">
@@ -104,16 +104,16 @@
         <span class="text-white font-futuristic font-bold text-4xl sm:text-5xl tracking-[0.2em] sm:tracking-[0.3em] overflow-hidden -translate-y-[50%]">STORE</span>
     </div>
 
-    <!-- Background Gradients -->
-    <div id="bg-day" class="bg-layer fixed inset-0 bg-gradient-to-b from-blue-400 to-blue-200 opacity-100 dark:opacity-0 -z-30"></div>
-    <div id="bg-night" class="bg-layer fixed inset-0 bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 opacity-0 dark:opacity-100 -z-30"></div>
-    <div id="ambient-glow" class="fixed inset-0 pointer-events-none opacity-0 transition-opacity duration-700 -z-20 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.15)_0%,transparent_70%)]"></div>
+    <!-- Background Gradients (Full Viewport Height) -->
+    <div id="bg-day" class="bg-layer fixed inset-0 min-h-[100lvh] bg-gradient-to-b from-blue-400 to-blue-200 opacity-100 dark:opacity-0 -z-30"></div>
+    <div id="bg-night" class="bg-layer fixed inset-0 min-h-[100lvh] bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 opacity-0 dark:opacity-100 -z-30"></div>
+    <div id="ambient-glow" class="fixed inset-0 min-h-[100lvh] pointer-events-none opacity-0 transition-opacity duration-700 -z-20 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.15)_0%,transparent_70%)]"></div>
 
     <!-- Canvas Efek Burung Terbang -->
-    <canvas id="sky-canvas" class="fixed inset-0 pointer-events-none -z-10"></canvas>
+    <canvas id="sky-canvas" class="fixed inset-0 min-h-[100lvh] pointer-events-none -z-10"></canvas>
 
     <!-- Header Navigation (Home, About, Jajan, Contact) -->
-    <header class="absolute top-0 left-0 w-full p-4 md:p-8 flex justify-between items-center z-50 font-mono text-[10px] md:text-xs uppercase tracking-widest transition-colors duration-1000 pointer-events-auto">
+    <header class="w-full pt-4 pb-2 px-4 md:p-8 flex justify-between items-center z-50 font-mono text-[10px] md:text-xs uppercase tracking-widest transition-colors duration-1000 pointer-events-auto shrink-0">
         <div class="hidden lg:block w-1/4 text-left">INDONESIA</div>
         
         <div class="w-full lg:w-2/4 flex justify-center">
@@ -128,10 +128,8 @@
         <div class="hidden lg:block w-1/4 text-right current-date-display"></div>
     </header>
 
-    <div class="lg:hidden absolute bottom-4 left-1/2 -translate-x-1/2 z-50 font-mono text-[9px] uppercase tracking-widest current-date-display opacity-70 pointer-events-none"></div>
-
     <!-- MAIN VIEW CONTAINER -->
-    <div class="relative z-40 flex-1 flex flex-col justify-center items-center w-full h-full px-4 sm:px-6 -translate-y-2">
+    <div class="relative z-40 flex-1 flex flex-col justify-center items-center w-full px-4 sm:px-6 py-2">
 
         <!-- 1. HOME VIEW (HERO UTAMA) -->
         <main id="home-view" class="view-section flex flex-col items-center justify-center text-center">
@@ -144,43 +142,42 @@
             </h1>
         </main>
 
-        <!-- 2. ABOUT VIEW (CLEAN MEMBER ACCESS & ROYAL STAMP CARD) -->
-        <section id="about-view" class="view-section hidden w-full mx-auto font-mono max-h-[84vh] overflow-y-auto py-2 px-1">
+        <!-- 2. ABOUT VIEW (SLIM MEMBER ACCESS & ROYAL STAMP CARD) -->
+        <section id="about-view" class="view-section hidden w-full mx-auto font-mono py-1">
             
             <!-- A. GERBANG LOGIN MEMBER -->
-            <div id="member-auth-card" class="royal-card-frame max-w-[330px] mx-auto rounded-2xl p-6 relative overflow-hidden text-center text-slate-100">
-                <!-- Garis Aksen Emas Tipis Atas -->
+            <div id="member-auth-card" class="royal-card-frame max-w-[320px] mx-auto rounded-2xl p-5 relative overflow-hidden text-center text-slate-100">
                 <div class="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-amber-400/70 to-transparent"></div>
 
                 <!-- Badge Crown -->
-                <div class="w-11 h-11 rounded-xl royal-gold-shimmer text-slate-950 flex items-center justify-center mx-auto mb-3.5 border border-amber-200/50">
-                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                <div class="w-10 h-10 rounded-xl royal-gold-shimmer text-slate-950 flex items-center justify-center mx-auto mb-3 border border-amber-200/50">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
                         <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>
                     </svg>
                 </div>
 
-                <div class="inline-block px-3 py-0.5 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-[8px] font-bold uppercase tracking-[0.2em] mb-2">
+                <div class="inline-block px-2.5 py-0.5 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-[8px] font-bold uppercase tracking-[0.2em] mb-1.5">
                     DEEPA LOYALTY
                 </div>
 
-                <h2 class="text-base font-black text-white uppercase tracking-wider font-futuristic mb-1">Member Access</h2>
-                <p class="text-[10px] text-slate-400 mb-5 leading-relaxed">
+                <h2 class="text-sm font-black text-white uppercase tracking-wider font-futuristic mb-1">Member Access</h2>
+                <p class="text-[10px] text-slate-400 mb-4 leading-relaxed">
                     Masuk ke kartu anggota eksklusif Anda.
                 </p>
 
-                <form onsubmit="handleMemberLogin(event)" class="space-y-3.5 text-left text-xs">
+                <form onsubmit="handleMemberLogin(event)" class="space-y-3 text-left text-xs">
                     <div>
-                        <label class="block font-bold mb-1.5 text-amber-200/90 uppercase text-[9px] tracking-widest">Username</label>
+                        <label class="block font-bold mb-1 text-amber-200/90 uppercase text-[9px] tracking-widest">Username</label>
                         <div class="relative">
                             <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs">@</span>
-                            <input type="text" id="member-login-user" required autocomplete="off" placeholder="username_anda" class="w-full pl-8 pr-3.5 py-2.5 rounded-xl bg-slate-950/75 border border-slate-700/80 text-[11px] focus:outline-none focus:border-amber-400 text-white placeholder-slate-500 transition-colors">
+                            <input type="text" id="member-login-user" required autocomplete="off" placeholder="username_anda" class="w-full pl-8 pr-3.5 py-2 rounded-xl bg-slate-950/75 border border-slate-700/80 text-[11px] focus:outline-none focus:border-amber-400 text-white placeholder-slate-500 transition-colors">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block font-bold mb-1.5 text-amber-200/90 uppercase text-[9px] tracking-widest">Password</label>
+                        <label class="block font-bold mb-1 text-amber-200/90 uppercase text-[9px] tracking-widest">Password</label>
                         <div class="relative">
-                            <input type="password" id="member-login-pass" required autocomplete="off" placeholder="••••••••" class="w-full px-3.5 py-2.5 pr-9 rounded-xl bg-slate-950/75 border border-slate-700/80 text-[11px] focus:outline-none focus:border-amber-400 text-white placeholder-slate-500 transition-colors">
+                            <input type="password" id="member-login-pass" required autocomplete="off" placeholder="••••••••" class="w-full px-3.5 py-2 pr-9 rounded-xl bg-slate-950/75 border border-slate-700/80 text-[11px] focus:outline-none focus:border-amber-400 text-white placeholder-slate-500 transition-colors">
                             <button type="button" onclick="toggleMemberPass('member-login-pass', this)" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-amber-400 transition-colors">
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                             </button>
@@ -189,101 +186,101 @@
 
                     <div id="member-login-error" class="text-rose-300 text-[9px] hidden font-bold text-center bg-rose-500/20 border border-rose-500/40 py-1.5 px-2.5 rounded-lg"></div>
 
-                    <button type="submit" id="member-login-btn" class="w-full py-2.5 royal-gold-shimmer hover:brightness-105 text-slate-950 font-black uppercase tracking-widest rounded-xl transition-all text-[10px] mt-1">
+                    <button type="submit" id="member-login-btn" class="w-full py-2.5 royal-gold-shimmer hover:brightness-105 text-slate-950 font-black uppercase tracking-widest rounded-xl transition-all text-[10px]">
                         Buka Royal Card →
                     </button>
                 </form>
 
-                <div class="mt-5 pt-3.5 border-t border-slate-700/60 text-[9px] text-slate-400">
+                <div class="mt-4 pt-3 border-t border-slate-700/60 text-[9px] text-slate-400">
                     Belum terdaftar member? 
                     <a href="https://wa.me/6281717622225?text=Halo%20Admin%20Deepa%20Store,%20saya%20ingin%20membuat%20akun%20member%20Royal%20Stamp%20Card." target="_blank" class="text-amber-300 font-bold hover:underline">Daftar via Admin</a>
                 </div>
             </div>
 
-            <!-- B. ROYAL STAMP CARD PRIBADI MEMBER -->
-            <div id="member-stamp-dashboard" class="hidden royal-card-frame max-w-[400px] mx-auto rounded-2xl p-5 relative overflow-hidden text-slate-100">
+            <!-- B. ROYAL STAMP CARD PRIBADI MEMBER (VERSI SLIM & TIPIS) -->
+            <div id="member-stamp-dashboard" class="hidden royal-card-frame max-w-[360px] mx-auto rounded-2xl p-4 relative overflow-hidden text-slate-100">
                 <div class="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-amber-400/70 to-transparent"></div>
 
                 <!-- Header Kartu Royal -->
-                <div class="flex items-center justify-between gap-2 mb-4 pb-3.5 border-b border-slate-700/70">
-                    <div class="flex items-center gap-2.5 text-left min-w-0">
-                        <div class="w-9 h-9 rounded-xl royal-gold-shimmer text-slate-950 flex items-center justify-center shrink-0 border border-amber-200/50">
-                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-700/70">
+                    <div class="flex items-center gap-2 text-left min-w-0">
+                        <div class="w-8 h-8 rounded-lg royal-gold-shimmer text-slate-950 flex items-center justify-center shrink-0 border border-amber-200/50">
+                            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
                                 <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>
                             </svg>
                         </div>
                         <div class="min-w-0">
                             <div class="flex items-center gap-1.5">
-                                <h2 class="text-xs font-black text-white uppercase tracking-wider font-futuristic truncate">Royal Card</h2>
+                                <h2 class="text-[11px] font-black text-white uppercase tracking-wide font-futuristic whitespace-nowrap">Royal Card</h2>
                                 <span class="px-1.5 py-0.5 rounded bg-amber-400/15 text-amber-300 text-[7px] font-bold uppercase border border-amber-400/30 shrink-0">LOYALTY</span>
                             </div>
-                            <p class="text-[10px] text-amber-200/90 font-bold truncate">
+                            <p class="text-[9px] text-amber-200/90 font-bold truncate">
                                 @<span id="active-member-username">member</span>
                             </p>
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-1.5 shrink-0">
-                        <button onclick="toggleMemberChangePassModal(true)" title="Ubah Password" class="px-2.5 py-1 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-amber-300 text-[8px] font-bold border border-amber-400/25 transition-colors">
+                    <div class="flex items-center gap-1 shrink-0">
+                        <button onclick="toggleMemberChangePassModal(true)" title="Ubah Password" class="px-2 py-1 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-amber-300 text-[8px] font-bold border border-amber-400/25 transition-colors whitespace-nowrap">
                             Ubah Pass
                         </button>
-                        <button onclick="handleMemberLogout()" title="Keluar Akun" class="px-2.5 py-1 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 text-[8px] font-bold border border-rose-500/30 transition-colors">
+                        <button onclick="handleMemberLogout()" title="Keluar Akun" class="px-2 py-1 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 text-[8px] font-bold border border-rose-500/30 transition-colors whitespace-nowrap">
                             Keluar
                         </button>
                     </div>
                 </div>
 
                 <!-- Sub-info & Counter Stamp -->
-                <div class="flex items-center justify-between text-[9px] mb-1.5">
+                <div class="flex items-center justify-between text-[8px] mb-1">
                     <span class="text-slate-400 font-bold uppercase tracking-wider">Koleksi Lencana</span>
                     <span class="font-black text-white">
-                        <span id="stamp-count-text" class="text-amber-400 text-xs">0</span><span class="text-slate-400">/10</span>
+                        <span id="stamp-count-text" class="text-amber-400 text-[11px]">0</span><span class="text-slate-400">/10</span>
                     </span>
                 </div>
 
-                <!-- Progress Bar Emas -->
-                <div class="w-full h-1.5 bg-slate-950/80 rounded-full overflow-hidden mb-4 border border-slate-800">
+                <!-- Progress Bar Emas Tipis -->
+                <div class="w-full h-1 bg-slate-950/80 rounded-full overflow-hidden mb-3 border border-slate-800">
                     <div id="stamp-progress-bar" class="h-full royal-gold-shimmer rounded-full transition-all duration-500" style="width: 0%;"></div>
                 </div>
 
-                <!-- Grid 10 Slot Ikon Foto Mini Stamp -->
-                <div id="stamp-grid" class="grid grid-cols-5 gap-2 mb-4"></div>
+                <!-- Grid 10 Slot Tipis (Compact Height) -->
+                <div id="stamp-grid" class="grid grid-cols-5 gap-1.5 mb-3"></div>
 
-                <p class="text-[9px] text-slate-400 text-center mb-3 leading-snug">
-                    Masukkan kode <span class="text-amber-300 font-bold">DEEPA-XXXXXX</span> dari transaksi Anda untuk mengisi slot lencana.
+                <p class="text-[8px] text-slate-400 text-center mb-2.5 leading-snug">
+                    Masukkan kode <span class="text-amber-300 font-bold">DEEPA-XXXXXX</span> dari transaksi Anda.
                 </p>
 
                 <!-- Form Input Klaim Kode Redeem DEEPA -->
-                <div class="space-y-2 text-xs">
+                <div class="space-y-1.5 text-xs">
                     <div class="flex gap-1.5">
-                        <input type="text" id="claim-stamp-input" autocomplete="off" placeholder="DEEPA-XXXXXX" class="w-full px-3 py-2 rounded-xl bg-slate-950/75 border border-slate-700/80 text-[10px] uppercase tracking-widest focus:outline-none focus:border-amber-400 text-white placeholder-slate-500">
-                        <button onclick="claimCustomerStamp()" id="claim-stamp-btn" class="px-3.5 py-2 royal-gold-shimmer hover:brightness-105 text-slate-950 font-black rounded-xl transition-all text-[10px] uppercase tracking-wider shrink-0">
+                        <input type="text" id="claim-stamp-input" autocomplete="off" placeholder="DEEPA-XXXXXX" class="w-full px-3 py-1.5 rounded-lg bg-slate-950/75 border border-slate-700/80 text-[10px] uppercase tracking-widest focus:outline-none focus:border-amber-400 text-white placeholder-slate-500">
+                        <button onclick="claimCustomerStamp()" id="claim-stamp-btn" class="px-3 py-1.5 royal-gold-shimmer hover:brightness-105 text-slate-950 font-black rounded-lg transition-all text-[9px] uppercase tracking-wider shrink-0">
                             Redeem
                         </button>
                     </div>
-                    <div id="stamp-msg" class="text-[9px] font-bold hidden py-1.5 px-2.5 rounded-lg text-center"></div>
+                    <div id="stamp-msg" class="text-[8px] font-bold hidden py-1 px-2 rounded-lg text-center"></div>
                 </div>
 
                 <!-- Tombol Penukaran Hadiah Ketika 10 Stamp Penuh -->
-                <div id="reward-section" class="mt-3 hidden">
-                    <button onclick="redeemStampReward()" class="w-full py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-black uppercase tracking-widest rounded-xl text-[10px] transition-colors flex items-center justify-center gap-1.5">
-                        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1a2.996 2.996 0 0 0-5.5-1.65l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/></svg>
+                <div id="reward-section" class="mt-2.5 hidden">
+                    <button onclick="redeemStampReward()" class="w-full py-2 bg-emerald-500 hover:bg-emerald-600 text-white font-black uppercase tracking-widest rounded-lg text-[9px] transition-colors flex items-center justify-center gap-1.5">
+                        <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1a2.996 2.996 0 0 0-5.5-1.65l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/></svg>
                         Klaim Hadiah 10 Stamp via WhatsApp
                     </button>
                 </div>
 
                 <!-- FORM UBAH PASSWORD MEMBER -->
-                <div id="member-change-pass-panel" class="hidden mt-4 pt-3.5 border-t border-slate-700/70 text-left">
-                    <div class="flex items-center justify-between mb-2">
-                        <h3 class="text-[10px] font-bold text-amber-300 uppercase tracking-wider">Ubah Password</h3>
-                        <button type="button" onclick="toggleMemberChangePassModal(false)" class="text-[9px] text-slate-400 hover:text-rose-400 font-bold">Batal ✕</button>
+                <div id="member-change-pass-panel" class="hidden mt-3 pt-2.5 border-t border-slate-700/70 text-left">
+                    <div class="flex items-center justify-between mb-1.5">
+                        <h3 class="text-[9px] font-bold text-amber-300 uppercase tracking-wider">Ubah Password</h3>
+                        <button type="button" onclick="toggleMemberChangePassModal(false)" class="text-[8px] text-slate-400 hover:text-rose-400 font-bold">Batal ✕</button>
                     </div>
-                    <form onsubmit="handleMemberChangePassword(event)" class="space-y-2 text-xs">
-                        <input type="password" id="member-old-pass" required autocomplete="off" placeholder="Password lama..." class="w-full px-3 py-1.5 rounded-lg bg-slate-950/75 border border-slate-700 text-[10px] focus:outline-none focus:border-amber-400 text-white">
-                        <input type="password" id="member-new-pass" required autocomplete="off" placeholder="Password baru (min 4 karakter)..." class="w-full px-3 py-1.5 rounded-lg bg-slate-950/75 border border-slate-700 text-[10px] focus:outline-none focus:border-amber-400 text-white">
-                        <input type="password" id="member-confirm-pass" required autocomplete="off" placeholder="Konfirmasi password baru..." class="w-full px-3 py-1.5 rounded-lg bg-slate-950/75 border border-slate-700 text-[10px] focus:outline-none focus:border-amber-400 text-white">
-                        <div id="member-cp-msg" class="text-[9px] font-bold hidden py-1 px-2 rounded-lg text-center"></div>
-                        <button type="submit" class="w-full py-2 royal-gold-shimmer text-slate-950 font-black uppercase tracking-wider rounded-lg text-[9px] transition-all">
+                    <form onsubmit="handleMemberChangePassword(event)" class="space-y-1.5 text-xs">
+                        <input type="password" id="member-old-pass" required autocomplete="off" placeholder="Password lama..." class="w-full px-2.5 py-1.5 rounded-lg bg-slate-950/75 border border-slate-700 text-[10px] focus:outline-none focus:border-amber-400 text-white">
+                        <input type="password" id="member-new-pass" required autocomplete="off" placeholder="Password baru (min 4 karakter)..." class="w-full px-2.5 py-1.5 rounded-lg bg-slate-950/75 border border-slate-700 text-[10px] focus:outline-none focus:border-amber-400 text-white">
+                        <input type="password" id="member-confirm-pass" required autocomplete="off" placeholder="Konfirmasi password baru..." class="w-full px-2.5 py-1.5 rounded-lg bg-slate-950/75 border border-slate-700 text-[10px] focus:outline-none focus:border-amber-400 text-white">
+                        <div id="member-cp-msg" class="text-[8px] font-bold hidden py-1 px-2 rounded-lg text-center"></div>
+                        <button type="submit" class="w-full py-1.5 royal-gold-shimmer text-slate-950 font-black uppercase tracking-wider rounded-lg text-[9px] transition-all">
                             Simpan Password
                         </button>
                     </form>
@@ -358,6 +355,9 @@
         </div>
 
     </div>
+
+    <!-- Footer Tanggal Mobile -->
+    <footer class="lg:hidden w-full py-3 text-center z-40 font-mono text-[9px] uppercase tracking-widest current-date-display opacity-70 pointer-events-none shrink-0"></footer>
 
     <!-- PRODUCT VARIANT MODAL POP-UP -->
     <div id="product-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 hidden">
@@ -709,14 +709,14 @@
             const msgBox = document.getElementById('member-cp-msg');
 
             if (newPass.length < 4) {
-                msgBox.className = "text-[9px] font-bold py-1 px-2 rounded-lg text-center bg-rose-500/20 text-rose-300";
+                msgBox.className = "text-[8px] font-bold py-1 px-2 rounded-lg text-center bg-rose-500/20 text-rose-300";
                 msgBox.textContent = "Password baru minimal 4 karakter!";
                 msgBox.classList.remove('hidden');
                 return;
             }
 
             if (newPass !== confirmPass) {
-                msgBox.className = "text-[9px] font-bold py-1 px-2 rounded-lg text-center bg-rose-500/20 text-rose-300";
+                msgBox.className = "text-[8px] font-bold py-1 px-2 rounded-lg text-center bg-rose-500/20 text-rose-300";
                 msgBox.textContent = "Konfirmasi password baru tidak cocok!";
                 msgBox.classList.remove('hidden');
                 return;
@@ -734,7 +734,7 @@
                     throw new Error(data.error || 'Gagal mengganti password');
                 }
 
-                msgBox.className = "text-[9px] font-bold py-1 px-2 rounded-lg text-center bg-emerald-500/20 text-emerald-300";
+                msgBox.className = "text-[8px] font-bold py-1 px-2 rounded-lg text-center bg-emerald-500/20 text-emerald-300";
                 msgBox.textContent = "Password berhasil diperbarui!";
                 msgBox.classList.remove('hidden');
 
@@ -742,7 +742,7 @@
                     toggleMemberChangePassModal(false);
                 }, 1200);
             } catch (err) {
-                msgBox.className = "text-[9px] font-bold py-1 px-2 rounded-lg text-center bg-rose-500/20 text-rose-300";
+                msgBox.className = "text-[8px] font-bold py-1 px-2 rounded-lg text-center bg-rose-500/20 text-rose-300";
                 msgBox.textContent = err.message;
                 msgBox.classList.remove('hidden');
             }
@@ -759,25 +759,25 @@
                 const box = document.createElement('div');
 
                 if (isFilled) {
-                    box.className = "aspect-square rounded-xl stamp-badge-active text-white flex flex-col items-center justify-center p-1 border border-amber-200/70 transition-all duration-300";
+                    box.className = "h-11 sm:h-12 rounded-lg stamp-badge-active text-white flex flex-col items-center justify-center py-1 border border-amber-200/70 transition-all duration-300";
                     box.innerHTML = `
-                        <div class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
-                            <svg class="w-3.5 h-3.5 fill-current text-white" viewBox="0 0 24 24">
+                        <div class="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center">
+                            <svg class="w-2.5 h-2.5 fill-current text-white" viewBox="0 0 24 24">
                                 <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>
                             </svg>
                         </div>
-                        <span class="text-[6px] font-black uppercase tracking-wider mt-0.5 text-amber-100">DEEPA</span>
+                        <span class="text-[5.5px] font-black uppercase tracking-wider mt-0.5 text-amber-100 leading-none">DEEPA</span>
                     `;
                 } else {
-                    box.className = `aspect-square rounded-xl ${isLastGoal ? 'bg-amber-400/10 border-amber-400/45 text-amber-300' : 'bg-slate-950/65 border-slate-700/80 text-slate-500'} border border-dashed flex flex-col items-center justify-center p-1 transition-all`;
+                    box.className = `h-11 sm:h-12 rounded-lg ${isLastGoal ? 'bg-amber-400/10 border-amber-400/45 text-amber-300' : 'bg-slate-950/65 border-slate-700/80 text-slate-500'} border border-dashed flex flex-col items-center justify-center py-1 transition-all`;
                     box.innerHTML = `
-                        <div class="w-6 h-6 rounded-full ${isLastGoal ? 'bg-amber-400/15' : 'bg-slate-800/80'} flex items-center justify-center">
+                        <div class="w-4 h-4 rounded-full ${isLastGoal ? 'bg-amber-400/15' : 'bg-slate-800/80'} flex items-center justify-center">
                             ${isLastGoal 
-                                ? `<svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1a2.996 2.996 0 0 0-5.5-1.65l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/></svg>`
-                                : `<span class="text-[9px] font-bold opacity-60">${i}</span>`
+                                ? `<svg class="w-2.5 h-2.5 fill-current" viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1a2.996 2.996 0 0 0-5.5-1.65l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/></svg>`
+                                : `<span class="text-[8px] font-bold opacity-60 leading-none">${i}</span>`
                             }
                         </div>
-                        <span class="text-[6px] font-bold uppercase tracking-wider mt-0.5 opacity-75">${isLastGoal ? 'GIFT' : 'SLOT'}</span>
+                        <span class="text-[5.5px] font-bold uppercase tracking-wider mt-0.5 opacity-75 leading-none">${isLastGoal ? 'GIFT' : 'SLOT'}</span>
                     `;
                 }
 
@@ -803,11 +803,11 @@
             msgBox.textContent = text;
             
             if (type === "emerald") {
-                msgBox.className = "text-[9px] font-bold py-1.5 px-2.5 rounded-lg text-center bg-emerald-500/20 text-emerald-300 border border-emerald-500/35";
+                msgBox.className = "text-[8px] font-bold py-1 px-2 rounded-lg text-center bg-emerald-500/20 text-emerald-300 border border-emerald-500/35";
             } else if (type === "amber") {
-                msgBox.className = "text-[9px] font-bold py-1.5 px-2.5 rounded-lg text-center bg-amber-500/20 text-amber-300 border border-amber-500/35";
+                msgBox.className = "text-[8px] font-bold py-1 px-2 rounded-lg text-center bg-amber-500/20 text-amber-300 border border-amber-500/35";
             } else {
-                msgBox.className = "text-[9px] font-bold py-1.5 px-2.5 rounded-lg text-center bg-rose-500/20 text-rose-300 border border-rose-500/35";
+                msgBox.className = "text-[8px] font-bold py-1 px-2 rounded-lg text-center bg-rose-500/20 text-rose-300 border border-rose-500/35";
             }
         }
 
