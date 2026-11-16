@@ -28,7 +28,18 @@ export default async function handler(req, res) {
                 WHERE LOWER(username) = LOWER(${username}) AND password = ${password}
                 LIMIT 1
             `;
-            if (rows.length === 0) return res.status(401).json({ error: 'Username atau password salah' });
+            if (rows.length === 0) return res.status(401).json({ error: 'Username atau password salah!' });
+            return res.status(200).json(rows[0]);
+        }
+
+        if (action === 'get_member_profile' && req.method === 'GET') {
+            const { username } = req.query;
+            const rows = await sql`
+                SELECT id, username, stamps FROM royal_members
+                WHERE LOWER(username) = LOWER(${username})
+                LIMIT 1
+            `;
+            if (rows.length === 0) return res.status(404).json({ error: 'Member tidak ditemukan' });
             return res.status(200).json(rows[0]);
         }
 
@@ -39,7 +50,7 @@ export default async function handler(req, res) {
                 WHERE LOWER(username) = LOWER(${username}) AND password = ${oldPassword}
                 RETURNING id, username
             `;
-            if (updated.length === 0) return res.status(400).json({ error: 'Password lama tidak sesuai' });
+            if (updated.length === 0) return res.status(400).json({ error: 'Password lama tidak sesuai!' });
             return res.status(200).json({ success: true });
         }
 
@@ -74,7 +85,6 @@ export default async function handler(req, res) {
         if (action === 'claim_stamp' && req.method === 'POST') {
             const { username, code } = req.body;
 
-            // Cek status kode stamp
             const stamps = await sql`SELECT * FROM royal_stamps WHERE UPPER(code) = UPPER(${code}) LIMIT 1`;
             if (stamps.length === 0) return res.status(404).json({ error: 'Kode stamp tidak valid!' });
 
@@ -82,12 +92,10 @@ export default async function handler(req, res) {
             if (stamp.is_redeemed) return res.status(400).json({ error: 'Kode stamp sudah pernah digunakan!' });
             if (new Date() > new Date(stamp.expires_at)) return res.status(400).json({ error: 'Kode stamp sudah expired!' });
 
-            // Cek jumlah stamp member
             const members = await sql`SELECT * FROM royal_members WHERE LOWER(username) = LOWER(${username}) LIMIT 1`;
             if (members.length === 0) return res.status(404).json({ error: 'Akun member tidak ditemukan!' });
             if (members[0].stamps >= 10) return res.status(400).json({ error: 'Stamp sudah penuh (10/10)!' });
 
-            // Tandai kode terpakai & tambah +1 stamp member
             await sql`
                 UPDATE royal_stamps
                 SET is_redeemed = TRUE, redeemed_by = ${username}, redeemed_at = NOW()
@@ -107,6 +115,11 @@ export default async function handler(req, res) {
             const { username } = req.body;
             await sql`UPDATE royal_members SET stamps = 0 WHERE LOWER(username) = LOWER(${username})`;
             return res.status(200).json({ stamps: 0 });
+        }
+
+        if (action === 'clear_expired' && req.method === 'DELETE') {
+            await sql`DELETE FROM royal_stamps WHERE is_redeemed = FALSE AND expires_at < NOW()`;
+            return res.status(200).json({ success: true });
         }
 
         return res.status(400).json({ error: 'Invalid action' });
