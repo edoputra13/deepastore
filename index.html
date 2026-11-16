@@ -146,37 +146,95 @@
             </h1>
         </main>
 
-        <!-- 2. ABOUT VIEW (PAGE TERPISAH ROYAL STAMP CARD) -->
+        <!-- 2. ABOUT VIEW (LOGIN MEMBER & ROYAL STAMP CARD PER AKUN) -->
         <section id="about-view" class="view-section hidden w-full max-w-[460px] mx-auto font-mono max-h-[82vh] overflow-y-auto py-2 px-1">
-            <div class="royal-card-frame rounded-2xl p-5 sm:p-6 relative overflow-hidden">
+            
+            <!-- A. GERBANG LOGIN MEMBER (MUNCUL JIKA BELUM LOGIN) -->
+            <div id="member-auth-card" class="royal-card-frame rounded-2xl p-5 sm:p-6 relative overflow-hidden text-center">
+                <div class="absolute -top-14 -right-14 w-32 h-32 bg-amber-400/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-14 -left-14 w-32 h-32 bg-sky-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-amber-500 to-yellow-500 text-white flex items-center justify-center mx-auto mb-3 shadow-md shadow-amber-500/30">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                        <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>
+                    </svg>
+                </div>
+
+                <h2 class="text-base sm:text-lg font-black text-slate-900 dark:text-white uppercase tracking-wider font-futuristic mb-1">Royal Member Access</h2>
+                <p class="text-[10px] text-slate-500 dark:text-slate-400 mb-4 leading-relaxed">
+                    Masuk menggunakan username & password dari Admin untuk mengakses Royal Stamp Card pribadi Anda.
+                </p>
+
+                <form onsubmit="handleMemberLogin(event)" class="space-y-3 text-left text-xs">
+                    <div>
+                        <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[10px] tracking-wider">Username Member</label>
+                        <input type="text" id="member-login-user" required autocomplete="off" placeholder="Masukkan username..." class="w-full px-3 py-2.5 rounded-xl bg-white/90 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:border-amber-500 text-slate-900 dark:text-white">
+                    </div>
+
+                    <div>
+                        <label class="block font-bold mb-1 text-slate-700 dark:text-slate-300 uppercase text-[10px] tracking-wider">Password</label>
+                        <div class="relative">
+                            <input type="password" id="member-login-pass" required autocomplete="off" placeholder="Masukkan password..." class="w-full px-3 py-2.5 pr-9 rounded-xl bg-white/90 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:border-amber-500 text-slate-900 dark:text-white">
+                            <button type="button" onclick="toggleMemberPass('member-login-pass', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-amber-500 transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="member-login-error" class="text-rose-500 text-[10px] hidden font-bold text-center bg-rose-500/10 py-1.5 px-2.5 rounded-lg"></div>
+
+                    <button type="submit" class="w-full py-3 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white font-bold uppercase tracking-widest rounded-xl shadow-md shadow-amber-500/25 transition-all text-[11px]">
+                        Masuk ke Royal Card
+                    </button>
+                </form>
+
+                <div class="mt-4 pt-3 border-t border-slate-200/70 dark:border-slate-700/70 text-[10px] text-slate-500 dark:text-slate-400">
+                    Belum punya akun member? 
+                    <a href="https://wa.me/6281717622225?text=Halo%20Admin%20Deepa%20Store,%20saya%20ingin%20membuat%20akun%20member%20Royal%20Stamp%20Card." target="_blank" class="text-sky-600 dark:text-sky-400 font-bold hover:underline">Minta ke Admin</a>
+                </div>
+            </div>
+
+            <!-- B. ROYAL STAMP CARD PRIBADI MEMBER (MUNCUL SETELAH LOGIN) -->
+            <div id="member-stamp-dashboard" class="hidden royal-card-frame rounded-2xl p-5 sm:p-6 relative overflow-hidden">
                 <!-- Dekorasi Glow Halus -->
                 <div class="absolute -top-16 -right-16 w-36 h-36 bg-amber-400/20 rounded-full blur-3xl pointer-events-none"></div>
                 <div class="absolute -bottom-16 -left-16 w-36 h-36 bg-sky-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
-                <!-- Header Kartu Royal -->
-                <div class="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-200/70 dark:border-slate-700/70">
-                    <div class="flex items-center gap-2.5 text-left">
+                <!-- Header Kartu Royal + Info Akun + Tombol Ubah Password & Logout -->
+                <div class="flex items-center justify-between gap-2 mb-3.5 pb-3 border-b border-slate-200/70 dark:border-slate-700/70">
+                    <div class="flex items-center gap-2.5 text-left min-w-0">
                         <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-yellow-400 text-white flex items-center justify-center shadow-md shadow-amber-500/30 shrink-0">
-                            <!-- Ikon Foto/Lencana Mahkota Royal -->
                             <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
                                 <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>
                             </svg>
                         </div>
-                        <div>
+                        <div class="min-w-0">
                             <div class="flex items-center gap-1.5">
-                                <h2 class="text-sm sm:text-base font-black text-slate-900 dark:text-white uppercase tracking-wider font-futuristic">Royal Card</h2>
-                                <span class="px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-600 dark:text-amber-400 text-[8px] font-bold uppercase border border-amber-500/30">VIP</span>
+                                <h2 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider font-futuristic truncate">Royal Card</h2>
+                                <span class="px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-600 dark:text-amber-400 text-[8px] font-bold uppercase border border-amber-500/30 shrink-0">VIP</span>
                             </div>
-                            <p class="text-[10px] text-slate-500 dark:text-slate-400">Loyalty Stamp Member</p>
+                            <p class="text-[10px] text-slate-600 dark:text-slate-300 font-bold truncate">
+                                @<span id="active-member-username">member</span>
+                            </p>
                         </div>
                     </div>
 
-                    <div class="text-right">
-                        <div class="text-[9px] uppercase text-slate-400 font-bold tracking-wider">Terkumpul</div>
-                        <div class="text-sm sm:text-base font-black text-slate-900 dark:text-white">
-                            <span id="stamp-count-text" class="text-amber-500">0</span><span class="text-slate-400 text-xs">/10</span>
-                        </div>
+                    <div class="flex items-center gap-1.5 shrink-0">
+                        <button onclick="toggleMemberChangePassModal(true)" title="Ubah Password" class="px-2 py-1.5 rounded-lg bg-sky-500/15 hover:bg-sky-500/25 text-sky-600 dark:text-sky-400 text-[9px] font-bold border border-sky-400/30 transition-all">
+                            Ubah Pass
+                        </button>
+                        <button onclick="handleMemberLogout()" title="Keluar Akun" class="px-2 py-1.5 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 text-rose-500 text-[9px] font-bold border border-rose-400/30 transition-all">
+                            Keluar
+                        </button>
                     </div>
+                </div>
+
+                <!-- Sub-info & Counter Stamp -->
+                <div class="flex items-center justify-between text-[10px] mb-1.5">
+                    <span class="text-slate-500 dark:text-slate-400 font-bold uppercase">Progres Stamp</span>
+                    <span class="font-black text-slate-900 dark:text-white">
+                        <span id="stamp-count-text" class="text-amber-500 text-xs">0</span><span class="text-slate-400">/10</span>
+                    </span>
                 </div>
 
                 <!-- Progress Bar -->
@@ -185,9 +243,7 @@
                 </div>
 
                 <!-- Grid 10 Slot Ikon Foto Mini Stamp -->
-                <div id="stamp-grid" class="grid grid-cols-5 gap-2 sm:gap-2.5 mb-4">
-                    <!-- Dirender dinamis oleh JavaScript sebagai 10 Lencana Ikon Foto Mini -->
-                </div>
+                <div id="stamp-grid" class="grid grid-cols-5 gap-2 sm:gap-2.5 mb-4"></div>
 
                 <p class="text-[10px] text-slate-500 dark:text-slate-400 text-center mb-3.5 leading-relaxed">
                     Dapatkan <span class="font-bold text-slate-700 dark:text-slate-200">1 kode stamp</span> di setiap transaksi. Kumpulkan 10 lencana untuk klaim hadiah eksklusif!
@@ -210,6 +266,32 @@
                         <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1a2.996 2.996 0 0 0-5.5-1.65l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/></svg>
                         Tukarkan 10 Stamp via WhatsApp
                     </button>
+                </div>
+
+                <!-- FORM UBAH PASSWORD MEMBER (INLINE OVERLAY) -->
+                <div id="member-change-pass-panel" class="hidden mt-4 pt-4 border-t border-slate-200/80 dark:border-slate-700/80 text-left">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-xs font-bold text-slate-900 dark:text-white uppercase">Ubah Password Akun</h3>
+                        <button type="button" onclick="toggleMemberChangePassModal(false)" class="text-[10px] text-slate-400 hover:text-rose-500 font-bold">Batal ✕</button>
+                    </div>
+                    <form onsubmit="handleMemberChangePassword(event)" class="space-y-2.5 text-xs">
+                        <div>
+                            <label class="block font-bold mb-1 text-[9px] uppercase text-slate-600 dark:text-slate-300">Password Lama</label>
+                            <input type="password" id="member-old-pass" required autocomplete="off" placeholder="Password saat ini..." class="w-full px-3 py-2 rounded-lg bg-white/90 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white">
+                        </div>
+                        <div>
+                            <label class="block font-bold mb-1 text-[9px] uppercase text-slate-600 dark:text-slate-300">Password Baru</label>
+                            <input type="password" id="member-new-pass" required autocomplete="off" placeholder="Minimal 4 karakter..." class="w-full px-3 py-2 rounded-lg bg-white/90 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white">
+                        </div>
+                        <div>
+                            <label class="block font-bold mb-1 text-[9px] uppercase text-slate-600 dark:text-slate-300">Konfirmasi Password Baru</label>
+                            <input type="password" id="member-confirm-pass" required autocomplete="off" placeholder="Ulangi password baru..." class="w-full px-3 py-2 rounded-lg bg-white/90 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:border-sky-500 text-slate-900 dark:text-white">
+                        </div>
+                        <div id="member-cp-msg" class="text-[10px] font-bold hidden py-1.5 px-2.5 rounded-lg text-center"></div>
+                        <button type="submit" class="w-full py-2.5 bg-sky-500 hover:bg-sky-600 text-white font-bold uppercase tracking-wider rounded-lg text-[10px] shadow transition-all">
+                            Simpan Password Baru
+                        </button>
+                    </form>
                 </div>
             </div>
         </section>
@@ -383,7 +465,7 @@
         setInterval(updateThemeBasedOnTime, 60000);
 
         window.addEventListener('DOMContentLoaded', () => {
-            renderStampGrid();
+            checkMemberSession();
             const path = window.location.pathname.replace('/', '');
             if (['about', 'jajan', 'contact'].includes(path)) {
                 switchView(path, false);
@@ -485,7 +567,7 @@
 
         function switchView(viewName, updateHistory = true) {
             if (viewName === 'jajan') fetchAndRenderProducts(); 
-            if (viewName === 'about') renderStampGrid();
+            if (viewName === 'about') checkMemberSession();
 
             const views = {
                 home: document.getElementById('home-view'),
@@ -545,14 +627,142 @@
         });
 
         // ==========================================
-        // ROYAL STAMP CARD SYSTEM (10 IKON FOTO MINI)
+        // SISTEM AKUN MEMBER & ROYAL STAMP PER USERNAME
         // ==========================================
-        function getStampsCount() {
-            return parseInt(localStorage.getItem('deepa_customer_stamps') || '0', 10);
+        function getMemberAccounts() {
+            return JSON.parse(localStorage.getItem('deepa_member_accounts') || '[]');
         }
 
-        function renderStampGrid() {
-            const total = getStampsCount();
+        function saveMemberAccounts(accounts) {
+            localStorage.setItem('deepa_member_accounts', JSON.stringify(accounts));
+        }
+
+        function getActiveMemberUsername() {
+            return localStorage.getItem('deepa_logged_in_member') || '';
+        }
+
+        function toggleMemberPass(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.classList.add('text-amber-500');
+            } else {
+                input.type = 'password';
+                btn.classList.remove('text-amber-500');
+            }
+        }
+
+        function checkMemberSession() {
+            const loggedUser = getActiveMemberUsername();
+            const accounts = getMemberAccounts();
+            const memberObj = accounts.find(acc => acc.username.toLowerCase() === loggedUser.toLowerCase());
+
+            const authCard = document.getElementById('member-auth-card');
+            const stampDashboard = document.getElementById('member-stamp-dashboard');
+
+            if (memberObj) {
+                authCard.classList.add('hidden');
+                stampDashboard.classList.remove('hidden');
+                document.getElementById('active-member-username').textContent = memberObj.username;
+                renderStampGrid(memberObj.stamps || 0);
+            } else {
+                localStorage.removeItem('deepa_logged_in_member');
+                stampDashboard.classList.add('hidden');
+                authCard.classList.remove('hidden');
+            }
+        }
+
+        function handleMemberLogin(e) {
+            e.preventDefault();
+            const userInput = document.getElementById('member-login-user').value.trim();
+            const passInput = document.getElementById('member-login-pass').value;
+            const errBox = document.getElementById('member-login-error');
+
+            const accounts = getMemberAccounts();
+            const foundMember = accounts.find(acc => acc.username.toLowerCase() === userInput.toLowerCase() && acc.password === passInput);
+
+            if (!foundMember) {
+                errBox.textContent = "Username atau password member tidak valid!";
+                errBox.classList.remove('hidden');
+                document.getElementById('member-login-pass').value = '';
+                return;
+            }
+
+            errBox.classList.add('hidden');
+            localStorage.setItem('deepa_logged_in_member', foundMember.username);
+            document.getElementById('member-login-user').value = '';
+            document.getElementById('member-login-pass').value = '';
+            checkMemberSession();
+        }
+
+        function handleMemberLogout() {
+            localStorage.removeItem('deepa_logged_in_member');
+            toggleMemberChangePassModal(false);
+            document.getElementById('stamp-msg').classList.add('hidden');
+            checkMemberSession();
+        }
+
+        function toggleMemberChangePassModal(show) {
+            const panel = document.getElementById('member-change-pass-panel');
+            const msg = document.getElementById('member-cp-msg');
+            msg.classList.add('hidden');
+            if (show) {
+                panel.classList.remove('hidden');
+                document.getElementById('member-old-pass').value = '';
+                document.getElementById('member-new-pass').value = '';
+                document.getElementById('member-confirm-pass').value = '';
+            } else {
+                panel.classList.add('hidden');
+            }
+        }
+
+        function handleMemberChangePassword(e) {
+            e.preventDefault();
+            const loggedUser = getActiveMemberUsername();
+            const oldPass = document.getElementById('member-old-pass').value;
+            const newPass = document.getElementById('member-new-pass').value;
+            const confirmPass = document.getElementById('member-confirm-pass').value;
+            const msgBox = document.getElementById('member-cp-msg');
+
+            const accounts = getMemberAccounts();
+            const idx = accounts.findIndex(acc => acc.username.toLowerCase() === loggedUser.toLowerCase());
+
+            if (idx === -1) return;
+
+            if (accounts[idx].password !== oldPass) {
+                msgBox.className = "text-[10px] font-bold py-1.5 px-2.5 rounded-lg text-center bg-rose-500/15 text-rose-500";
+                msgBox.textContent = "Password lama tidak sesuai!";
+                msgBox.classList.remove('hidden');
+                return;
+            }
+
+            if (newPass.length < 4) {
+                msgBox.className = "text-[10px] font-bold py-1.5 px-2.5 rounded-lg text-center bg-rose-500/15 text-rose-500";
+                msgBox.textContent = "Password baru minimal 4 karakter!";
+                msgBox.classList.remove('hidden');
+                return;
+            }
+
+            if (newPass !== confirmPass) {
+                msgBox.className = "text-[10px] font-bold py-1.5 px-2.5 rounded-lg text-center bg-rose-500/15 text-rose-500";
+                msgBox.textContent = "Konfirmasi password baru tidak cocok!";
+                msgBox.classList.remove('hidden');
+                return;
+            }
+
+            accounts[idx].password = newPass;
+            saveMemberAccounts(accounts);
+
+            msgBox.className = "text-[10px] font-bold py-1.5 px-2.5 rounded-lg text-center bg-emerald-500/15 text-emerald-600 dark:text-emerald-400";
+            msgBox.textContent = "Password berhasil diperbarui!";
+            msgBox.classList.remove('hidden');
+
+            setTimeout(() => {
+                toggleMemberChangePassModal(false);
+            }, 1200);
+        }
+
+        function renderStampGrid(total = 0) {
             const grid = document.getElementById('stamp-grid');
             if (!grid) return;
             grid.innerHTML = '';
@@ -566,7 +776,7 @@
                     box.className = "aspect-square rounded-xl stamp-badge-active text-white flex flex-col items-center justify-center p-1.5 border border-amber-200/70 transition-all duration-300 scale-100 relative overflow-hidden group";
                     box.innerHTML = `
                         <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/25 backdrop-blur-sm flex items-center justify-center shadow-inner">
-                            <svg class="w-4 h-4 sm:w-4.5 sm:h-4.5 fill-current text-white drop-shadow" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 fill-current text-white drop-shadow" viewBox="0 0 24 24">
                                 <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>
                             </svg>
                         </div>
@@ -616,6 +826,13 @@
         }
 
         function claimCustomerStamp() {
+            const loggedUser = getActiveMemberUsername();
+            if (!loggedUser) return;
+
+            const accounts = getMemberAccounts();
+            const memberIdx = accounts.findIndex(acc => acc.username.toLowerCase() === loggedUser.toLowerCase());
+            if (memberIdx === -1) return;
+
             const codeInput = document.getElementById('claim-stamp-input').value.trim().toUpperCase();
 
             if (!codeInput) {
@@ -623,7 +840,7 @@
                 return;
             }
 
-            let currentStamps = getStampsCount();
+            let currentStamps = Number(accounts[memberIdx].stamps || 0);
             if (currentStamps >= 10) {
                 showStampMessage("Royal Card Anda sudah penuh (10/10)! Silakan tukarkan hadiah.", "amber");
                 return;
@@ -651,25 +868,35 @@
             }
 
             targetStamp.isRedeemed = true;
+            targetStamp.redeemedBy = loggedUser;
             targetStamp.redeemedAt = new Date().toISOString();
             localStorage.setItem('deepa_admin_generated_stamps', JSON.stringify(adminStamps));
 
             currentStamps += 1;
-            localStorage.setItem('deepa_customer_stamps', String(currentStamps));
+            accounts[memberIdx].stamps = currentStamps;
+            saveMemberAccounts(accounts);
 
-            renderStampGrid();
+            renderStampGrid(currentStamps);
             showStampMessage(`Berhasil! +1 Lencana Stamp ditambahkan (${currentStamps}/10).`, "emerald");
             document.getElementById('claim-stamp-input').value = '';
         }
 
         function redeemStampReward() {
+            const loggedUser = getActiveMemberUsername();
+            if (!loggedUser) return;
+
+            const accounts = getMemberAccounts();
+            const memberIdx = accounts.findIndex(acc => acc.username.toLowerCase() === loggedUser.toLowerCase());
+            if (memberIdx === -1) return;
+
             const phoneNumber = "6281717622225";
-            const message = "Halo Deepa Store, Royal Card saya sudah penuh (10/10 Stamp). Saya ingin menukarkan hadiah eksklusif saya. Mohon diproses ya kak!";
+            const message = `Halo Deepa Store, akun member *@${loggedUser}* telah mengumpulkan 10/10 Lencana Royal Card. Saya ingin menukarkan hadiah eksklusif saya. Mohon diproses ya kak!`;
             window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
             
-            localStorage.setItem('deepa_customer_stamps', '0');
-            renderStampGrid();
-            showStampMessage("Penukaran dikirim ke WhatsApp! Kartu stamp direset ke 0/10.", "emerald");
+            accounts[memberIdx].stamps = 0;
+            saveMemberAccounts(accounts);
+            renderStampGrid(0);
+            showStampMessage("Penukaran dikirim ke WhatsApp! Kartu stamp akun direset ke 0/10.", "emerald");
         }
 
         // ==========================================
