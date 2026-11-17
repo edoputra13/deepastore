@@ -208,7 +208,7 @@
                 </div>
             </div>
 
-            <!-- B. ROYAL STAMP CARD PRIBADI MEMBER (VERSI SLIM & TIPIS DENGAN TIER ICON) -->
+            <!-- B. ROYAL STAMP CARD PRIBADI MEMBER -->
             <div id="member-stamp-dashboard" class="hidden royal-card-frame max-w-[360px] mx-auto rounded-2xl p-4 relative overflow-hidden text-slate-100">
                 <div class="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-amber-400/70 to-transparent"></div>
 
@@ -254,7 +254,7 @@
                     <div id="stamp-progress-bar" class="h-full royal-gold-shimmer rounded-full transition-all duration-500" style="width: 0%;"></div>
                 </div>
 
-                <!-- Grid 10 Slot Tipis (Compact Height dengan Progressive Tier Icons Opsi 1) -->
+                <!-- Grid 10 Slot Tipis (Progressive Tier Icons Opsi 1) -->
                 <div id="stamp-grid" class="grid grid-cols-5 gap-1.5 mb-3"></div>
 
                 <p class="text-[8px] text-slate-400 text-center mb-2.5 leading-snug">
@@ -299,7 +299,7 @@
             </div>
         </section>
 
-        <!-- 3. JAJAN CATALOG VIEW (CLEAN FLAT CARDS TANPA SHADOW) -->
+        <!-- 3. JAJAN CATALOG VIEW -->
         <div id="jajan-view" class="view-section hidden w-full max-w-4xl mx-auto font-mono max-h-[75vh] overflow-y-auto px-2 py-4">
             <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5 justify-center"></div>
         </div>
@@ -422,7 +422,7 @@
         </div>
     </div>
 
-    <!-- Script Utama -->
+    <!-- Script Utama (Kompatibel Cloudflare Pages Functions + Neon PostgreSQL) -->
     <script>
         const PROXY_API_URL = "/api/products";
         const ROYAL_API_URL = "/api/products";
@@ -759,18 +759,16 @@
             }
         }
 
-        // RENDER STAMP GRID DENGAN OPSI 1 (PROGRESSIVE TIER ICONS)
         function renderStampGrid(total = 0) {
             const grid = document.getElementById('stamp-grid');
             if (!grid) return;
             grid.innerHTML = '';
 
-            // Definisi ikon SVG untuk tiap rentang slot (Opsi 1)
             const tierConfigs = [
-                { max: 3, tierClass: 'tier-bronze', label: 'STARTER', svg: '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>' }, // Slot 1-3: Bintang (Bronze)
-                { max: 6, tierClass: 'tier-silver', label: 'ELITE',   svg: '<path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>' }, // Slot 4-6: Berlian/Perisai (Silver)
-                { max: 9, tierClass: 'tier-gold',   label: 'ROYAL',   svg: '<path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>' }, // Slot 7-9: Mahkota (Gold)
-                { max: 10, tierClass: 'tier-gift',  label: 'GIFT',    svg: '<path d="M20 6h-2.18c.11-.31.18-.65.18-1a2.996 2.996 0 0 0-5.5-1.65l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/>'} // Slot 10: Gift Box (Emerald & Gold)
+                { max: 3, tierClass: 'tier-bronze', label: 'STARTER', svg: '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>' },
+                { max: 6, tierClass: 'tier-silver', label: 'ELITE',   svg: '<path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>' },
+                { max: 9, tierClass: 'tier-gold',   label: 'ROYAL',   svg: '<path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>' },
+                { max: 10, tierClass: 'tier-gift',  label: 'GIFT',    svg: '<path d="M20 6h-2.18c.11-.31.18-.65.18-1a2.996 2.996 0 0 0-5.5-1.65l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/>'}
             ];
 
             for (let i = 1; i <= 10; i++) {
