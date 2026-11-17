@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content">
-    <title>Deepa Store - Selected Work</title>
+    <title>DEEPA STORE</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS & JSZip -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -62,7 +63,21 @@
             box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(56, 189, 248, 0.12);
         }
 
-        /* CLEAN FLAT OBSIDIAN & GOLD ROYAL CARD (TANPA SHADOW) */
+        /* STUDIO PRO WORKSPACE GLASS */
+        .studio-workspace {
+            background: linear-gradient(155deg, rgba(15, 23, 42, 0.94) 0%, rgba(17, 24, 39, 0.95) 50%, rgba(15, 23, 42, 0.97) 100%);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1px solid rgba(56, 189, 248, 0.28);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+
+        .studio-panel-box {
+            background: rgba(30, 41, 59, 0.55);
+            border: 1px solid rgba(148, 163, 184, 0.16);
+        }
+
+        /* CLEAN FLAT OBSIDIAN & GOLD ROYAL CARD */
         .royal-card-frame {
             background: linear-gradient(160deg, rgba(15, 23, 42, 0.94) 0%, rgba(23, 37, 84, 0.92) 55%, rgba(15, 23, 42, 0.96) 100%);
             backdrop-filter: blur(24px);
@@ -74,16 +89,10 @@
             background: linear-gradient(135deg, #fde68a 0%, #f59e0b 45%, #d97706 100%);
         }
 
-        /* STAMP TIER GRADIENTS (OPSI 1) */
-        .tier-bronze {
-            background: linear-gradient(145deg, #d97706 0%, #b45309 60%, #78350f 100%);
-        }
-        .tier-silver {
-            background: linear-gradient(145deg, #cbd5e1 0%, #94a3b8 60%, #475569 100%);
-        }
-        .tier-gold {
-            background: linear-gradient(145deg, #fbbf24 0%, #d97706 60%, #92400e 100%);
-        }
+        /* STAMP TIER GRADIENTS */
+        .tier-bronze { background: linear-gradient(145deg, #d97706 0%, #b45309 60%, #78350f 100%); }
+        .tier-silver { background: linear-gradient(145deg, #cbd5e1 0%, #94a3b8 60%, #475569 100%); }
+        .tier-gold { background: linear-gradient(145deg, #fbbf24 0%, #d97706 60%, #92400e 100%); }
         .tier-gift {
             background: linear-gradient(145deg, #059669 0%, #047857 60%, #064e3b 100%);
             border: 1px solid rgba(252, 211, 77, 0.8) !important;
@@ -100,9 +109,21 @@
         }
         .platform-item:hover::before { transform: translateX(100%); }
 
-        ::-webkit-scrollbar { width: 6px; }
+        /* Checkerboard pattern untuk canvas transparan */
+        .canvas-checkerboard {
+            background-color: #0b1120;
+            background-image: 
+                linear-gradient(45deg, rgba(148, 163, 184, 0.12) 25%, transparent 25%), 
+                linear-gradient(-45deg, rgba(148, 163, 184, 0.12) 25%, transparent 25%), 
+                linear-gradient(45deg, transparent 75%, rgba(148, 163, 184, 0.12) 75%), 
+                linear-gradient(-45deg, transparent 75%, rgba(148, 163, 184, 0.12) 75%);
+            background-size: 16px 16px;
+            background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+        }
+
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(150, 150, 150, 0.3); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.35); border-radius: 4px; }
     </style>
 </head>
 <body class="antialiased overflow-x-hidden font-sans select-none text-slate-800 dark:text-slate-200 min-h-dvh w-full flex flex-col justify-between bg-gradient-to-b from-blue-400 to-blue-200 dark:from-slate-900 dark:via-indigo-950 dark:to-slate-900">
@@ -115,7 +136,7 @@
         <span class="text-white font-futuristic font-bold text-4xl sm:text-5xl tracking-[0.2em] sm:tracking-[0.3em] overflow-hidden -translate-y-[50%]">STORE</span>
     </div>
 
-    <!-- Background Gradients (Full Viewport Height) -->
+    <!-- Background Gradients -->
     <div id="bg-day" class="bg-layer fixed inset-0 min-h-[100lvh] bg-gradient-to-b from-blue-400 to-blue-200 opacity-100 dark:opacity-0 -z-30"></div>
     <div id="bg-night" class="bg-layer fixed inset-0 min-h-[100lvh] bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 opacity-0 dark:opacity-100 -z-30"></div>
     <div id="ambient-glow" class="fixed inset-0 min-h-[100lvh] pointer-events-none opacity-0 transition-opacity duration-700 -z-20 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.15)_0%,transparent_70%)]"></div>
@@ -123,7 +144,7 @@
     <!-- Canvas Efek Burung Terbang -->
     <canvas id="sky-canvas" class="fixed inset-0 min-h-[100lvh] pointer-events-none -z-10"></canvas>
 
-    <!-- Header Navigation (Home, About, Jajan, Contact) -->
+    <!-- Header Navigation -->
     <header class="w-full pt-4 pb-2 px-4 md:p-8 flex justify-between items-center z-50 font-mono text-[10px] md:text-xs uppercase tracking-widest transition-colors duration-1000 pointer-events-auto shrink-0">
         <div class="hidden lg:block w-1/4 text-left">INDONESIA</div>
         
@@ -142,7 +163,7 @@
     <!-- MAIN VIEW CONTAINER -->
     <div class="relative z-40 flex-1 flex flex-col justify-center items-center w-full px-4 sm:px-6 py-2">
 
-        <!-- 1. HOME VIEW (HERO UTAMA) -->
+        <!-- 1. HOME VIEW -->
         <main id="home-view" class="view-section flex flex-col items-center justify-center text-center">
             <div class="flex items-center gap-1 mb-2 md:mb-4 font-mono text-[10px] sm:text-xs md:text-sm tracking-widest uppercase transition-colors duration-1000 h-6">
                 <span id="typing-text"></span><span class="typing-cursor"></span>
@@ -153,14 +174,13 @@
             </h1>
         </main>
 
-        <!-- 2. ABOUT VIEW (SLIM MEMBER ACCESS & ROYAL STAMP CARD) -->
-        <section id="about-view" class="view-section hidden w-full mx-auto font-mono py-1">
+        <!-- 2. ABOUT VIEW -->
+        <section id="about-view" class="view-section hidden w-full mx-auto font-mono py-1 flex flex-col items-center">
             
             <!-- A. GERBANG LOGIN MEMBER -->
-            <div id="member-auth-card" class="royal-card-frame max-w-[320px] mx-auto rounded-2xl p-5 relative overflow-hidden text-center text-slate-100">
+            <div id="member-auth-card" class="royal-card-frame w-full max-w-[320px] mx-auto rounded-2xl p-5 relative overflow-hidden text-center text-slate-100">
                 <div class="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-amber-400/70 to-transparent"></div>
 
-                <!-- Badge Crown -->
                 <div class="w-10 h-10 rounded-xl royal-gold-shimmer text-slate-950 flex items-center justify-center mx-auto mb-3 border border-amber-200/50">
                     <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
                         <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>
@@ -209,10 +229,9 @@
             </div>
 
             <!-- B. ROYAL STAMP CARD PRIBADI MEMBER -->
-            <div id="member-stamp-dashboard" class="hidden royal-card-frame max-w-[360px] mx-auto rounded-2xl p-4 relative overflow-hidden text-slate-100">
+            <div id="member-stamp-dashboard" class="hidden royal-card-frame w-full max-w-[360px] mx-auto rounded-2xl p-4 relative overflow-hidden text-slate-100">
                 <div class="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-amber-400/70 to-transparent"></div>
 
-                <!-- Header Kartu Royal -->
                 <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-700/70">
                     <div class="flex items-center gap-2 text-left min-w-0">
                         <div class="w-8 h-8 rounded-lg royal-gold-shimmer text-slate-950 flex items-center justify-center shrink-0 border border-amber-200/50">
@@ -241,7 +260,6 @@
                     </div>
                 </div>
 
-                <!-- Sub-info & Counter Stamp -->
                 <div class="flex items-center justify-between text-[8px] mb-1">
                     <span class="text-slate-400 font-bold uppercase tracking-wider">Koleksi Lencana</span>
                     <span class="font-black text-white">
@@ -249,19 +267,16 @@
                     </span>
                 </div>
 
-                <!-- Progress Bar Emas Tipis -->
                 <div class="w-full h-1 bg-slate-950/80 rounded-full overflow-hidden mb-3 border border-slate-800">
                     <div id="stamp-progress-bar" class="h-full royal-gold-shimmer rounded-full transition-all duration-500" style="width: 0%;"></div>
                 </div>
 
-                <!-- Grid 10 Slot Tipis (Progressive Tier Icons Opsi 1) -->
                 <div id="stamp-grid" class="grid grid-cols-5 gap-1.5 mb-3"></div>
 
                 <p class="text-[8px] text-slate-400 text-center mb-2.5 leading-snug">
                     Masukkan kode <span class="text-amber-300 font-bold">DEEPA-XXXXXX</span> dari transaksi Anda.
                 </p>
 
-                <!-- Form Input Klaim Kode Redeem DEEPA -->
                 <div class="space-y-1.5 text-xs">
                     <div class="flex gap-1.5">
                         <input type="text" id="claim-stamp-input" autocomplete="off" placeholder="DEEPA-XXXXXX" class="w-full px-3 py-1.5 rounded-lg bg-slate-950/75 border border-slate-700/80 text-[10px] uppercase tracking-widest focus:outline-none focus:border-amber-400 text-white placeholder-slate-500">
@@ -272,7 +287,6 @@
                     <div id="stamp-msg" class="text-[8px] font-bold hidden py-1 px-2 rounded-lg text-center"></div>
                 </div>
 
-                <!-- Tombol Penukaran Hadiah Ketika 10 Stamp Penuh -->
                 <div id="reward-section" class="mt-2.5 hidden">
                     <button onclick="redeemStampReward()" class="w-full py-2 bg-emerald-500 hover:bg-emerald-600 text-white font-black uppercase tracking-widest rounded-lg text-[9px] transition-colors flex items-center justify-center gap-1.5">
                         <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1a2.996 2.996 0 0 0-5.5-1.65l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/></svg>
@@ -280,7 +294,6 @@
                     </button>
                 </div>
 
-                <!-- FORM UBAH PASSWORD MEMBER -->
                 <div id="member-change-pass-panel" class="hidden mt-3 pt-2.5 border-t border-slate-700/70 text-left">
                     <div class="flex items-center justify-between mb-1.5">
                         <h3 class="text-[9px] font-bold text-amber-300 uppercase tracking-wider">Ubah Password</h3>
@@ -297,20 +310,281 @@
                     </form>
                 </div>
             </div>
+
+            <!-- TOMBOL IKON PENSIL SEJAJAR KIRI CARD & TANPA SHADOW -->
+            <div id="studio-trigger-wrap" class="w-full max-w-[320px] mx-auto mt-3 flex justify-start">
+                <button onclick="switchView('studio')" title="Buka Watermark & Bulk Studio" aria-label="Buka Watermark Studio" class="group w-9 h-9 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-sky-400/45 hover:border-sky-300 text-sky-300 hover:text-white flex items-center justify-center shadow-none transition-all duration-300 hover:scale-105 active:scale-95">
+                    <svg class="w-4 h-4 text-sky-400 group-hover:text-sky-200 transition-transform duration-300 group-hover:-rotate-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 20h9"/>
+                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                    </svg>
+                </button>
+            </div>
         </section>
 
-        <!-- 3. JAJAN CATALOG VIEW -->
+        <!-- 3. WM EDIT STUDIO VIEW (SINGLE + BULK) -->
+        <section id="studio-view" class="view-section hidden w-full max-w-5xl mx-auto font-mono max-h-[85vh] overflow-y-auto px-1 py-1">
+            <div class="studio-workspace rounded-2xl p-3.5 sm:p-5 text-slate-100 relative overflow-hidden">
+                <!-- Garis Aksen Neon Atas -->
+                <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-sky-400 to-transparent opacity-80"></div>
+
+                <!-- Top Header Studio -->
+                <div class="flex flex-wrap items-center justify-between gap-2.5 pb-3 mb-3.5 border-b border-slate-700/70">
+                    <div class="flex items-center gap-2.5">
+                        <button onclick="switchView('about')" class="px-2.5 py-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-600/60 text-slate-200 text-[10px] font-bold uppercase tracking-wider transition-all flex items-center gap-1">
+                            <span>←</span>
+                            <span class="hidden sm:inline">Kembali</span>
+                        </button>
+                        <div class="flex items-center gap-2">
+                            <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-sky-400 to-indigo-600 text-slate-950 flex items-center justify-center font-black text-xs">
+                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 20h9"/>
+                                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h2 class="text-xs sm:text-sm font-black uppercase tracking-widest font-futuristic text-white">WM STUDIO PRO</h2>
+                                <p class="text-[8px] text-sky-300/80 uppercase tracking-wider">110 Fonts • Logo • Single & Bulk Edit</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mode Switcher (Single vs Bulk) -->
+                    <div class="flex items-center bg-slate-950/80 p-1 rounded-xl border border-slate-700/80">
+                        <button id="mode-single-btn" onclick="setStudioMode('single')" class="px-2.5 py-1 rounded-lg bg-sky-500 text-slate-950 font-black text-[9px] uppercase tracking-wider transition-all">
+                            1 Foto
+                        </button>
+                        <button id="mode-bulk-btn" onclick="setStudioMode('bulk')" class="px-2.5 py-1 rounded-lg text-slate-300 hover:text-white font-bold text-[9px] uppercase tracking-wider transition-all flex items-center gap-1">
+                            <span>Bulk Edit</span>
+                            <span id="bulk-count-badge" class="hidden px-1.5 py-0.2 rounded-full bg-amber-400 text-slate-950 text-[8px] font-black">0</span>
+                        </button>
+                    </div>
+
+                    <!-- Action Buttons (Upload & Download) -->
+                    <div class="flex items-center gap-2">
+                        <!-- Upload Single -->
+                        <label id="single-upload-wrap" class="cursor-pointer px-3 py-1.5 rounded-xl bg-sky-500/20 hover:bg-sky-500/30 border border-sky-400/40 text-sky-300 font-bold text-[10px] uppercase tracking-wider flex items-center gap-1.5 transition-all">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                            <span>Pilih Foto</span>
+                            <input type="file" id="studio-base-upload" accept="image/*" onchange="handleBaseImageUpload(event)" class="hidden">
+                        </label>
+
+                        <!-- Upload Bulk (Banyak Foto) -->
+                        <label id="bulk-upload-wrap" class="hidden cursor-pointer px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-amber-300 font-bold text-[10px] uppercase tracking-wider flex items-center gap-1.5 transition-all">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                            <span>+ Tambah Banyak Foto</span>
+                            <input type="file" id="studio-bulk-upload" accept="image/*" multiple onchange="handleBulkImagesUpload(event)" class="hidden">
+                        </label>
+
+                        <!-- Download Single -->
+                        <button id="single-download-btn" onclick="downloadStudioImage()" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:brightness-110 text-slate-950 font-black text-[10px] uppercase tracking-wider flex items-center gap-1.5 transition-all">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                            <span>Simpan PNG</span>
+                        </button>
+
+                        <!-- Download Bulk ZIP -->
+                        <button id="bulk-download-btn" onclick="downloadBulkZip()" class="hidden px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 hover:brightness-110 text-slate-950 font-black text-[10px] uppercase tracking-wider flex items-center gap-1.5 transition-all">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                            <span id="bulk-download-label">Unduh Semua (ZIP)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Grid Workspace Utama -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+                    
+                    <!-- KOLOM KIRI: AREA KANVAS UTAMA (7 Kolom) -->
+                    <div class="lg:col-span-7 flex flex-col">
+                        <div class="w-full rounded-2xl overflow-hidden border border-slate-700/80 canvas-checkerboard flex items-center justify-center relative min-h-[260px] sm:min-h-[360px]">
+                            <canvas id="studio-canvas" class="max-w-full max-h-[50vh] object-contain cursor-crosshair touch-none"></canvas>
+                            
+                            <!-- Badge Indikator Preview Bulk -->
+                            <div id="bulk-preview-badge" class="hidden absolute top-2.5 left-2.5 px-2.5 py-1 rounded-lg bg-slate-950/85 border border-amber-400/40 text-amber-300 text-[9px] font-bold pointer-events-none">
+                                Preview Foto <span id="bulk-active-index">1</span>/<span id="bulk-total-index">0</span>
+                            </div>
+
+                            <!-- Placeholder Elegan -->
+                            <div id="studio-empty-hint" class="absolute inset-0 flex flex-col items-center justify-center p-4 text-center pointer-events-none bg-slate-950/35">
+                                <div class="w-12 h-12 rounded-2xl bg-sky-500/15 text-sky-400 flex items-center justify-center mb-2.5 border border-sky-400/30">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                </div>
+                                <p id="empty-hint-title" class="text-xs font-bold text-white tracking-wide">Kanvas Editor Siap</p>
+                                <p id="empty-hint-sub" class="text-[9px] text-slate-400 max-w-xs mt-1">Klik <span class="text-sky-300 font-bold">"Pilih Foto"</span> di atas untuk mengunggah gambar, atau beralih ke <span class="text-amber-300 font-bold">Bulk Edit</span> untuk mengedit puluhan foto sekaligus.</p>
+                            </div>
+                        </div>
+
+                        <!-- Galeri Antrean Foto Bulk -->
+                        <div id="bulk-queue-panel" class="hidden mt-2.5 studio-panel-box rounded-xl p-2.5 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[9px] font-black uppercase tracking-wider text-amber-300">
+                                    Antrean Foto Bulk (<span id="bulk-queue-count">0</span> file)
+                                </span>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[8px] text-slate-400">Klik thumbnail untuk preview</span>
+                                    <button onclick="clearBulkImages()" class="text-[8px] text-rose-400 hover:underline font-bold">Hapus Semua</button>
+                                </div>
+                            </div>
+                            <div id="bulk-thumbnails-strip" class="flex items-center gap-2 overflow-x-auto pb-1 min-h-[54px]">
+                                <div class="text-[9px] text-slate-500 italic py-2 px-1">Belum ada foto ditambahkan. Klik "+ Tambah Banyak Foto" di kanan atas.</div>
+                            </div>
+                        </div>
+
+                        <!-- Toolbar Coretan -->
+                        <div id="draw-toolbar-panel" class="mt-2.5 studio-panel-box rounded-xl p-2 flex flex-wrap items-center justify-between gap-2">
+                            <div class="flex items-center gap-2">
+                                <button id="draw-mode-toggle" onclick="toggleDrawMode()" class="px-2.5 py-1.5 rounded-lg bg-sky-500 text-slate-950 text-[9px] font-black uppercase tracking-wider transition-all flex items-center gap-1">
+                                    <span>✎ Coret: ON</span>
+                                </button>
+                                
+                                <div class="flex items-center gap-1 bg-slate-950/70 px-2 py-1 rounded-lg border border-slate-700/70">
+                                    <input type="color" id="draw-color" value="#38bdf8" title="Warna Kuas" onchange="saveStudioPrefs()" class="w-5 h-5 rounded cursor-pointer border-0 bg-transparent">
+                                    <select id="draw-size" onchange="saveStudioPrefs()" class="bg-transparent text-[9px] font-bold text-slate-200 focus:outline-none cursor-pointer">
+                                        <option value="2" class="bg-slate-900">2px Tipis</option>
+                                        <option value="5" selected class="bg-slate-900">5px Normal</option>
+                                        <option value="12" class="bg-slate-900">12px Tebal</option>
+                                        <option value="24" class="bg-slate-900">24px Sensor</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-1.5">
+                                <button onclick="undoDrawStroke()" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-[9px] font-bold transition-colors">
+                                    ↶ Undo
+                                </button>
+                                <button onclick="clearDrawStrokes()" class="px-2.5 py-1.5 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 border border-rose-500/30 text-rose-300 text-[9px] font-bold transition-colors">
+                                    Hapus Coretan
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KOLOM KANAN: PANEL KONTROL PRO (5 Kolom) -->
+                    <div class="lg:col-span-5 space-y-2.5 text-left max-h-[62vh] overflow-y-auto pr-1">
+                        
+                        <!-- KARTU 1: TEKS WATERMARK & 110 FONT -->
+                        <div class="studio-panel-box rounded-xl p-3 space-y-2.5">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[9px] font-black uppercase tracking-widest text-amber-300 flex items-center gap-1.5">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                                    Teks & 110 Font
+                                </span>
+                                <label class="inline-flex items-center gap-1.5 text-[9px] font-bold text-slate-300 cursor-pointer select-none">
+                                    <input type="checkbox" id="wm-tiled" onchange="updateAndSaveStudio()" class="rounded accent-sky-400">
+                                    <span>Pola Penuh (Tiled)</span>
+                                </label>
+                            </div>
+
+                            <!-- Input Teks -->
+                            <input type="text" id="wm-text" value="DEEPA STORE" oninput="updateAndSaveStudio()" placeholder="Ketik teks watermark..." class="w-full px-3 py-1.5 rounded-lg bg-slate-950/85 border border-slate-700/80 text-xs font-bold text-white focus:outline-none focus:border-sky-400">
+
+                            <!-- Filter & Navigasi 110 Font -->
+                            <div class="space-y-1.5">
+                                <div class="flex items-center justify-between gap-1">
+                                    <input type="text" id="font-search-input" oninput="filterStudioFonts()" placeholder="Cari dari 110 font..." class="w-full px-2.5 py-1 rounded-lg bg-slate-950/70 border border-slate-700/70 text-[9px] text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-400">
+                                    <button type="button" onclick="stepFont(-1)" title="Font Sebelumnya" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[10px] font-bold border border-slate-700">◀</button>
+                                    <button type="button" onclick="stepFont(1)" title="Font Berikutnya" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-[10px] font-bold border border-slate-700">▶</button>
+                                </div>
+
+                                <select id="wm-font" onchange="onSelectStudioFont()" class="w-full px-2.5 py-1.5 rounded-lg bg-slate-950/90 border border-amber-400/35 text-[10px] font-bold text-amber-200 focus:outline-none cursor-pointer"></select>
+                            </div>
+
+                            <!-- Posisi & Warna -->
+                            <div class="grid grid-cols-12 gap-2 items-center">
+                                <div class="col-span-7">
+                                    <span class="block text-[8px] text-slate-400 uppercase mb-0.5">Posisi Teks</span>
+                                    <select id="wm-pos" onchange="updateAndSaveStudio()" class="w-full px-2 py-1 rounded-lg bg-slate-950/85 border border-slate-700 text-[9px] font-bold text-slate-200">
+                                        <option value="center">Tengah Gambar</option>
+                                        <option value="bottom-right" selected>Pojok Kanan Bawah</option>
+                                        <option value="bottom-left">Pojok Kiri Bawah</option>
+                                        <option value="top-right">Pojok Kanan Atas</option>
+                                        <option value="top-left">Pojok Kiri Atas</option>
+                                    </select>
+                                </div>
+                                <div class="col-span-5">
+                                    <span class="block text-[8px] text-slate-400 uppercase mb-0.5">Warna Teks</span>
+                                    <div class="flex items-center gap-1.5 bg-slate-950/85 border border-slate-700 rounded-lg px-2 py-0.5">
+                                        <input type="color" id="wm-color" value="#ffffff" onchange="updateAndSaveStudio()" class="w-5 h-5 rounded cursor-pointer border-0 bg-transparent">
+                                        <span id="wm-color-hex" class="text-[9px] text-slate-300 uppercase">#FFFFFF</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Slider Ukuran & Opasitas -->
+                            <div class="grid grid-cols-2 gap-2.5 pt-0.5">
+                                <div>
+                                    <div class="flex justify-between text-[8px] text-slate-400 uppercase">
+                                        <span>Ukuran</span>
+                                        <span class="text-sky-300 font-bold"><span id="wm-size-val">32</span>px</span>
+                                    </div>
+                                    <input type="range" id="wm-size" min="12" max="110" value="32" oninput="updateAndSaveStudio()" class="w-full accent-sky-400 cursor-pointer">
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[8px] text-slate-400 uppercase">
+                                        <span>Transparansi</span>
+                                        <span class="text-sky-300 font-bold"><span id="wm-opacity-val">80</span>%</span>
+                                    </div>
+                                    <input type="range" id="wm-opacity" min="10" max="100" value="80" oninput="updateAndSaveStudio()" class="w-full accent-sky-400 cursor-pointer">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- KARTU 2: LOGO OVERLAY -->
+                        <div class="studio-panel-box rounded-xl p-3 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[9px] font-black uppercase tracking-widest text-purple-300 flex items-center gap-1.5">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
+                                    Logo Overlay (PNG/JPG)
+                                </span>
+                                <button onclick="removeCustomLogo()" class="text-[8px] text-rose-400 hover:underline font-bold">Hapus Logo</button>
+                            </div>
+
+                            <input type="file" id="studio-logo-upload" accept="image/*" onchange="handleLogoUpload(event)" class="block w-full text-[9px] text-slate-300 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-[9px] file:font-bold file:uppercase file:bg-purple-500/80 file:text-white hover:file:bg-purple-500 cursor-pointer">
+
+                            <div class="grid grid-cols-3 gap-2 items-center pt-1">
+                                <div>
+                                    <span class="block text-[8px] text-slate-400 uppercase mb-0.5">Posisi</span>
+                                    <select id="logo-pos" onchange="updateAndSaveStudio()" class="w-full px-1.5 py-1 rounded-lg bg-slate-950/85 border border-slate-700 text-[9px] font-bold text-slate-200">
+                                        <option value="top-left" selected>Kiri Atas</option>
+                                        <option value="top-right">Kanan Atas</option>
+                                        <option value="bottom-left">Kiri Bawah</option>
+                                        <option value="bottom-right">Kanan Bawah</option>
+                                        <option value="center">Tengah</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="block text-[8px] text-slate-400 uppercase">Skala (<span id="logo-size-val">18</span>%)</span>
+                                    <input type="range" id="logo-size" min="5" max="65" value="18" oninput="updateAndSaveStudio()" class="w-full accent-purple-400 cursor-pointer">
+                                </div>
+                                <div>
+                                    <span class="block text-[8px] text-slate-400 uppercase">Opasitas (<span id="logo-opacity-val">90</span>%)</span>
+                                    <input type="range" id="logo-opacity" min="10" max="100" value="90" oninput="updateAndSaveStudio()" class="w-full accent-purple-400 cursor-pointer">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tombol Reset -->
+                        <div class="flex justify-end pt-0.5">
+                            <button onclick="resetStudioSettings()" class="text-[8px] text-slate-400 hover:text-rose-400 uppercase tracking-wider font-bold transition-colors">
+                                ↺ Reset Semua Pengaturan
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. JAJAN CATALOG VIEW -->
         <div id="jajan-view" class="view-section hidden w-full max-w-4xl mx-auto font-mono max-h-[75vh] overflow-y-auto px-2 py-4">
             <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5 justify-center"></div>
         </div>
 
-        <!-- 4. CONTACT VIEW -->
+        <!-- 5. CONTACT VIEW -->
         <div id="contact-view" class="view-section hidden w-full max-w-[460px] mx-auto font-mono text-center">
             <div class="futuristic-card rounded-xl p-5 sm:p-6 relative overflow-hidden">
                 <div class="absolute -top-14 -right-14 w-32 h-32 bg-sky-400/20 rounded-full blur-3xl pointer-events-none"></div>
                 <div class="absolute -bottom-14 -left-14 w-32 h-32 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
-                <!-- Header Card: Judul & Ikon Admin Sejajar -->
                 <div class="relative flex items-center justify-center mb-4">
                     <h2 class="text-lg sm:text-xl font-black text-slate-900 dark:text-white uppercase tracking-wider font-futuristic">Hubungi Kami</h2>
                     
@@ -386,7 +660,6 @@
                 </div>
             </div>
 
-            <!-- Ringkasan Deskripsi + Tombol Lihat Semua -->
             <div class="mb-4 bg-white/60 dark:bg-slate-800/50 border border-sky-100 dark:border-slate-700/70 rounded-lg p-3 overflow-hidden">
                 <p id="modal-desc" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line break-words">Layanan digital siap pakai kualitas terbaik dari Deepa Store.</p>
                 <button id="toggle-desc-btn" onclick="toggleDescription()" class="hidden mt-1.5 text-[10px] font-bold text-sky-600 dark:text-sky-400 hover:underline inline-flex items-center gap-1 focus:outline-none">
@@ -422,7 +695,7 @@
         </div>
     </div>
 
-    <!-- Script Utama (Kompatibel Cloudflare Pages Functions + Neon PostgreSQL) -->
+    <!-- Script Utama -->
     <script>
         const PROXY_API_URL = "/api/products";
         const ROYAL_API_URL = "/api/products";
@@ -431,6 +704,85 @@
             "Prefer": "return=representation"
         };
 
+        // ==========================================
+        // DAFTAR 110 FONT KEREN (GOOGLE FONTS DYNAMIC)
+        // ==========================================
+        const STUDIO_FONT_CATALOG = [
+            "Orbitron", "Audiowide", "Exo 2", "Rajdhani", "Chakra Petch", "Syncopate", "Michroma", "Electrolize", "Share Tech Mono", "Syne",
+            "Space Grotesk", "Space Mono", "Oxanium", "Quantico", "Goldman", "Bruno Ace SC", "Iceland", "VT323", "Press Start 2P", "Silkscreen",
+            "Bebas Neue", "Anton", "Oswald", "Righteous", "Russo One", "Black Ops One", "Bungee", "Bungee Shade", "Archivo Black", "Teko",
+            "Staatliches", "Fjalla One", "Passion One", "Titan One", "Luckiest Guy", "Bangers", "Alfa Slab One", "Ultra", "Fugaz One", "Racing Sans One",
+            "Cinzel", "Cinzel Decorative", "Playfair Display", "Cormorant Garamond", "Bodoni Moda", "Prata", "DM Serif Display", "Abril Fatface", "Yeseva One", "Marcellus",
+            "Libre Baskerville", "Lora", "Merriweather", "Crimson Pro", "Spectral", "Cardo", "Philosopher", "Unna", "Gilda Display", "Forum",
+            "Dancing Script", "Great Vibes", "Pacifico", "Alex Brush", "Allura", "Satisfy", "Sacramento", "Kaushan Script", "Caveat", "Permanent Marker",
+            "Rock Salt", "Shadows Into Light", "Indie Flower", "Amatic SC", "Patrick Hand", "Courgette", "Lobster", "Lobster Two", "Yellowtail", "Cookie",
+            "Mr Dafoe", "Pinyon Script", "Tangerine", "Parisienne", "Marck Script", "Bad Script", "Kalam", "Architects Daughter", "Gloria Hallelujah", "Gochi Hand",
+            "Montserrat", "Poppins", "Inter", "Raleway", "Quicksand", "Nunito", "Rubik", "Work Sans", "Plus Jakarta Sans", "Outfit",
+            "Manrope", "Urbanist", "Josefin Sans", "Comfortaa", "Fredoka", "Kanit", "Prompt", "Barlow Condensed", "Saira Condensed", "League Spartan"
+        ];
+
+        const loadedFontSet = new Set(["Orbitron", "Cinzel", "Space Mono", "Inter"]);
+
+        function ensureFontLoaded(fontName) {
+            if (!fontName || loadedFontSet.has(fontName)) return Promise.resolve();
+            loadedFontSet.add(fontName);
+            const encoded = fontName.replace(/ /g, '+');
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = `https://fonts.googleapis.com/css2?family=${encoded}:wght@400;700&display=swap`;
+            document.head.appendChild(link);
+            return document.fonts.load(`bold 28px "${fontName}"`).catch(() => {});
+        }
+
+        function populateFontDropdown(filterText = '') {
+            const select = document.getElementById('wm-font');
+            if (!select) return;
+            const currentVal = select.value || 'Orbitron';
+            const keyword = filterText.trim().toLowerCase();
+            const filtered = STUDIO_FONT_CATALOG.filter(f => f.toLowerCase().includes(keyword));
+
+            select.innerHTML = '';
+            const listToRender = filtered.length > 0 ? filtered : STUDIO_FONT_CATALOG;
+
+            listToRender.forEach((fontName, idx) => {
+                const opt = document.createElement('option');
+                opt.value = fontName;
+                opt.textContent = `${idx + 1}. ${fontName}`;
+                opt.className = "bg-slate-900 text-slate-100";
+                select.appendChild(opt);
+            });
+
+            if (listToRender.includes(currentVal)) {
+                select.value = currentVal;
+            }
+        }
+
+        function filterStudioFonts() {
+            const q = document.getElementById('font-search-input').value;
+            populateFontDropdown(q);
+            onSelectStudioFont();
+        }
+
+        function stepFont(dir) {
+            const select = document.getElementById('wm-font');
+            if (!select || select.options.length === 0) return;
+            let nextIdx = select.selectedIndex + dir;
+            if (nextIdx < 0) nextIdx = select.options.length - 1;
+            if (nextIdx >= select.options.length) nextIdx = 0;
+            select.selectedIndex = nextIdx;
+            onSelectStudioFont();
+        }
+
+        async function onSelectStudioFont() {
+            const fontName = document.getElementById('wm-font').value;
+            await ensureFontLoaded(fontName);
+            updateAndSaveStudio();
+            setTimeout(renderStudioCanvas, 180);
+        }
+
+        // ==========================================
+        // WAKTU & TEMA OTOMATIS
+        // ==========================================
         function updateThemeBasedOnTime() {
             const options = { timeZone: 'Asia/Jakarta', hour: 'numeric', hour12: false };
             const formatter = new Intl.DateTimeFormat('en-US', options);
@@ -457,9 +809,11 @@
         setInterval(updateThemeBasedOnTime, 60000);
 
         window.addEventListener('DOMContentLoaded', () => {
+            populateFontDropdown();
             checkMemberSession();
+            initStudioFromLocalStorage();
             const path = window.location.pathname.replace('/', '');
-            if (['about', 'jajan', 'contact'].includes(path)) {
+            if (['about', 'jajan', 'contact', 'studio'].includes(path)) {
                 switchView(path, false);
             }
         });
@@ -550,19 +904,22 @@
         function switchView(viewName, updateHistory = true) {
             if (viewName === 'jajan') fetchAndRenderProducts(); 
             if (viewName === 'about') checkMemberSession();
+            if (viewName === 'studio') renderStudioCanvas();
 
             const views = {
                 home: document.getElementById('home-view'),
                 about: document.getElementById('about-view'),
+                studio: document.getElementById('studio-view'),
                 jajan: document.getElementById('jajan-view'),
                 contact: document.getElementById('contact-view')
             };
 
             const navLinks = document.querySelectorAll('.nav-link');
             const ambientGlow = document.getElementById('ambient-glow');
+            const activeNavTarget = viewName === 'studio' ? 'about' : viewName;
 
             navLinks.forEach(link => {
-                if (link.dataset.nav === viewName) {
+                if (link.dataset.nav === activeNavTarget) {
                     link.classList.add('text-sky-400', 'font-semibold');
                     link.classList.remove('font-medium');
                 } else {
@@ -603,13 +960,598 @@
 
         window.addEventListener('popstate', () => {
             const path = window.location.pathname.replace('/', '') || 'home';
-            if (['home', 'about', 'jajan', 'contact'].includes(path)) {
+            if (['home', 'about', 'jajan', 'contact', 'studio'].includes(path)) {
                 switchView(path, false);
             }
         });
 
         // ==========================================
-        // SISTEM AKUN MEMBER & PROGRESSIVE ROYAL STAMP (OPSI 1)
+        // WM EDIT STUDIO LOGIC (SINGLE + BULK)
+        // ==========================================
+        const STUDIO_STORAGE_KEY = 'deepa_watermark_studio_v2';
+        let studioMode = 'single';
+        let studioBaseImg = null;
+        let studioLogoImg = null;
+        let studioLogoDataUrl = '';
+        let studioStrokes = [];
+        let currentStroke = null;
+        let isDrawingActive = true;
+        let isPointerDown = false;
+
+        let bulkImageList = [];
+        let activeBulkIndex = 0;
+
+        function setStudioMode(mode) {
+            studioMode = mode;
+            const singleBtn = document.getElementById('mode-single-btn');
+            const bulkBtn = document.getElementById('mode-bulk-btn');
+            const singleUpload = document.getElementById('single-upload-wrap');
+            const bulkUpload = document.getElementById('bulk-upload-wrap');
+            const singleDownload = document.getElementById('single-download-btn');
+            const bulkDownload = document.getElementById('bulk-download-btn');
+            const bulkQueuePanel = document.getElementById('bulk-queue-panel');
+            const bulkPreviewBadge = document.getElementById('bulk-preview-badge');
+            const emptyTitle = document.getElementById('empty-hint-title');
+            const emptySub = document.getElementById('empty-hint-sub');
+
+            if (mode === 'bulk') {
+                singleBtn.className = 'px-2.5 py-1 rounded-lg text-slate-300 hover:text-white font-bold text-[9px] uppercase tracking-wider transition-all';
+                bulkBtn.className = 'px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 font-black text-[9px] uppercase tracking-wider transition-all flex items-center gap-1';
+
+                singleUpload.classList.add('hidden');
+                bulkUpload.classList.remove('hidden');
+                singleDownload.classList.add('hidden');
+                bulkDownload.classList.remove('hidden');
+                bulkQueuePanel.classList.remove('hidden');
+
+                if (bulkImageList.length > 0) {
+                    document.getElementById('studio-empty-hint').classList.add('hidden');
+                    bulkPreviewBadge.classList.remove('hidden');
+                } else {
+                    document.getElementById('studio-empty-hint').classList.remove('hidden');
+                    bulkPreviewBadge.classList.add('hidden');
+                    emptyTitle.textContent = 'Mode Bulk Edit Aktif';
+                    emptySub.innerHTML = 'Klik <span class="text-amber-300 font-bold">"+ Tambah Banyak Foto"</span> di atas untuk mengunggah puluhan gambar sekaligus.';
+                }
+            } else {
+                singleBtn.className = 'px-2.5 py-1 rounded-lg bg-sky-500 text-slate-950 font-black text-[9px] uppercase tracking-wider transition-all';
+                bulkBtn.className = 'px-2.5 py-1 rounded-lg text-slate-300 hover:text-white font-bold text-[9px] uppercase tracking-wider transition-all flex items-center gap-1';
+
+                singleUpload.classList.remove('hidden');
+                bulkUpload.classList.add('hidden');
+                singleDownload.classList.remove('hidden');
+                bulkDownload.classList.add('hidden');
+                bulkQueuePanel.classList.add('hidden');
+                bulkPreviewBadge.classList.add('hidden');
+
+                if (studioBaseImg || studioStrokes.length > 0) {
+                    document.getElementById('studio-empty-hint').classList.add('hidden');
+                } else {
+                    document.getElementById('studio-empty-hint').classList.remove('hidden');
+                    emptyTitle.textContent = 'Kanvas Editor Siap';
+                    emptySub.innerHTML = 'Klik <span class="text-sky-300 font-bold">"Pilih Foto"</span> di atas untuk mengunggah gambar, atau beralih ke <span class="text-amber-300 font-bold">Bulk Edit</span> untuk mengedit puluhan foto sekaligus.';
+                }
+            }
+            renderStudioCanvas();
+        }
+
+        function handleBulkImagesUpload(e) {
+            const files = Array.from(e.target.files || []);
+            if (files.length === 0) return;
+
+            let loadedCount = 0;
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        bulkImageList.push({
+                            id: Date.now() + Math.random(),
+                            name: file.name,
+                            img: img,
+                            thumbUrl: ev.target.result
+                        });
+                        loadedCount++;
+                        if (loadedCount === files.length) {
+                            updateBulkQueueUI();
+                            renderStudioCanvas();
+                        }
+                    };
+                    img.src = ev.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+            e.target.value = '';
+        }
+
+        function updateBulkQueueUI() {
+            const strip = document.getElementById('bulk-thumbnails-strip');
+            const badge = document.getElementById('bulk-count-badge');
+            const queueCount = document.getElementById('bulk-queue-count');
+            const previewBadge = document.getElementById('bulk-preview-badge');
+            const activeIdxText = document.getElementById('bulk-active-index');
+            const totalIdxText = document.getElementById('bulk-total-index');
+
+            const total = bulkImageList.length;
+            queueCount.textContent = total;
+            totalIdxText.textContent = total;
+
+            if (total > 0) {
+                badge.textContent = total;
+                badge.classList.remove('hidden');
+                document.getElementById('studio-empty-hint').classList.add('hidden');
+                previewBadge.classList.remove('hidden');
+                if (activeBulkIndex >= total) activeBulkIndex = total - 1;
+                activeIdxText.textContent = activeBulkIndex + 1;
+            } else {
+                badge.classList.add('hidden');
+                previewBadge.classList.add('hidden');
+                if (studioMode === 'bulk') {
+                    document.getElementById('studio-empty-hint').classList.remove('hidden');
+                }
+                strip.innerHTML = `<div class="text-[9px] text-slate-500 italic py-2 px-1">Belum ada foto ditambahkan. Klik "+ Tambah Banyak Foto" di kanan atas.</div>`;
+                return;
+            }
+
+            strip.innerHTML = '';
+            bulkImageList.forEach((item, idx) => {
+                const isSelected = idx === activeBulkIndex;
+                const card = document.createElement('div');
+                card.className = `relative shrink-0 w-14 h-14 rounded-lg overflow-hidden border-2 cursor-pointer transition-all group ${isSelected ? 'border-amber-400 scale-105 shadow-md shadow-amber-400/20' : 'border-slate-700 opacity-75 hover:opacity-100'}`;
+                card.onclick = () => {
+                    activeBulkIndex = idx;
+                    updateBulkQueueUI();
+                    renderStudioCanvas();
+                };
+
+                card.innerHTML = `
+                    <img src="${item.thumbUrl}" alt="${item.name}" class="w-full h-full object-cover">
+                    <span class="absolute bottom-0.5 left-0.5 px-1 rounded bg-black/75 text-[8px] font-bold text-white">${idx + 1}</span>
+                    <button type="button" onclick="removeBulkImageItem(event, ${idx})" title="Hapus foto ini" class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-rose-600/90 text-white text-[9px] font-bold flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">✕</button>
+                `;
+                strip.appendChild(card);
+            });
+        }
+
+        function removeBulkImageItem(e, idx) {
+            e.stopPropagation();
+            bulkImageList.splice(idx, 1);
+            if (activeBulkIndex >= bulkImageList.length) {
+                activeBulkIndex = Math.max(0, bulkImageList.length - 1);
+            }
+            updateBulkQueueUI();
+            renderStudioCanvas();
+        }
+
+        function clearBulkImages() {
+            bulkImageList = [];
+            activeBulkIndex = 0;
+            updateBulkQueueUI();
+            renderStudioCanvas();
+        }
+
+        async function initStudioFromLocalStorage() {
+            const raw = localStorage.getItem(STUDIO_STORAGE_KEY);
+            if (raw) {
+                try {
+                    const prefs = JSON.parse(raw);
+                    if (prefs.wmText !== undefined) document.getElementById('wm-text').value = prefs.wmText;
+                    if (prefs.wmFont) {
+                        await ensureFontLoaded(prefs.wmFont);
+                        document.getElementById('wm-font').value = prefs.wmFont;
+                    }
+                    if (prefs.wmPos) document.getElementById('wm-pos').value = prefs.wmPos;
+                    if (prefs.wmColor) {
+                        document.getElementById('wm-color').value = prefs.wmColor;
+                        document.getElementById('wm-color-hex').textContent = prefs.wmColor.toUpperCase();
+                    }
+                    if (prefs.wmSize) {
+                        document.getElementById('wm-size').value = prefs.wmSize;
+                        document.getElementById('wm-size-val').textContent = prefs.wmSize;
+                    }
+                    if (prefs.wmOpacity) {
+                        document.getElementById('wm-opacity').value = prefs.wmOpacity;
+                        document.getElementById('wm-opacity-val').textContent = prefs.wmOpacity;
+                    }
+                    if (prefs.wmTiled !== undefined) document.getElementById('wm-tiled').checked = prefs.wmTiled;
+                    if (prefs.logoPos) document.getElementById('logo-pos').value = prefs.logoPos;
+                    if (prefs.logoSize) {
+                        document.getElementById('logo-size').value = prefs.logoSize;
+                        document.getElementById('logo-size-val').textContent = prefs.logoSize;
+                    }
+                    if (prefs.logoOpacity) {
+                        document.getElementById('logo-opacity').value = prefs.logoOpacity;
+                        document.getElementById('logo-opacity-val').textContent = prefs.logoOpacity;
+                    }
+                    if (prefs.drawColor) document.getElementById('draw-color').value = prefs.drawColor;
+                    if (prefs.drawSize) document.getElementById('draw-size').value = prefs.drawSize;
+
+                    if (prefs.logoDataUrl) {
+                        studioLogoDataUrl = prefs.logoDataUrl;
+                        const img = new Image();
+                        img.onload = () => {
+                            studioLogoImg = img;
+                            renderStudioCanvas();
+                        };
+                        img.src = studioLogoDataUrl;
+                    }
+                } catch (e) {}
+            }
+            setupStudioPointerEvents();
+            renderStudioCanvas();
+        }
+
+        function saveStudioPrefs() {
+            const prefs = {
+                wmText: document.getElementById('wm-text').value,
+                wmFont: document.getElementById('wm-font').value,
+                wmPos: document.getElementById('wm-pos').value,
+                wmColor: document.getElementById('wm-color').value,
+                wmSize: document.getElementById('wm-size').value,
+                wmOpacity: document.getElementById('wm-opacity').value,
+                wmTiled: document.getElementById('wm-tiled').checked,
+                logoPos: document.getElementById('logo-pos').value,
+                logoSize: document.getElementById('logo-size').value,
+                logoOpacity: document.getElementById('logo-opacity').value,
+                drawColor: document.getElementById('draw-color').value,
+                drawSize: document.getElementById('draw-size').value,
+                logoDataUrl: studioLogoDataUrl
+            };
+            try {
+                localStorage.setItem(STUDIO_STORAGE_KEY, JSON.stringify(prefs));
+            } catch (e) {
+                prefs.logoDataUrl = '';
+                localStorage.setItem(STUDIO_STORAGE_KEY, JSON.stringify(prefs));
+            }
+        }
+
+        function updateAndSaveStudio() {
+            document.getElementById('wm-size-val').textContent = document.getElementById('wm-size').value;
+            document.getElementById('wm-opacity-val').textContent = document.getElementById('wm-opacity').value;
+            document.getElementById('logo-size-val').textContent = document.getElementById('logo-size').value;
+            document.getElementById('logo-opacity-val').textContent = document.getElementById('logo-opacity').value;
+            document.getElementById('wm-color-hex').textContent = document.getElementById('wm-color').value.toUpperCase();
+            saveStudioPrefs();
+            renderStudioCanvas();
+        }
+
+        function handleBaseImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                const img = new Image();
+                img.onload = () => {
+                    studioBaseImg = img;
+                    studioStrokes = [];
+                    document.getElementById('studio-empty-hint').classList.add('hidden');
+                    renderStudioCanvas();
+                };
+                img.src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function handleLogoUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                const img = new Image();
+                img.onload = () => {
+                    const off = document.createElement('canvas');
+                    const maxDim = 300;
+                    let w = img.width;
+                    let h = img.height;
+                    if (w > maxDim || h > maxDim) {
+                        if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
+                        else { w = Math.round((w * maxDim) / h); h = maxDim; }
+                    }
+                    off.width = w;
+                    off.height = h;
+                    off.getContext('2d').drawImage(img, 0, 0, w, h);
+                    studioLogoDataUrl = off.toDataURL('image/png');
+                    studioLogoImg = img;
+                    updateAndSaveStudio();
+                };
+                img.src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeCustomLogo() {
+            studioLogoImg = null;
+            studioLogoDataUrl = '';
+            document.getElementById('studio-logo-upload').value = '';
+            updateAndSaveStudio();
+        }
+
+        function resetStudioSettings() {
+            localStorage.removeItem(STUDIO_STORAGE_KEY);
+            studioLogoImg = null;
+            studioLogoDataUrl = '';
+            studioStrokes = [];
+            document.getElementById('font-search-input').value = '';
+            populateFontDropdown();
+            document.getElementById('wm-text').value = 'DEEPA STORE';
+            document.getElementById('wm-font').value = 'Orbitron';
+            document.getElementById('wm-pos').value = 'bottom-right';
+            document.getElementById('wm-color').value = '#ffffff';
+            document.getElementById('wm-size').value = 32;
+            document.getElementById('wm-opacity').value = 80;
+            document.getElementById('wm-tiled').checked = false;
+            document.getElementById('logo-pos').value = 'top-left';
+            document.getElementById('logo-size').value = 18;
+            document.getElementById('logo-opacity').value = 90;
+            updateAndSaveStudio();
+        }
+
+        function toggleDrawMode() {
+            isDrawingActive = !isDrawingActive;
+            const btn = document.getElementById('draw-mode-toggle');
+            const canvas = document.getElementById('studio-canvas');
+            if (isDrawingActive) {
+                btn.innerHTML = '<span>✎ Coret: ON</span>';
+                btn.className = 'px-2.5 py-1.5 rounded-lg bg-sky-500 text-slate-950 text-[9px] font-black uppercase tracking-wider transition-all flex items-center gap-1';
+                canvas.style.cursor = 'crosshair';
+            } else {
+                btn.innerHTML = '<span>✎ Coret: OFF</span>';
+                btn.className = 'px-2.5 py-1.5 rounded-lg bg-slate-800 text-slate-400 border border-slate-700 text-[9px] font-black uppercase tracking-wider transition-all flex items-center gap-1';
+                canvas.style.cursor = 'default';
+            }
+        }
+
+        function undoDrawStroke() {
+            studioStrokes.pop();
+            renderStudioCanvas();
+        }
+
+        function clearDrawStrokes() {
+            studioStrokes = [];
+            renderStudioCanvas();
+        }
+
+        function setupStudioPointerEvents() {
+            const canvas = document.getElementById('studio-canvas');
+            if (!canvas) return;
+
+            const getCanvasCoords = (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                return {
+                    x: ((clientX - rect.left) * scaleX) / canvas.width,
+                    y: ((clientY - rect.top) * scaleY) / canvas.height
+                };
+            };
+
+            const startDraw = (e) => {
+                if (!isDrawingActive) return;
+                e.preventDefault();
+                document.getElementById('studio-empty-hint').classList.add('hidden');
+                isPointerDown = true;
+                const pt = getCanvasCoords(e);
+                currentStroke = {
+                    color: document.getElementById('draw-color').value,
+                    baseSize: Number(document.getElementById('draw-size').value),
+                    points: [pt]
+                };
+                studioStrokes.push(currentStroke);
+                renderStudioCanvas();
+            };
+
+            const moveDraw = (e) => {
+                if (!isPointerDown || !isDrawingActive || !currentStroke) return;
+                e.preventDefault();
+                const pt = getCanvasCoords(e);
+                currentStroke.points.push(pt);
+                renderStudioCanvas();
+            };
+
+            const endDraw = () => {
+                isPointerDown = false;
+                currentStroke = null;
+            };
+
+            canvas.addEventListener('mousedown', startDraw);
+            canvas.addEventListener('mousemove', moveDraw);
+            window.addEventListener('mouseup', endDraw);
+
+            canvas.addEventListener('touchstart', startDraw, { passive: false });
+            canvas.addEventListener('touchmove', moveDraw, { passive: false });
+            window.addEventListener('touchend', endDraw);
+        }
+
+        function drawCompositionToCanvas(targetCanvas, targetBaseImg) {
+            const sCtx = targetCanvas.getContext('2d');
+
+            if (targetBaseImg) {
+                targetCanvas.width = targetBaseImg.width;
+                targetCanvas.height = targetBaseImg.height;
+                sCtx.clearRect(0, 0, targetCanvas.width, targetCanvas.height);
+                sCtx.drawImage(targetBaseImg, 0, 0);
+            } else {
+                targetCanvas.width = 800;
+                targetCanvas.height = 500;
+                sCtx.fillStyle = '#090d16';
+                sCtx.fillRect(0, 0, targetCanvas.width, targetCanvas.height);
+            }
+
+            const scaleFactor = Math.max(targetCanvas.width / 800, 0.8);
+
+            // 1. Coret-Coret Layer
+            studioStrokes.forEach(stroke => {
+                if (stroke.points.length < 1) return;
+                sCtx.save();
+                sCtx.strokeStyle = stroke.color;
+                sCtx.lineWidth = stroke.baseSize * scaleFactor;
+                sCtx.lineCap = 'round';
+                sCtx.lineJoin = 'round';
+                sCtx.beginPath();
+                sCtx.moveTo(stroke.points[0].x * targetCanvas.width, stroke.points[0].y * targetCanvas.height);
+                for (let i = 1; i < stroke.points.length; i++) {
+                    sCtx.lineTo(stroke.points[i].x * targetCanvas.width, stroke.points[i].y * targetCanvas.height);
+                }
+                if (stroke.points.length === 1) {
+                    sCtx.lineTo(stroke.points[0].x * targetCanvas.width + 0.1, stroke.points[0].y * targetCanvas.height + 0.1);
+                }
+                sCtx.stroke();
+                sCtx.restore();
+            });
+
+            // 2. Logo Overlay Layer
+            if (studioLogoImg) {
+                const logoScalePct = Number(document.getElementById('logo-size').value) / 100;
+                const logoOpacity = Number(document.getElementById('logo-opacity').value) / 100;
+                const logoPos = document.getElementById('logo-pos').value;
+
+                const targetW = targetCanvas.width * logoScalePct;
+                const ratio = studioLogoImg.height / studioLogoImg.width;
+                const targetH = targetW * ratio;
+                const pad = 24 * scaleFactor;
+
+                let lx = pad;
+                let ly = pad;
+                if (logoPos === 'top-right') { lx = targetCanvas.width - targetW - pad; ly = pad; }
+                else if (logoPos === 'bottom-left') { lx = pad; ly = targetCanvas.height - targetH - pad; }
+                else if (logoPos === 'bottom-right') { lx = targetCanvas.width - targetW - pad; ly = targetCanvas.height - targetH - pad; }
+                else if (logoPos === 'center') { lx = (targetCanvas.width - targetW) / 2; ly = (targetCanvas.height - targetH) / 2; }
+
+                sCtx.save();
+                sCtx.globalAlpha = logoOpacity;
+                sCtx.drawImage(studioLogoImg, lx, ly, targetW, targetH);
+                sCtx.restore();
+            }
+
+            // 3. Teks Watermark Layer
+            const wmText = document.getElementById('wm-text').value.trim();
+            if (wmText) {
+                const wmFontName = document.getElementById('wm-font').value || 'Orbitron';
+                const wmColor = document.getElementById('wm-color').value;
+                const wmSize = Number(document.getElementById('wm-size').value) * scaleFactor;
+                const wmOpacity = Number(document.getElementById('wm-opacity').value) / 100;
+                const wmPos = document.getElementById('wm-pos').value;
+                const isTiled = document.getElementById('wm-tiled').checked;
+
+                sCtx.save();
+                sCtx.globalAlpha = wmOpacity;
+                sCtx.font = `bold ${wmSize}px "${wmFontName}", sans-serif`;
+                sCtx.fillStyle = wmColor;
+                sCtx.shadowColor = 'rgba(0,0,0,0.5)';
+                sCtx.shadowBlur = 5 * scaleFactor;
+
+                if (isTiled) {
+                    sCtx.textAlign = 'center';
+                    sCtx.textBaseline = 'middle';
+                    const stepX = sCtx.measureText(wmText).width + (85 * scaleFactor);
+                    const stepY = wmSize * 3.2;
+                    for (let y = stepY / 2; y < targetCanvas.height + stepY; y += stepY) {
+                        for (let x = 0; x < targetCanvas.width + stepX; x += stepX) {
+                            sCtx.save();
+                            sCtx.translate(x, y);
+                            sCtx.rotate(-22 * Math.PI / 180);
+                            sCtx.fillText(wmText, 0, 0);
+                            sCtx.restore();
+                        }
+                    }
+                } else {
+                    const pad = 26 * scaleFactor;
+                    let tx = targetCanvas.width / 2;
+                    let ty = targetCanvas.height / 2;
+                    sCtx.textAlign = 'center';
+                    sCtx.textBaseline = 'middle';
+
+                    if (wmPos === 'bottom-right') {
+                        sCtx.textAlign = 'right';
+                        sCtx.textBaseline = 'bottom';
+                        tx = targetCanvas.width - pad;
+                        ty = targetCanvas.height - pad;
+                    } else if (wmPos === 'bottom-left') {
+                        sCtx.textAlign = 'left';
+                        sCtx.textBaseline = 'bottom';
+                        tx = pad;
+                        ty = targetCanvas.height - pad;
+                    } else if (wmPos === 'top-right') {
+                        sCtx.textAlign = 'right';
+                        sCtx.textBaseline = 'top';
+                        tx = targetCanvas.width - pad;
+                        ty = pad;
+                    } else if (wmPos === 'top-left') {
+                        sCtx.textAlign = 'left';
+                        sCtx.textBaseline = 'top';
+                        tx = pad;
+                        ty = pad;
+                    }
+                    sCtx.fillText(wmText, tx, ty);
+                }
+                sCtx.restore();
+            }
+        }
+
+        function renderStudioCanvas() {
+            const canvas = document.getElementById('studio-canvas');
+            if (!canvas) return;
+            const activeImg = studioMode === 'bulk'
+                ? (bulkImageList[activeBulkIndex]?.img || null)
+                : studioBaseImg;
+            drawCompositionToCanvas(canvas, activeImg);
+        }
+
+        function downloadStudioImage() {
+            const canvas = document.getElementById('studio-canvas');
+            const link = document.createElement('a');
+            link.download = `deepa-wm-${Date.now()}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        async function downloadBulkZip() {
+            if (bulkImageList.length === 0) {
+                alert("Tambahkan minimal 1 foto terlebih dahulu di mode Bulk Edit!");
+                return;
+            }
+            if (typeof JSZip === 'undefined') {
+                alert("Modul ZIP sedang dimuat, silakan coba beberapa detik lagi.");
+                return;
+            }
+
+            const btn = document.getElementById('bulk-download-btn');
+            const label = document.getElementById('bulk-download-label');
+            btn.disabled = true;
+
+            try {
+                const zip = new JSZip();
+                const offscreenCanvas = document.createElement('canvas');
+
+                for (let i = 0; i < bulkImageList.length; i++) {
+                    label.textContent = `Memproses ${i + 1}/${bulkImageList.length}...`;
+                    const item = bulkImageList[i];
+                    drawCompositionToCanvas(offscreenCanvas, item.img);
+
+                    const blob = await new Promise(resolve => offscreenCanvas.toBlob(resolve, 'image/png'));
+                    const cleanBaseName = item.name.replace(/\.[^/.]+$/, "");
+                    zip.file(`${String(i + 1).padStart(2, '0')}_${cleanBaseName}_wm.png`, blob);
+                }
+
+                label.textContent = "Membuat ZIP...";
+                const zipBlob = await zip.generateAsync({ type: 'blob' });
+                const link = document.createElement('a');
+                link.download = `deepa-bulk-wm-${Date.now()}.zip`;
+                link.href = URL.createObjectURL(zipBlob);
+                link.click();
+                setTimeout(() => URL.revokeObjectURL(link.href), 5000);
+            } catch (err) {
+                alert("Gagal memproses batch gambar: " + err.message);
+            } finally {
+                btn.disabled = false;
+                label.textContent = "Unduh Semua (ZIP)";
+            }
+        }
+
+        // ==========================================
+        // SISTEM AKUN MEMBER & PROGRESSIVE ROYAL STAMP
         // ==========================================
         function getActiveMemberUsername() {
             return localStorage.getItem('deepa_logged_in_member') || '';
@@ -630,10 +1572,12 @@
             const loggedUser = getActiveMemberUsername();
             const authCard = document.getElementById('member-auth-card');
             const stampDashboard = document.getElementById('member-stamp-dashboard');
+            const triggerWrap = document.getElementById('studio-trigger-wrap');
 
             if (!loggedUser) {
                 stampDashboard.classList.add('hidden');
                 authCard.classList.remove('hidden');
+                if (triggerWrap) triggerWrap.className = 'w-full max-w-[320px] mx-auto mt-3 flex justify-start';
                 return;
             }
 
@@ -644,12 +1588,14 @@
 
                 authCard.classList.add('hidden');
                 stampDashboard.classList.remove('hidden');
+                if (triggerWrap) triggerWrap.className = 'w-full max-w-[360px] mx-auto mt-3 flex justify-start';
                 document.getElementById('active-member-username').textContent = memberObj.username;
                 renderStampGrid(memberObj.stamps || 0);
             } catch (err) {
                 localStorage.removeItem('deepa_logged_in_member');
                 stampDashboard.classList.add('hidden');
                 authCard.classList.remove('hidden');
+                if (triggerWrap) triggerWrap.className = 'w-full max-w-[320px] mx-auto mt-3 flex justify-start';
             }
         }
 
