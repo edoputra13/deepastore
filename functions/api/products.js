@@ -1,16 +1,45 @@
-import { neon } from '@neondatabase/serverless';
+const { neon } = require('@neondatabase/serverless');
 
-export default async function handler(req, res) {
-    // Header Anti-Cache agar pengecekan sesi member & katalog selalu real-time
+module.exports = async function handler(req, res) {
+    // CORS & Anti-Cache Headers
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Prefer, Authorization');
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     res.setHeader('Pragma', 'no-cache');
     res.setHeader('Expires', '0');
+
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+
+    if (!process.env.DATABASE_URL) {
+        return res.status(500).json({ 
+            error: 'Environment variable DATABASE_URL belum diatur di Vercel.' 
+        });
+    }
 
     const sql = neon(process.env.DATABASE_URL);
     const { action } = req.query;
 
     try {
-        // Pastikan tabel member & stamp codes tersedia di Neon PostgreSQL
+        // Pastikan semua tabel tersedia otomatis di Neon PostgreSQL
+        await sql`
+            CREATE TABLE IF NOT EXISTS products (
+                id SERIAL PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                category VARCHAR(100) DEFAULT 'Digital',
+                price NUMERIC DEFAULT 0,
+                price_3d NUMERIC DEFAULT 0,
+                price_7d NUMERIC DEFAULT 0,
+                price_1m NUMERIC DEFAULT 0,
+                stock INTEGER DEFAULT 0,
+                description TEXT DEFAULT '',
+                image TEXT DEFAULT '',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `;
+
         await sql`
             CREATE TABLE IF NOT EXISTS royal_members (
                 id SERIAL PRIMARY KEY,
@@ -35,7 +64,7 @@ export default async function handler(req, res) {
         // 1. ROYAL LOYALTY CARD ENDPOINTS (MEMBER & ADMIN)
         // ============================================================
         if (action) {
-            // A. Cek Profil & Validasi Keberadaan Akun Member (Anti-Bypass saat dihapus Admin)
+            // A. Cek Profil & Validasi Keberadaan Akun Member
             if (action === 'get_member_profile' && req.method === 'GET') {
                 const username = String(req.query.username || '').trim().toLowerCase();
                 if (!username) {
@@ -130,7 +159,6 @@ export default async function handler(req, res) {
                     return res.status(400).json({ error: 'Username dan kode wajib diisi!' });
                 }
 
-                // Validasi keberadaan member terlebih dahulu
                 const memberRows = await sql`
                     SELECT id, username, stamps 
                     FROM royal_members 
@@ -142,7 +170,6 @@ export default async function handler(req, res) {
                     return res.status(404).json({ error: 'Akun member tidak ditemukan atau telah dihapus oleh admin.' });
                 }
 
-                // Cek validitas kode redeem
                 const codeRows = await sql`
                     SELECT id, is_used 
                     FROM royal_stamp_codes 
@@ -205,9 +232,7 @@ export default async function handler(req, res) {
                 return res.status(200).json({ success: true, stamps: 0 });
             }
 
-            // ============================================================
-            // F. ENDPOINT ADMIN UNTUK KELOLA MEMBER & KODE STAMP
-            // ============================================================
+            // F. Endpoint Admin untuk Member & Kode Stamp
             if (action === 'list_members' && req.method === 'GET') {
                 const members = await sql`
                     SELECT id, username, password, stamps, created_at 
@@ -306,7 +331,7 @@ export default async function handler(req, res) {
             const products = await sql`
                 SELECT * FROM products ORDER BY id ASC
             `;
-            return res.status(200).json(products);
+            return res.status(200).json(products || []);
         }
 
         if (req.method === 'POST') {
@@ -315,7 +340,7 @@ export default async function handler(req, res) {
                 INSERT INTO products (name, category, price, price_3d, price_7d, price_1m, stock, description, image)
                 VALUES (
                     ${name},
-                    ${category},
+                    ${category || 'Digital'},
                     ${Number(price) || 0},
                     ${Number(price_3d) || 0},
                     ${Number(price_7d) || 0},
@@ -365,4 +390,4 @@ export default async function handler(req, res) {
         console.error('API Error:', error);
         return res.status(500).json({ error: error.message || 'Terjadi kesalahan pada server' });
     }
-}
+};
