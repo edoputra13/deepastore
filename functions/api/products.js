@@ -166,7 +166,7 @@ export async function onRequest(context) {
                 return jsonResponse({ success: true, message: 'Password berhasil diperbarui' }, 200);
             }
 
-            // D. Klaim Kode Stamp
+            // D. Klaim Kode Stamp (Expired otomatis dalam 1 Hari / 24 Jam)
             if (action === 'claim_stamp' && request.method === 'POST') {
                 const cleanUser = String(body.username || '').trim().toLowerCase();
                 const cleanCode = String(body.code || '').trim().toUpperCase();
@@ -187,7 +187,8 @@ export async function onRequest(context) {
                 }
 
                 const codeRows = await sql`
-                    SELECT id, is_used 
+                    SELECT id, is_used, created_at,
+                           (created_at < NOW() - INTERVAL '1 day') AS is_expired
                     FROM royal_stamp_codes 
                     WHERE UPPER(code) = ${cleanCode} 
                     LIMIT 1
@@ -199,6 +200,10 @@ export async function onRequest(context) {
 
                 if (codeRows[0].is_used) {
                     return jsonResponse({ error: 'Kode redeem sudah pernah digunakan!' }, 400);
+                }
+
+                if (codeRows[0].is_expired) {
+                    return jsonResponse({ error: 'Kode redeem sudah kedaluwarsa (batas waktu 1 hari telah habis)!' }, 400);
                 }
 
                 const currentStamps = Number(memberRows[0].stamps) || 0;
@@ -307,7 +312,9 @@ export async function onRequest(context) {
 
             if (action === 'list_codes' && request.method === 'GET') {
                 const codes = await sql`
-                    SELECT id, code, is_used, used_by, created_at 
+                    SELECT id, code, is_used, used_by, created_at,
+                           (created_at + INTERVAL '1 day') AS expires_at,
+                           (NOT is_used AND created_at < NOW() - INTERVAL '1 day') AS is_expired
                     FROM royal_stamp_codes 
                     ORDER BY id DESC
                 `;
@@ -319,9 +326,11 @@ export async function onRequest(context) {
                 if (!cleanCode) return jsonResponse({ error: 'Kode tidak boleh kosong' }, 400);
 
                 const inserted = await sql`
-                    INSERT INTO royal_stamp_codes (code, is_used)
-                    VALUES (${cleanCode}, FALSE)
-                    RETURNING id, code, is_used, used_by
+                    INSERT INTO royal_stamp_codes (code, is_used, created_at)
+                    VALUES (${cleanCode}, FALSE, CURRENT_TIMESTAMP)
+                    RETURNING id, code, is_used, used_by, created_at,
+                              (created_at + INTERVAL '1 day') AS expires_at,
+                              FALSE AS is_expired
                 `;
                 return jsonResponse(inserted[0], 201);
             }
