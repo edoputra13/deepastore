@@ -365,11 +365,11 @@
             const list = document.getElementById('admin-products-list');
             list.innerHTML = '<div class="text-xs text-slate-400 py-4 text-center">Memuat produk...</div>';
             try {
-                const res = await fetch(API_URL);
+                const res = await fetch(`${API_URL}?_t=${Date.now()}`);
                 const products = await res.json();
                 list.innerHTML = '';
 
-                if (!products.length) {
+                if (!Array.isArray(products) || !products.length) {
                     list.innerHTML = '<div class="text-xs text-slate-500 py-4 text-center">Belum ada produk.</div>';
                     return;
                 }
@@ -440,11 +440,17 @@
             const url = id ? `${API_URL}?id=${id}` : API_URL;
             const method = id ? 'PATCH' : 'POST';
 
-            await fetch(url, {
+            const res = await fetch(url, {
                 method,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
+
+            if (!res.ok) {
+                const err = await res.json();
+                alert(err.error || 'Gagal menyimpan produk');
+                return;
+            }
 
             resetProductForm();
             loadAdminProducts();
@@ -467,7 +473,7 @@
                 const members = await res.json();
                 list.innerHTML = '';
 
-                if (!members.length) {
+                if (!Array.isArray(members) || !members.length) {
                     list.innerHTML = '<div class="text-xs text-slate-500 py-4 text-center">Belum ada member terdaftar.</div>';
                     return;
                 }
@@ -536,7 +542,7 @@
                 const codes = await res.json();
                 list.innerHTML = '';
 
-                if (!codes.length) {
+                if (!Array.isArray(codes) || !codes.length) {
                     list.innerHTML = '<div class="text-xs text-slate-500 py-4 text-center">Belum ada kode stamp.</div>';
                     return;
                 }
