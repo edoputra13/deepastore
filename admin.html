@@ -1,51 +1,549 @@
-<!-- LOGIN / ADMIN ACCESS CARD -->
-        <div id="admin-login-card" class="w-full max-w-[340px] mx-auto bg-gradient-to-b from-white to-sky-50 rounded-[2rem] p-6 sm:p-7 shadow-2xl border border-white/60 text-center font-mono text-slate-900">
-            
-            <!-- Ikon Gembok -->
-            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-sky-500 to-indigo-600 text-white flex items-center justify-center mx-auto mb-3.5 shadow-lg shadow-sky-500/30">
-                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                    <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
-                </svg>
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Deepa Store</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        mono: ['"Space Mono"', 'monospace'],
+                        sans: ['Inter', 'sans-serif'],
+                        futuristic: ['"Orbitron"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.3); border-radius: 4px; }
+    </style>
+</head>
+<body class="min-h-dvh w-full bg-[#060b19] text-slate-200 font-mono antialiased flex flex-col justify-center items-center p-4">
+
+    <!-- =========================================================
+         1. LOGIN / ADMIN ACCESS CARD
+    ========================================================== -->
+    <div id="admin-login-card" class="w-full max-w-[340px] mx-auto bg-gradient-to-b from-white to-sky-50 rounded-[2rem] p-6 sm:p-7 shadow-2xl border border-white/60 text-center font-mono text-slate-900">
+        
+        <!-- Ikon Gembok -->
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-sky-500 to-indigo-600 text-white flex items-center justify-center mx-auto mb-3.5 shadow-lg shadow-sky-500/30">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+            </svg>
+        </div>
+
+        <h2 class="text-xl font-black text-slate-900 uppercase tracking-wider font-futuristic mb-1">Admin Access</h2>
+        <p class="text-[11px] text-slate-500 mb-5">Autentikasi keamanan Deepa Store.</p>
+
+        <form onsubmit="handleAdminLogin(event)" class="space-y-3.5 text-left">
+            <div>
+                <label class="block text-[10px] font-bold text-slate-800 uppercase tracking-widest mb-1">Username</label>
+                <input type="text" id="admin-username" required autocomplete="off" placeholder="Username kamu" class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-sky-500 transition-colors">
             </div>
 
-            <h2 class="text-xl font-black text-slate-900 uppercase tracking-wider font-futuristic mb-1">Admin Access</h2>
-            <p class="text-[11px] text-slate-500 mb-5">Autentikasi keamanan Deepa Store.</p>
-
-            <form onsubmit="handleAdminLogin(event)" class="space-y-3.5 text-left">
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-800 uppercase tracking-widest mb-1">Username</label>
-                    <input type="text" id="admin-username" required autocomplete="off" placeholder="Username kamu" class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-sky-500 transition-colors">
-                </div>
-
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-800 uppercase tracking-widest mb-1">Password</label>
-                    <div class="relative">
-                        <input type="password" id="admin-password" required autocomplete="off" placeholder="Password kamu" class="w-full px-3.5 py-2.5 pr-10 rounded-xl bg-white border border-slate-200 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-sky-500 transition-colors">
-                        <button type="button" onclick="toggleAdminPass('admin-password', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-sky-600 transition-colors">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                        </button>
-                    </div>
-                </div>
-
-                <div id="admin-login-error" class="hidden text-rose-600 text-[10px] font-bold text-center bg-rose-50 border border-rose-200 py-1.5 px-2.5 rounded-lg"></div>
-
-                <!-- Baris Tombol: Ikon Kembali (kiri) sejajar dengan MASUK DASHBOARD (kanan) -->
-                <div class="pt-1 flex items-center gap-2">
-                    <a href="index.html" title="Kembali ke Store" class="w-10 h-10 shrink-0 rounded-xl bg-slate-200/80 hover:bg-slate-300/80 text-slate-700 flex items-center justify-center border border-slate-300/60 transition-all">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                        </svg>
-                    </a>
-
-                    <button type="submit" id="admin-login-btn" class="flex-1 h-10 bg-gradient-to-r from-sky-500 to-indigo-600 hover:brightness-105 text-white font-black uppercase tracking-widest rounded-xl text-[11px] shadow-md shadow-sky-500/25 transition-all">
-                        MASUK DASHBOARD
+            <div>
+                <label class="block text-[10px] font-bold text-slate-800 uppercase tracking-widest mb-1">Password</label>
+                <div class="relative">
+                    <input type="password" id="admin-password" required autocomplete="off" placeholder="Password kamu" class="w-full px-3.5 py-2.5 pr-10 rounded-xl bg-white border border-slate-200 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-sky-500 transition-colors">
+                    <button type="button" onclick="toggleAdminPass('admin-password', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-sky-600 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                     </button>
                 </div>
-            </form>
+            </div>
 
-            <div class="mt-4">
-                <button type="button" onclick="toggleChangeAdminPass(true)" class="text-[11px] font-bold text-sky-600 hover:underline">
-                    Ubah Password Admin
+            <div id="admin-login-error" class="hidden text-rose-600 text-[10px] font-bold text-center bg-rose-50 border border-rose-200 py-1.5 px-2.5 rounded-lg"></div>
+
+            <!-- Baris Tombol: Ikon Kembali (kiri) sejajar dengan MASUK DASHBOARD (kanan) -->
+            <div class="pt-1 flex items-center gap-2">
+                <a href="index.html" title="Kembali ke Store" class="w-10 h-10 shrink-0 rounded-xl bg-slate-200/80 hover:bg-slate-300/80 text-slate-700 flex items-center justify-center border border-slate-300/60 transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                </a>
+
+                <button type="submit" id="admin-login-btn" class="flex-1 h-10 bg-gradient-to-r from-sky-500 to-indigo-600 hover:brightness-105 text-white font-black uppercase tracking-widest rounded-xl text-[11px] shadow-md shadow-sky-500/25 transition-all">
+                    MASUK DASHBOARD
                 </button>
             </div>
+        </form>
+
+        <div class="mt-4">
+            <button type="button" onclick="toggleChangeAdminPass(true)" class="text-[11px] font-bold text-sky-600 hover:underline">
+                Ubah Password Admin
+            </button>
         </div>
+
+        <!-- Panel Ubah Password Admin -->
+        <div id="change-admin-pass-box" class="hidden mt-4 pt-3.5 border-t border-slate-200 text-left">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-[10px] font-bold text-slate-700 uppercase">Ganti Password Admin</span>
+                <button type="button" onclick="toggleChangeAdminPass(false)" class="text-[10px] text-rose-500 font-bold">Batal ✕</button>
+            </div>
+            <form onsubmit="handleUpdateAdminPass(event)" class="space-y-2">
+                <input type="password" id="old-admin-pass" required placeholder="Password lama..." class="w-full px-3 py-2 rounded-lg bg-white border border-slate-200 text-xs text-slate-900">
+                <input type="password" id="new-admin-pass" required placeholder="Password baru..." class="w-full px-3 py-2 rounded-lg bg-white border border-slate-200 text-xs text-slate-900">
+                <div id="admin-cp-msg" class="hidden text-[10px] font-bold text-center py-1 rounded"></div>
+                <button type="submit" class="w-full py-2 bg-slate-900 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider">Simpan Password</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         2. DASHBOARD ADMIN UTAMA
+    ========================================================== -->
+    <div id="admin-dashboard" class="hidden w-full max-w-5xl mx-auto my-4 space-y-5">
+        
+        <!-- Top Bar -->
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <a href="index.html" title="Ke Store" class="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-sky-400 flex items-center justify-center border border-slate-700 transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                </a>
+                <div>
+                    <h1 class="font-futuristic font-black text-base sm:text-lg text-white tracking-wider">DEEPA ADMIN</h1>
+                    <p class="text-[10px] text-slate-400">Kelola Katalog Produk, Member & Kode Redeem</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button onclick="switchAdminTab('products')" id="tab-btn-products" class="px-3 py-1.5 rounded-lg bg-sky-500 text-slate-950 font-bold text-[11px] uppercase">Produk</button>
+                <button onclick="switchAdminTab('members')" id="tab-btn-members" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-bold text-[11px] uppercase">Member</button>
+                <button onclick="switchAdminTab('codes')" id="tab-btn-codes" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-bold text-[11px] uppercase">Kode Stamp</button>
+                <button onclick="handleAdminLogout()" class="px-3 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 font-bold text-[11px] uppercase">Keluar</button>
+            </div>
+        </div>
+
+        <!-- TAB 1: MANAJEMEN PRODUK -->
+        <div id="tab-products" class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 h-fit">
+                <h2 id="product-form-title" class="text-sm font-bold text-sky-400 uppercase mb-3">Tambah / Edit Produk</h2>
+                <form onsubmit="saveProduct(event)" class="space-y-3 text-xs">
+                    <input type="hidden" id="prod-id">
+                    <div>
+                        <label class="block text-[10px] text-slate-400 uppercase mb-1">Nama Produk</label>
+                        <input type="text" id="prod-name" required placeholder="Contoh: Netflix 1P1U" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:border-sky-500 focus:outline-none">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[10px] text-slate-400 uppercase mb-1">Kategori</label>
+                            <input type="text" id="prod-category" required value="Streaming" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:border-sky-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 uppercase mb-1">Stok</label>
+                            <input type="number" id="prod-stock" required value="10" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:border-sky-500 focus:outline-none">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[10px] text-slate-400 uppercase mb-1">Harga 1 Hari (Rp)</label>
+                            <input type="number" id="prod-price" required placeholder="3000" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:border-sky-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 uppercase mb-1">Harga 3 Hari (Rp)</label>
+                            <input type="number" id="prod-price-3d" placeholder="7000" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:border-sky-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 uppercase mb-1">Harga 7 Hari (Rp)</label>
+                            <input type="number" id="prod-price-7d" placeholder="12000" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:border-sky-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 uppercase mb-1">Harga 1 Bulan (Rp)</label>
+                            <input type="number" id="prod-price-1m" placeholder="25000" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:border-sky-500 focus:outline-none">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-400 uppercase mb-1">URL Gambar / Logo</label>
+                        <input type="text" id="prod-image" placeholder="https://..." class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:border-sky-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-400 uppercase mb-1">Deskripsi</label>
+                        <textarea id="prod-desc" rows="3" placeholder="Keterangan garansi & aturan..." class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:border-sky-500 focus:outline-none"></textarea>
+                    </div>
+                    <div class="flex gap-2 pt-1">
+                        <button type="submit" class="flex-1 py-2.5 bg-sky-500 hover:bg-sky-400 text-slate-950 font-black uppercase rounded-xl text-[11px]">Simpan Produk</button>
+                        <button type="button" onclick="resetProductForm()" class="px-3 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-[11px]">Reset</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="lg:col-span-2 bg-slate-900/90 border border-slate-800 rounded-2xl p-5">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-sm font-bold text-white uppercase">Daftar Produk Katalog</h2>
+                    <button onclick="loadAdminProducts()" class="text-[11px] text-sky-400 hover:underline">Refresh</button>
+                </div>
+                <div id="admin-product-list" class="space-y-2.5 max-h-[65vh] overflow-y-auto pr-1"></div>
+            </div>
+        </div>
+
+        <!-- TAB 2: MANAJEMEN MEMBER ROYAL CARD -->
+        <div id="tab-members" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-5">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 h-fit">
+                <h2 class="text-sm font-bold text-amber-400 uppercase mb-3">Daftarkan Member Baru</h2>
+                <form onsubmit="createMember(event)" class="space-y-3 text-xs">
+                    <div>
+                        <label class="block text-[10px] text-slate-400 uppercase mb-1">Username Member</label>
+                        <input type="text" id="new-member-user" required placeholder="tanpa @" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:border-amber-400 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-400 uppercase mb-1">Password Awal</label>
+                        <input type="text" id="new-member-pass" required placeholder="Password member" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:border-amber-400 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-400 uppercase mb-1">Jumlah Stamp Awal (0-10)</label>
+                        <input type="number" id="new-member-stamps" min="0" max="10" value="0" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white focus:border-amber-400 focus:outline-none">
+                    </div>
+                    <button type="submit" class="w-full py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black uppercase rounded-xl text-[11px]">Buat Akun Member</button>
+                </form>
+            </div>
+
+            <div class="lg:col-span-2 bg-slate-900/90 border border-slate-800 rounded-2xl p-5">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-sm font-bold text-white uppercase">Daftar Member Royal Card</h2>
+                    <button onclick="loadAdminMembers()" class="text-[11px] text-amber-400 hover:underline">Refresh</button>
+                </div>
+                <div id="admin-member-list" class="space-y-2.5 max-h-[65vh] overflow-y-auto pr-1"></div>
+            </div>
+        </div>
+
+        <!-- TAB 3: MANAJEMEN KODE STAMP (EXPIRED 1 HARI) -->
+        <div id="tab-codes" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-5">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 h-fit">
+                <h2 class="text-sm font-bold text-emerald-400 uppercase mb-1">Generate Kode Stamp</h2>
+                <p class="text-[10px] text-slate-400 mb-3">Kode otomatis kedaluwarsa dalam 1 hari (24 jam).</p>
+                <form onsubmit="createStampCode(event)" class="space-y-3 text-xs">
+                    <div>
+                        <label class="block text-[10px] text-slate-400 uppercase mb-1">Kode Redeem</label>
+                        <div class="flex gap-1.5">
+                            <input type="text" id="new-code-input" required placeholder="DEEPA-XXXXXX" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white uppercase focus:border-emerald-400 focus:outline-none">
+                            <button type="button" onclick="generateRandomCode()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-emerald-300 rounded-xl text-[10px] font-bold">Acak</button>
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black uppercase rounded-xl text-[11px]">Simpan Kode</button>
+                </form>
+            </div>
+
+            <div class="lg:col-span-2 bg-slate-900/90 border border-slate-800 rounded-2xl p-5">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-sm font-bold text-white uppercase">Riwayat Kode Stamp</h2>
+                    <button onclick="loadAdminCodes()" class="text-[11px] text-emerald-400 hover:underline">Refresh</button>
+                </div>
+                <div id="admin-code-list" class="space-y-2 max-h-[65vh] overflow-y-auto pr-1"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const API_URL = "/api/products";
+
+        // Kredensial Default Admin (bisa diubah dari tombol "Ubah Password Admin")
+        const DEFAULT_ADMIN_USER = "admin";
+        const DEFAULT_ADMIN_PASS = "deepa2026";
+
+        function getAdminCreds() {
+            return {
+                user: localStorage.getItem("deepa_admin_user") || DEFAULT_ADMIN_USER,
+                pass: localStorage.getItem("deepa_admin_pass") || DEFAULT_ADMIN_PASS
+            };
+        }
+
+        function toggleAdminPass(id, btn) {
+            const el = document.getElementById(id);
+            el.type = el.type === "password" ? "text" : "password";
+            btn.classList.toggle("text-sky-600");
+        }
+
+        function toggleChangeAdminPass(show) {
+            const box = document.getElementById("change-admin-pass-box");
+            document.getElementById("admin-cp-msg").classList.add("hidden");
+            if (show) box.classList.remove("hidden");
+            else box.classList.add("hidden");
+        }
+
+        function handleUpdateAdminPass(e) {
+            e.preventDefault();
+            const oldP = document.getElementById("old-admin-pass").value;
+            const newP = document.getElementById("new-admin-pass").value;
+            const msg = document.getElementById("admin-cp-msg");
+            const creds = getAdminCreds();
+
+            if (oldP !== creds.pass) {
+                msg.textContent = "Password lama salah!";
+                msg.className = "text-[10px] font-bold text-center py-1 rounded bg-rose-100 text-rose-600";
+                msg.classList.remove("hidden");
+                return;
+            }
+            if (newP.length < 4) {
+                msg.textContent = "Minimal 4 karakter!";
+                msg.className = "text-[10px] font-bold text-center py-1 rounded bg-rose-100 text-rose-600";
+                msg.classList.remove("hidden");
+                return;
+            }
+            localStorage.setItem("deepa_admin_pass", newP);
+            msg.textContent = "Password berhasil diperbarui!";
+            msg.className = "text-[10px] font-bold text-center py-1 rounded bg-emerald-100 text-emerald-700";
+            msg.classList.remove("hidden");
+            setTimeout(() => toggleChangeAdminPass(false), 1000);
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById("admin-username").value.trim();
+            const p = document.getElementById("admin-password").value;
+            const err = document.getElementById("admin-login-error");
+            const creds = getAdminCreds();
+
+            if (u === creds.user && p === creds.pass) {
+                sessionStorage.setItem("deepa_admin_auth", "true");
+                err.classList.add("hidden");
+                showDashboard();
+            } else {
+                err.textContent = "Username atau password admin salah!";
+                err.classList.remove("hidden");
+            }
+        }
+
+        function handleAdminLogout() {
+            sessionStorage.removeItem("deepa_admin_auth");
+            document.getElementById("admin-dashboard").classList.add("hidden");
+            document.getElementById("admin-login-card").classList.remove("hidden");
+            document.body.classList.add("justify-center");
+        }
+
+        function showDashboard() {
+            document.getElementById("admin-login-card").classList.add("hidden");
+            document.getElementById("admin-dashboard").classList.remove("hidden");
+            document.body.classList.remove("justify-center");
+            loadAdminProducts();
+            loadAdminMembers();
+            loadAdminCodes();
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            if (sessionStorage.getItem("deepa_admin_auth") === "true") {
+                showDashboard();
+            }
+            generateRandomCode();
+        });
+
+        function switchAdminTab(tab) {
+            ["products", "members", "codes"].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add("hidden");
+                document.getElementById(`tab-btn-${t}`).className = "px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-bold text-[11px] uppercase";
+            });
+            document.getElementById(`tab-${tab}`).classList.remove("hidden");
+            document.getElementById(`tab-btn-${tab}`).className = "px-3 py-1.5 rounded-lg bg-sky-500 text-slate-950 font-bold text-[11px] uppercase";
+        }
+
+        // ==========================================
+        // CRUD PRODUK
+        // ==========================================
+        async function loadAdminProducts() {
+            const list = document.getElementById("admin-product-list");
+            list.innerHTML = `<div class="text-xs text-slate-400">Sebentar ya...</div>`;
+            try {
+                const res = await fetch(`${API_URL}?_t=${Date.now()}`);
+                const products = await res.json();
+                if (!Array.isArray(products) || products.length === 0) {
+                    list.innerHTML = `<div class="text-xs text-slate-500">Belum ada produk.</div>`;
+                    return;
+                }
+                list.innerHTML = products.map(p => `
+                    <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 flex items-center justify-between gap-3">
+                        <div class="min-w-0">
+                            <div class="text-xs font-bold text-white truncate">${p.name} <span class="text-[10px] text-sky-400">(${p.category})</span></div>
+                            <div class="text-[10px] text-slate-400">1H: Rp${Number(p.price).toLocaleString('id-ID')} | 1B: Rp${Number(p.price_1m || 0).toLocaleString('id-ID')} | Stok: ${p.stock}</div>
+                        </div>
+                        <div class="flex gap-1.5 shrink-0">
+                            <button onclick='editProduct(${JSON.stringify(p).replace(/'/g, "'")})' class="px-2.5 py-1 bg-sky-500/20 text-sky-300 rounded-lg text-[10px] font-bold">Edit</button>
+                            <button onclick="deleteProduct(${p.id})" class="px-2.5 py-1 bg-rose-500/20 text-rose-300 rounded-lg text-[10px] font-bold">Hapus</button>
+                        </div>
+                    </div>
+                `).join("");
+            } catch (e) {
+                list.innerHTML = `<div class="text-xs text-rose-400">Gagal memuat: ${e.message}</div>`;
+            }
+        }
+
+        function editProduct(p) {
+            document.getElementById("prod-id").value = p.id;
+            document.getElementById("prod-name").value = p.name;
+            document.getElementById("prod-category").value = p.category;
+            document.getElementById("prod-stock").value = p.stock;
+            document.getElementById("prod-price").value = p.price;
+            document.getElementById("prod-price-3d").value = p.price_3d || "";
+            document.getElementById("prod-price-7d").value = p.price_7d || "";
+            document.getElementById("prod-price-1m").value = p.price_1m || "";
+            document.getElementById("prod-image").value = p.image || "";
+            document.getElementById("prod-desc").value = p.description || "";
+        }
+
+        function resetProductForm() {
+            document.getElementById("prod-id").value = "";
+            document.getElementById("prod-name").value = "";
+            document.getElementById("prod-category").value = "Streaming";
+            document.getElementById("prod-stock").value = 10;
+            document.getElementById("prod-price").value = "";
+            document.getElementById("prod-price-3d").value = "";
+            document.getElementById("prod-price-7d").value = "";
+            document.getElementById("prod-price-1m").value = "";
+            document.getElementById("prod-image").value = "";
+            document.getElementById("prod-desc").value = "";
+        }
+
+        async function saveProduct(e) {
+            e.preventDefault();
+            const id = document.getElementById("prod-id").value;
+            const payload = {
+                id: id ? Number(id) : undefined,
+                name: document.getElementById("prod-name").value.trim(),
+                category: document.getElementById("prod-category").value.trim(),
+                stock: Number(document.getElementById("prod-stock").value),
+                price: Number(document.getElementById("prod-price").value),
+                price_3d: Number(document.getElementById("prod-price-3d").value) || 0,
+                price_7d: Number(document.getElementById("prod-price-7d").value) || 0,
+                price_1m: Number(document.getElementById("prod-price-1m").value) || 0,
+                image: document.getElementById("prod-image").value.trim(),
+                description: document.getElementById("prod-desc").value.trim()
+            };
+
+            await fetch(id ? `${API_URL}?id=${id}` : API_URL, {
+                method: id ? "PATCH" : "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+            resetProductForm();
+            loadAdminProducts();
+        }
+
+        async function deleteProduct(id) {
+            if (!confirm("Hapus produk ini?")) return;
+            await fetch(`${API_URL}?id=${id}`, { method: "DELETE" });
+            loadAdminProducts();
+        }
+
+        // ==========================================
+        // CRUD MEMBER
+        // ==========================================
+        async function loadAdminMembers() {
+            const list = document.getElementById("admin-member-list");
+            const res = await fetch(`${API_URL}?action=list_members&_t=${Date.now()}`);
+            const members = await res.json();
+            if (!Array.isArray(members) || members.length === 0) {
+                list.innerHTML = `<div class="text-xs text-slate-500">Belum ada member terdaftar.</div>`;
+                return;
+            }
+            list.innerHTML = members.map(m => `
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 flex items-center justify-between gap-3">
+                    <div>
+                        <div class="text-xs font-bold text-amber-300">@${m.username} <span class="text-slate-500 font-normal">(Pass: ${m.password})</span></div>
+                        <div class="text-[10px] text-slate-400">Koleksi Stamp: <span class="text-white font-bold">${m.stamps}/10</span></div>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <button onclick="updateMemberStamp(${m.id}, ${Math.min((m.stamps || 0) + 1, 10)})" class="px-2 py-1 bg-emerald-500/20 text-emerald-300 rounded-lg text-[10px] font-bold">+1 Stamp</button>
+                        <button onclick="deleteMember(${m.id})" class="px-2 py-1 bg-rose-500/20 text-rose-300 rounded-lg text-[10px] font-bold">Hapus</button>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        async function createMember(e) {
+            e.preventDefault();
+            await fetch(`${API_URL}?action=create_member`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    username: document.getElementById("new-member-user").value,
+                    password: document.getElementById("new-member-pass").value,
+                    stamps: Number(document.getElementById("new-member-stamps").value) || 0
+                })
+            });
+            document.getElementById("new-member-user").value = "";
+            document.getElementById("new-member-pass").value = "";
+            document.getElementById("new-member-stamps").value = 0;
+            loadAdminMembers();
+        }
+
+        async function updateMemberStamp(id, stamps) {
+            await fetch(`${API_URL}?action=update_member`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id, stamps })
+            });
+            loadAdminMembers();
+        }
+
+        async function deleteMember(id) {
+            if (!confirm("Hapus akun member ini? Member akan otomatis logout.")) return;
+            await fetch(`${API_URL}?action=delete_member&id=${id}`, { method: "DELETE" });
+            loadAdminMembers();
+        }
+
+        // ==========================================
+        // CRUD KODE STAMP (EXPIRED 1 HARI)
+        // ==========================================
+        function generateRandomCode() {
+            const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+            let rand = "";
+            for (let i = 0; i < 6; i++) rand += chars.charAt(Math.floor(Math.random() * chars.length));
+            document.getElementById("new-code-input").value = `DEEPA-${rand}`;
+        }
+
+        async function loadAdminCodes() {
+            const list = document.getElementById("admin-code-list");
+            const res = await fetch(`${API_URL}?action=list_codes&_t=${Date.now()}`);
+            const codes = await res.json();
+            if (!Array.isArray(codes) || codes.length === 0) {
+                list.innerHTML = `<div class="text-xs text-slate-500">Belum ada kode redeem.</div>`;
+                return;
+            }
+            list.innerHTML = codes.map(c => {
+                let badge = `<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[9px] font-bold">AKTIF (1 HARI)</span>`;
+                if (c.is_used) badge = `<span class="px-2 py-0.5 rounded bg-slate-700 text-slate-300 text-[9px] font-bold">DIPAKAI (@${c.used_by || '-'})</span>`;
+                else if (c.is_expired) badge = `<span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 text-[9px] font-bold">EXPIRED</span>`;
+
+                return `
+                    <div class="bg-slate-950 border border-slate-800 rounded-xl p-2.5 flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-white tracking-wider">${c.code}</span>
+                            ${badge}
+                        </div>
+                        <button onclick="deleteCode(${c.id})" class="px-2 py-1 bg-rose-500/20 text-rose-300 rounded-lg text-[10px] font-bold">Hapus</button>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        async function createStampCode(e) {
+            e.preventDefault();
+            await fetch(`${API_URL}?action=create_code`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ code: document.getElementById("new-code-input").value })
+            });
+            generateRandomCode();
+            loadAdminCodes();
+        }
+
+        async function deleteCode(id) {
+            await fetch(`${API_URL}?action=delete_code&id=${id}`, { method: "DELETE" });
+            loadAdminCodes();
+        }
+    </script>
+</body>
+</html>
