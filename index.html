@@ -597,7 +597,10 @@
 
         // ==========================================
         // SISTEM AKUN MEMBER & PROGRESSIVE ROYAL STAMP
+        // (FIX BUG: VALIDASI KETAT & AUTO LOGOUT SAAT DIHAPUS ADMIN)
         // ==========================================
+        let memberSessionInterval = null;
+
         function getActiveMemberUsername() {
             return localStorage.getItem('deepa_logged_in_member') || '';
         }
@@ -613,32 +616,87 @@
             }
         }
 
-        async function checkMemberSession() {
+        function forceClearMemberSession(reasonMsg = "") {
+            localStorage.removeItem('deepa_logged_in_member');
+            if (memberSessionInterval) {
+                clearInterval(memberSessionInterval);
+                memberSessionInterval = null;
+            }
+            toggleMemberChangePassModal(false);
+            const stampMsg = document.getElementById('stamp-msg');
+            if (stampMsg) stampMsg.classList.add('hidden');
+            
+            document.getElementById('member-stamp-dashboard').classList.add('hidden');
+            document.getElementById('member-auth-card').classList.remove('hidden');
+
+            const errBox = document.getElementById('member-login-error');
+            if (reasonMsg && errBox) {
+                errBox.textContent = reasonMsg;
+                errBox.classList.remove('hidden');
+            }
+        }
+
+        async function checkMemberSession(isBackgroundCheck = false) {
             const loggedUser = getActiveMemberUsername();
             const authCard = document.getElementById('member-auth-card');
             const stampDashboard = document.getElementById('member-stamp-dashboard');
 
             if (!loggedUser) {
-                stampDashboard.classList.add('hidden');
-                authCard.classList.remove('hidden');
-                return;
+                forceClearMemberSession();
+                return false;
             }
 
             try {
-                const res = await fetch(`${ROYAL_API_URL}?action=get_member_profile&username=${encodeURIComponent(loggedUser)}`);
-                if (!res.ok) throw new Error('Sesi berakhir');
-                const memberObj = await res.json();
+                const res = await fetch(`${ROYAL_API_URL}?action=get_member_profile&username=${encodeURIComponent(loggedUser)}&_t=${Date.now()}`, {
+                    cache: 'no-store'
+                });
+                
+                let memberObj = null;
+                try {
+                    memberObj = await res.json();
+                } catch (parseErr) {
+                    memberObj = null;
+                }
+
+                // Pastikan response sukses DAN data user benar-benar valid/masih ada di DB
+                if (!res.ok || !memberObj || typeof memberObj !== 'object' || !memberObj.username || memberObj.error || memberObj.deleted) {
+                    throw new Error('Akun member telah dihapus atau tidak terdaftar.');
+                }
+
+                // Pastikan username dari database sama dengan sesi yang aktif
+                if (String(memberObj.username).toLowerCase() !== String(loggedUser).toLowerCase()) {
+                    throw new Error('Sesi akun tidak valid.');
+                }
 
                 authCard.classList.add('hidden');
                 stampDashboard.classList.remove('hidden');
                 document.getElementById('active-member-username').textContent = memberObj.username;
                 renderStampGrid(memberObj.stamps || 0);
+
+                // Polling otomatis setiap 8 detik untuk mendeteksi penghapusan akun oleh admin
+                if (!memberSessionInterval) {
+                    memberSessionInterval = setInterval(() => {
+                        if (getActiveMemberUsername()) {
+                            checkMemberSession(true);
+                        } else {
+                            clearInterval(memberSessionInterval);
+                            memberSessionInterval = null;
+                        }
+                    }, 8000);
+                }
+                return true;
             } catch (err) {
-                localStorage.removeItem('deepa_logged_in_member');
-                stampDashboard.classList.add('hidden');
-                authCard.classList.remove('hidden');
+                forceClearMemberSession(isBackgroundCheck ? "Akses dicabut: Akun member Anda telah dihapus oleh admin." : "");
+                return false;
             }
         }
+
+        // Cek ulang otomatis saat user kembali ke tab browser ini
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden && getActiveMemberUsername()) {
+                checkMemberSession(true);
+            }
+        });
 
         async function handleMemberLogin(e) {
             e.preventDefault();
@@ -659,14 +717,14 @@
                 });
                 const data = await res.json();
 
-                if (!res.ok) {
+                if (!res.ok || !data || !data.username) {
                     throw new Error(data.error || 'Username atau password salah!');
                 }
 
                 localStorage.setItem('deepa_logged_in_member', data.username);
                 document.getElementById('member-login-user').value = '';
                 document.getElementById('member-login-pass').value = '';
-                await checkMemberSession();
+                await checkMemberSession(false);
             } catch (err) {
                 errBox.textContent = err.message;
                 errBox.classList.remove('hidden');
@@ -678,10 +736,7 @@
         }
 
         function handleMemberLogout() {
-            localStorage.removeItem('deepa_logged_in_member');
-            toggleMemberChangePassModal(false);
-            document.getElementById('stamp-msg').classList.add('hidden');
-            checkMemberSession();
+            forceClearMemberSession();
         }
 
         function toggleMemberChangePassModal(show) {
@@ -700,6 +755,9 @@
 
         async function handleMemberChangePassword(e) {
             e.preventDefault();
+            const isValid = await checkMemberSession(true);
+            if (!isValid) return;
+
             const loggedUser = getActiveMemberUsername();
             const oldPass = document.getElementById('member-old-pass').value;
             const newPass = document.getElementById('member-new-pass').value;
@@ -729,6 +787,10 @@
                 const data = await res.json();
 
                 if (!res.ok) {
+                    if (res.status === 404) {
+                        forceClearMemberSession("Akun member Anda sudah dihapus oleh admin.");
+                        return;
+                    }
                     throw new Error(data.error || 'Gagal mengganti password');
                 }
 
@@ -813,9 +875,10 @@
         }
 
         async function claimCustomerStamp() {
-            const loggedUser = getActiveMemberUsername();
-            if (!loggedUser) return;
+            const isValid = await checkMemberSession(true);
+            if (!isValid) return;
 
+            const loggedUser = getActiveMemberUsername();
             const codeInput = document.getElementById('claim-stamp-input').value.trim().toUpperCase();
             if (!codeInput) {
                 showStampMessage("Masukkan kode redeem DEEPA terlebih dahulu!", "rose");
@@ -835,6 +898,10 @@
                 const data = await res.json();
 
                 if (!res.ok) {
+                    if (res.status === 404 && data.error && data.error.toLowerCase().includes('member')) {
+                        forceClearMemberSession("Akses dicabut: Akun member Anda telah dihapus oleh admin.");
+                        return;
+                    }
                     throw new Error(data.error || 'Gagal klaim kode');
                 }
 
@@ -850,19 +917,24 @@
         }
 
         async function redeemStampReward() {
-            const loggedUser = getActiveMemberUsername();
-            if (!loggedUser) return;
+            const isValid = await checkMemberSession(true);
+            if (!isValid) return;
 
+            const loggedUser = getActiveMemberUsername();
             const phoneNumber = "6281717622225";
             const message = `Halo Deepa Store, akun member *@${loggedUser}* telah mengumpulkan 10/10 Lencana Royal Card. Saya ingin menukarkan hadiah eksklusif saya. Mohon diproses ya kak!`;
             window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
             
             try {
-                await fetch(`${ROYAL_API_URL}?action=redeem_reward`, {
+                const res = await fetch(`${ROYAL_API_URL}?action=redeem_reward`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username: loggedUser })
                 });
+                if (res.status === 404) {
+                    forceClearMemberSession("Akun member Anda sudah tidak terdaftar.");
+                    return;
+                }
                 renderStampGrid(0);
                 showStampMessage("Penukaran dikirim ke WhatsApp! Kartu stamp direset ke 0/10.", "emerald");
             } catch (err) {
