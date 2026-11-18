@@ -23,7 +23,7 @@ module.exports = async function handler(req, res) {
     const { action } = req.query;
 
     try {
-        // Pastikan semua tabel tersedia otomatis di Neon PostgreSQL
+        // Auto-create tabel di Neon PostgreSQL jika belum ada
         await sql`
             CREATE TABLE IF NOT EXISTS products (
                 id SERIAL PRIMARY KEY,
@@ -64,7 +64,6 @@ module.exports = async function handler(req, res) {
         // 1. ROYAL LOYALTY CARD ENDPOINTS (MEMBER & ADMIN)
         // ============================================================
         if (action) {
-            // A. Cek Profil & Validasi Keberadaan Akun Member
             if (action === 'get_member_profile' && req.method === 'GET') {
                 const username = String(req.query.username || '').trim().toLowerCase();
                 if (!username) {
@@ -88,7 +87,6 @@ module.exports = async function handler(req, res) {
                 return res.status(200).json(rows[0]);
             }
 
-            // B. Login Member Royal Card
             if (action === 'login_member' && req.method === 'POST') {
                 const { username, password } = req.body || {};
                 const cleanUser = String(username || '').trim().toLowerCase();
@@ -116,7 +114,6 @@ module.exports = async function handler(req, res) {
                 });
             }
 
-            // C. Ubah Password Member
             if (action === 'change_password' && req.method === 'PATCH') {
                 const { username, oldPassword, newPassword } = req.body || {};
                 const cleanUser = String(username || '').trim().toLowerCase();
@@ -149,7 +146,6 @@ module.exports = async function handler(req, res) {
                 return res.status(200).json({ success: true, message: 'Password berhasil diperbarui' });
             }
 
-            // D. Klaim Kode Stamp (DEEPA-XXXXXX)
             if (action === 'claim_stamp' && req.method === 'POST') {
                 const { username, code } = req.body || {};
                 const cleanUser = String(username || '').trim().toLowerCase();
@@ -207,7 +203,6 @@ module.exports = async function handler(req, res) {
                 });
             }
 
-            // E. Klaim Hadiah 10 Stamp & Reset ke 0
             if (action === 'redeem_reward' && req.method === 'POST') {
                 const { username } = req.body || {};
                 const cleanUser = String(username || '').trim().toLowerCase();
@@ -232,7 +227,6 @@ module.exports = async function handler(req, res) {
                 return res.status(200).json({ success: true, stamps: 0 });
             }
 
-            // F. Endpoint Admin untuk Member & Kode Stamp
             if (action === 'list_members' && req.method === 'GET') {
                 const members = await sql`
                     SELECT id, username, password, stamps, created_at 
