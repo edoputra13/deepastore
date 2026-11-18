@@ -337,13 +337,13 @@
                         </div>
                     </a>
 
-                    <a href="https://deepastore.vip" target="_blank" class="platform-item flex items-center gap-3 p-3 rounded-lg bg-sky-500/10 dark:bg-sky-950/20 border border-sky-500/30 hover:border-sky-400 hover:shadow-[0_0_15px_rgba(56,189,248,0.2)] transition-all text-left group">
+                    <a href="https://deeaps.store" target="_blank" class="platform-item flex items-center gap-3 p-3 rounded-lg bg-sky-500/10 dark:bg-sky-950/20 border border-sky-500/30 hover:border-sky-400 hover:shadow-[0_0_15px_rgba(56,189,248,0.2)] transition-all text-left group">
                         <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-sky-600 to-indigo-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-sky-500/25 group-hover:scale-105 transition-transform">
                             <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zM4 12c0-.968.182-1.895.512-2.75h3.045c-.195.856-.307 1.765-.307 2.75s.112 1.894.307 2.75H4.512C4.182 13.895 4 12.968 4 12zm2.072 4.75h3.195c.571 1.253 1.343 2.373 2.269 3.298C7.94 19.349 6.368 18.283 6.072 16.75zm3.195-9.5H6.072c.296-1.533 1.868-2.599 5.464-3.298-.926.925-1.698 2.045-2.269 3.298zm2.733 9.75c-.88-.946-1.611-2.072-2.135-3.25h4.27c-.524 1.178-1.255 2.304-2.135 3.25zm0-10c.88.946 1.611 2.072 2.135 3.25H9.805c.524-1.178 1.255-2.304 2.135-3.25zm3.928 6.75c0-.985-.112-1.894-.307-2.75h3.045c.33.855.512 1.782.512 2.75s-.182 1.895-.512 2.75h-3.045c.195-.856.307-1.765.307-2.75zm.307-4.75h3.195c-.296-1.533-1.868-2.599-5.464-3.298.926.925 1.698 2.045 2.269 3.298zm2.269 6.75h-3.195c.571 1.253 1.343 2.373 2.269 3.298 1.596-.599 3.168-1.665 3.464-3.198z"/></svg>
                         </div>
                         <div class="min-w-0">
                             <div class="text-xs font-bold text-slate-900 dark:text-white leading-tight">Website</div>
-                            <div class="text-[10px] text-sky-600 dark:text-sky-400 font-medium truncate">deepastore.vip</div>
+                            <div class="text-[10px] text-sky-600 dark:text-sky-400 font-medium truncate">deeaps.store</div>
                         </div>
                     </a>
                 </div>
@@ -476,11 +476,18 @@
             try {
                 const response = await fetch(`${PROXY_API_URL}?_t=${Date.now()}`, {
                     method: "GET",
-                    headers: apiHeaders,
+                    headers: { "Accept": "application/json" },
                     cache: "no-store"
                 });
 
-                const data = await response.json();
+                const rawText = await response.text();
+                let data;
+
+                try {
+                    data = JSON.parse(rawText);
+                } catch (e) {
+                    throw new Error(`Endpoint /api/products mengembalikan HTML (Status ${response.status}). Pastikan file API berada di /functions/api/products.js.`);
+                }
 
                 if (!response.ok) {
                     throw new Error(data.error || `HTTP Error ${response.status}`);
@@ -530,9 +537,9 @@
             } catch (err) {
                 console.error("Load Products Error:", err);
                 grid.innerHTML = `
-                    <div class="col-span-2 text-center py-12 space-y-1">
+                    <div class="col-span-2 text-center py-12 space-y-1 px-4">
                         <div class="text-xs font-bold text-rose-600">Gagal terhubung ke database produk.</div>
-                        <div class="text-[10px] text-slate-600 dark:text-slate-400">${err.message}</div>
+                        <div class="text-[10px] text-slate-700 dark:text-slate-300 break-words">${err.message}</div>
                     </div>
                 `;
             }
