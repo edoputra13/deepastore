@@ -147,7 +147,7 @@
             </h1>
         </main>
 
-        <!-- 2. ABOUT VIEW -->
+        <!-- 2. ABOUT VIEW (ROYAL LOYALTY CARD) -->
         <section id="about-view" class="view-section hidden w-full mx-auto font-mono py-1 flex flex-col items-center">
             
             <!-- A. GERBANG LOGIN MEMBER -->
@@ -466,23 +466,33 @@
             }, 1500);
         });
 
+        // ==========================================
+        // KATALOG PRODUK (JAJAN VIEW)
+        // ==========================================
         async function fetchAndRenderProducts() {
             const grid = document.getElementById('product-grid');
-            grid.innerHTML = `<div class="col-span-2 text-center text-xs text-slate-400 py-12">Memuat katalog...</div>`;
+            grid.innerHTML = `<div class="col-span-2 text-center text-xs text-slate-600 dark:text-slate-400 py-12">Memuat katalog...</div>`;
 
             try {
-                const response = await fetch(`${PROXY_API_URL}?select=*`, {
+                const response = await fetch(`${PROXY_API_URL}?_t=${Date.now()}`, {
                     method: "GET",
-                    headers: apiHeaders
+                    headers: apiHeaders,
+                    cache: "no-store"
                 });
-                if (!response.ok) throw new Error("Gagal mengambil data produk");
-                const products = await response.json();
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || `HTTP Error ${response.status}`);
+                }
+
+                const products = Array.isArray(data) ? data : (Array.isArray(data.products) ? data.products : []);
 
                 grid.innerHTML = '';
                 const activeProducts = products.filter(p => Number(p.stock) > 0);
 
                 if (activeProducts.length === 0) {
-                    grid.innerHTML = `<div class="col-span-2 text-center text-xs text-slate-400 py-12">Belum ada produk aktif atau stok habis.</div>`;
+                    grid.innerHTML = `<div class="col-span-2 text-center text-xs text-slate-600 dark:text-slate-400 py-12">Belum ada produk aktif atau stok habis.</div>`;
                     return;
                 }
 
@@ -518,7 +528,13 @@
                     grid.appendChild(card);
                 });
             } catch (err) {
-                grid.innerHTML = `<div class="col-span-2 text-center text-xs text-rose-500 py-12">Gagal terhubung ke database produk.</div>`;
+                console.error("Load Products Error:", err);
+                grid.innerHTML = `
+                    <div class="col-span-2 text-center py-12 space-y-1">
+                        <div class="text-xs font-bold text-rose-600">Gagal terhubung ke database produk.</div>
+                        <div class="text-[10px] text-slate-600 dark:text-slate-400">${err.message}</div>
+                    </div>
+                `;
             }
         }
 
@@ -597,7 +613,6 @@
 
         // ==========================================
         // SISTEM AKUN MEMBER & PROGRESSIVE ROYAL STAMP
-        // (FIX BUG: VALIDASI KETAT & AUTO LOGOUT SAAT DIHAPUS ADMIN)
         // ==========================================
         let memberSessionInterval = null;
 
@@ -658,12 +673,10 @@
                     memberObj = null;
                 }
 
-                // Pastikan response sukses DAN data user benar-benar valid/masih ada di DB
                 if (!res.ok || !memberObj || typeof memberObj !== 'object' || !memberObj.username || memberObj.error || memberObj.deleted) {
                     throw new Error('Akun member telah dihapus atau tidak terdaftar.');
                 }
 
-                // Pastikan username dari database sama dengan sesi yang aktif
                 if (String(memberObj.username).toLowerCase() !== String(loggedUser).toLowerCase()) {
                     throw new Error('Sesi akun tidak valid.');
                 }
@@ -673,7 +686,6 @@
                 document.getElementById('active-member-username').textContent = memberObj.username;
                 renderStampGrid(memberObj.stamps || 0);
 
-                // Polling otomatis setiap 8 detik untuk mendeteksi penghapusan akun oleh admin
                 if (!memberSessionInterval) {
                     memberSessionInterval = setInterval(() => {
                         if (getActiveMemberUsername()) {
@@ -691,7 +703,6 @@
             }
         }
 
-        // Cek ulang otomatis saat user kembali ke tab browser ini
         document.addEventListener('visibilitychange', () => {
             if (!document.hidden && getActiveMemberUsername()) {
                 checkMemberSession(true);
