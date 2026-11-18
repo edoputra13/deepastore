@@ -1,152 +1,368 @@
 import { neon } from '@neondatabase/serverless';
 
-export async function onRequest(context) {
-    const { request, env } = context;
+export default async function handler(req, res) {
+    // Header Anti-Cache agar pengecekan sesi member & katalog selalu real-time
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
 
-    const corsHeaders = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Prefer',
-        'Content-Type': 'application/json'
-    };
-
-    if (request.method === 'OPTIONS') {
-        return new Response(null, { status: 204, headers: corsHeaders });
-    }
-
-    if (!env.DATABASE_URL) {
-        return new Response(JSON.stringify({ error: 'DATABASE_URL belum dikonfigurasi di Cloudflare Pages.' }), {
-            status: 500,
-            headers: corsHeaders
-        });
-    }
-
-    const sql = neon(env.DATABASE_URL);
-    const url = new URL(request.url);
-    const action = url.searchParams.get('action') || '';
+    const sql = neon(process.env.DATABASE_URL);
+    const { action } = req.query;
 
     try {
-        // ==========================================
-        // A. ROYAL LOYALTY & MEMBER ENDPOINTS
-        // ==========================================
-        if (action === 'get_member_profile' && request.method === 'GET') {
-            const username = (url.searchParams.get('username') || '').trim().toLowerCase();
-            if (!username) {
-                return new Response(JSON.stringify({ error: 'Username diperlukan' }), { status: 400, headers: corsHeaders });
+        // Pastikan tabel member & stamp codes tersedia di Neon PostgreSQL
+        await sql`
+            CREATE TABLE IF NOT EXISTS royal_members (
+                id SERIAL PRIMARY KEY,
+                username VARCHAR(100) UNIQUE NOT NULL,
+                password VARCHAR(255) NOT NULL,
+                stamps INTEGER DEFAULT 0,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `;
+
+        await sql`
+            CREATE TABLE IF NOT EXISTS royal_stamp_codes (
+                id SERIAL PRIMARY KEY,
+                code VARCHAR(50) UNIQUE NOT NULL,
+                is_used BOOLEAN DEFAULT FALSE,
+                used_by VARCHAR(100),
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `;
+
+        // ============================================================
+        // 1. ROYAL LOYALTY CARD ENDPOINTS (MEMBER & ADMIN)
+        // ============================================================
+        if (action) {
+            // A. Cek Profil & Validasi Keberadaan Akun Member (Anti-Bypass saat dihapus Admin)
+            if (action === 'get_member_profile' && req.method === 'GET') {
+                const username = String(req.query.username || '').trim().toLowerCase();
+                if (!username) {
+                    return res.status(400).json({ error: 'Username wajib diisi' });
+                }
+
+                const rows = await sql`
+                    SELECT id, username, stamps 
+                    FROM royal_members 
+                    WHERE LOWER(username) = ${username} 
+                    LIMIT 1
+                `;
+
+                if (!rows || rows.length === 0) {
+                    return res.status(404).json({ 
+                        error: 'Akun member tidak ditemukan atau telah dihapus oleh admin.',
+                        deleted: true 
+                    });
+                }
+
+                return res.status(200).json(rows[0]);
             }
-            const rows = await sql`SELECT username, stamps FROM royal_members WHERE LOWER(username) = ${username} LIMIT 1`;
-            if (rows.length === 0) {
-                return new Response(JSON.stringify({ error: 'Akun member tidak ditemukan' }), { status: 404, headers: corsHeaders });
+
+            // B. Login Member Royal Card
+            if (action === 'login_member' && req.method === 'POST') {
+                const { username, password } = req.body || {};
+                const cleanUser = String(username || '').trim().toLowerCase();
+                const cleanPass = String(password || '');
+
+                if (!cleanUser || !cleanPass) {
+                    return res.status(400).json({ error: 'Username dan password wajib diisi!' });
+                }
+
+                const rows = await sql`
+                    SELECT id, username, password, stamps 
+                    FROM royal_members 
+                    WHERE LOWER(username) = ${cleanUser} 
+                    LIMIT 1
+                `;
+
+                if (!rows || rows.length === 0 || rows[0].password !== cleanPass) {
+                    return res.status(401).json({ error: 'Username atau password salah!' });
+                }
+
+                return res.status(200).json({
+                    id: rows[0].id,
+                    username: rows[0].username,
+                    stamps: rows[0].stamps || 0
+                });
             }
-            return new Response(JSON.stringify(rows[0]), { status: 200, headers: corsHeaders });
+
+            // C. Ubah Password Member
+            if (action === 'change_password' && req.method === 'PATCH') {
+                const { username, oldPassword, newPassword } = req.body || {};
+                const cleanUser = String(username || '').trim().toLowerCase();
+
+                if (!cleanUser || !oldPassword || !newPassword) {
+                    return res.status(400).json({ error: 'Data tidak lengkap!' });
+                }
+
+                const rows = await sql`
+                    SELECT id, password 
+                    FROM royal_members 
+                    WHERE LOWER(username) = ${cleanUser} 
+                    LIMIT 1
+                `;
+
+                if (!rows || rows.length === 0) {
+                    return res.status(404).json({ error: 'Akun member tidak ditemukan atau telah dihapus.' });
+                }
+
+                if (rows[0].password !== String(oldPassword)) {
+                    return res.status(401).json({ error: 'Password lama salah!' });
+                }
+
+                await sql`
+                    UPDATE royal_members 
+                    SET password = ${String(newPassword)} 
+                    WHERE id = ${rows[0].id}
+                `;
+
+                return res.status(200).json({ success: true, message: 'Password berhasil diperbarui' });
+            }
+
+            // D. Klaim Kode Stamp (DEEPA-XXXXXX)
+            if (action === 'claim_stamp' && req.method === 'POST') {
+                const { username, code } = req.body || {};
+                const cleanUser = String(username || '').trim().toLowerCase();
+                const cleanCode = String(code || '').trim().toUpperCase();
+
+                if (!cleanUser || !cleanCode) {
+                    return res.status(400).json({ error: 'Username dan kode wajib diisi!' });
+                }
+
+                // Validasi keberadaan member terlebih dahulu
+                const memberRows = await sql`
+                    SELECT id, username, stamps 
+                    FROM royal_members 
+                    WHERE LOWER(username) = ${cleanUser} 
+                    LIMIT 1
+                `;
+
+                if (!memberRows || memberRows.length === 0) {
+                    return res.status(404).json({ error: 'Akun member tidak ditemukan atau telah dihapus oleh admin.' });
+                }
+
+                // Cek validitas kode redeem
+                const codeRows = await sql`
+                    SELECT id, is_used 
+                    FROM royal_stamp_codes 
+                    WHERE UPPER(code) = ${cleanCode} 
+                    LIMIT 1
+                `;
+
+                if (!codeRows || codeRows.length === 0) {
+                    return res.status(400).json({ error: 'Kode redeem tidak valid!' });
+                }
+
+                if (codeRows[0].is_used) {
+                    return res.status(400).json({ error: 'Kode redeem sudah pernah digunakan!' });
+                }
+
+                const currentStamps = Number(memberRows[0].stamps) || 0;
+                const updatedStamps = Math.min(currentStamps + 1, 10);
+
+                await sql`
+                    UPDATE royal_stamp_codes 
+                    SET is_used = TRUE, used_by = ${memberRows[0].username} 
+                    WHERE id = ${codeRows[0].id}
+                `;
+
+                const updatedMember = await sql`
+                    UPDATE royal_members 
+                    SET stamps = ${updatedStamps} 
+                    WHERE id = ${memberRows[0].id} 
+                    RETURNING id, username, stamps
+                `;
+
+                return res.status(200).json({
+                    success: true,
+                    stamps: updatedMember[0].stamps
+                });
+            }
+
+            // E. Klaim Hadiah 10 Stamp & Reset ke 0
+            if (action === 'redeem_reward' && req.method === 'POST') {
+                const { username } = req.body || {};
+                const cleanUser = String(username || '').trim().toLowerCase();
+
+                const memberRows = await sql`
+                    SELECT id, stamps 
+                    FROM royal_members 
+                    WHERE LOWER(username) = ${cleanUser} 
+                    LIMIT 1
+                `;
+
+                if (!memberRows || memberRows.length === 0) {
+                    return res.status(404).json({ error: 'Akun member tidak ditemukan.' });
+                }
+
+                await sql`
+                    UPDATE royal_members 
+                    SET stamps = 0 
+                    WHERE id = ${memberRows[0].id}
+                `;
+
+                return res.status(200).json({ success: true, stamps: 0 });
+            }
+
+            // ============================================================
+            // F. ENDPOINT ADMIN UNTUK KELOLA MEMBER & KODE STAMP
+            // ============================================================
+            if (action === 'list_members' && req.method === 'GET') {
+                const members = await sql`
+                    SELECT id, username, password, stamps, created_at 
+                    FROM royal_members 
+                    ORDER BY id DESC
+                `;
+                return res.status(200).json(members);
+            }
+
+            if (action === 'create_member' && req.method === 'POST') {
+                const { username, password, stamps } = req.body || {};
+                const cleanUser = String(username || '').trim().toLowerCase().replace(/^@/, '');
+                if (!cleanUser || !password) {
+                    return res.status(400).json({ error: 'Username dan password wajib diisi' });
+                }
+
+                const inserted = await sql`
+                    INSERT INTO royal_members (username, password, stamps)
+                    VALUES (${cleanUser}, ${String(password)}, ${Number(stamps) || 0})
+                    RETURNING id, username, password, stamps
+                `;
+                return res.status(201).json(inserted[0]);
+            }
+
+            if (action === 'update_member' && req.method === 'PATCH') {
+                const { id, username, password, stamps } = req.body || {};
+                if (!id) return res.status(400).json({ error: 'ID member wajib diisi' });
+
+                const updated = await sql`
+                    UPDATE royal_members
+                    SET 
+                        username = COALESCE(${username ? String(username).trim().toLowerCase().replace(/^@/, '') : null}, username),
+                        password = COALESCE(${password ? String(password) : null}, password),
+                        stamps = COALESCE(${stamps !== undefined ? Number(stamps) : null}, stamps)
+                    WHERE id = ${Number(id)}
+                    RETURNING id, username, password, stamps
+                `;
+                if (!updated || updated.length === 0) {
+                    return res.status(404).json({ error: 'Member tidak ditemukan' });
+                }
+                return res.status(200).json(updated[0]);
+            }
+
+            if (action === 'delete_member' && req.method === 'DELETE') {
+                const targetId = req.query.id || (req.body && req.body.id);
+                const targetUser = req.query.username || (req.body && req.body.username);
+
+                if (targetId) {
+                    await sql`DELETE FROM royal_members WHERE id = ${Number(targetId)}`;
+                } else if (targetUser) {
+                    await sql`DELETE FROM royal_members WHERE LOWER(username) = ${String(targetUser).trim().toLowerCase()}`;
+                } else {
+                    return res.status(400).json({ error: 'Parameter id atau username wajib disertakan' });
+                }
+
+                return res.status(200).json({ success: true, deleted: true });
+            }
+
+            if (action === 'list_codes' && req.method === 'GET') {
+                const codes = await sql`
+                    SELECT id, code, is_used, used_by, created_at 
+                    FROM royal_stamp_codes 
+                    ORDER BY id DESC
+                `;
+                return res.status(200).json(codes);
+            }
+
+            if (action === 'create_code' && req.method === 'POST') {
+                const { code } = req.body || {};
+                const cleanCode = String(code || '').trim().toUpperCase();
+                if (!cleanCode) return res.status(400).json({ error: 'Kode tidak boleh kosong' });
+
+                const inserted = await sql`
+                    INSERT INTO royal_stamp_codes (code, is_used)
+                    VALUES (${cleanCode}, FALSE)
+                    RETURNING id, code, is_used, used_by
+                `;
+                return res.status(201).json(inserted[0]);
+            }
+
+            if (action === 'delete_code' && req.method === 'DELETE') {
+                const targetId = req.query.id || (req.body && req.body.id);
+                if (!targetId) return res.status(400).json({ error: 'ID kode wajib disertakan' });
+
+                await sql`DELETE FROM royal_stamp_codes WHERE id = ${Number(targetId)}`;
+                return res.status(200).json({ success: true });
+            }
+
+            return res.status(400).json({ error: `Action '${action}' tidak dikenali` });
         }
 
-        if (action === 'login_member' && request.method === 'POST') {
-            const { username, password } = await request.json();
-            const cleanUser = (username || '').trim().toLowerCase();
-            const rows = await sql`SELECT username, password, stamps FROM royal_members WHERE LOWER(username) = ${cleanUser} LIMIT 1`;
-            if (rows.length === 0 || rows[0].password !== password) {
-                return new Response(JSON.stringify({ error: 'Username atau password salah!' }), { status: 401, headers: corsHeaders });
-            }
-            return new Response(JSON.stringify({ username: rows[0].username, stamps: rows[0].stamps }), { status: 200, headers: corsHeaders });
+        // ============================================================
+        // 2. KATALOG PRODUK ENDPOINTS (CRUD DEFAULT)
+        // ============================================================
+        if (req.method === 'GET') {
+            const products = await sql`
+                SELECT * FROM products ORDER BY id ASC
+            `;
+            return res.status(200).json(products);
         }
 
-        if (action === 'change_password' && request.method === 'PATCH') {
-            const { username, oldPassword, newPassword } = await request.json();
-            const cleanUser = (username || '').trim().toLowerCase();
-            const rows = await sql`SELECT password FROM royal_members WHERE LOWER(username) = ${cleanUser} LIMIT 1`;
-            if (rows.length === 0 || rows[0].password !== oldPassword) {
-                return new Response(JSON.stringify({ error: 'Password lama tidak sesuai!' }), { status: 401, headers: corsHeaders });
-            }
-            await sql`UPDATE royal_members SET password = ${newPassword} WHERE LOWER(username) = ${cleanUser}`;
-            return new Response(JSON.stringify({ success: true }), { status: 200, headers: corsHeaders });
-        }
-
-        if (action === 'claim_stamp' && request.method === 'POST') {
-            const { username, code } = await request.json();
-            const cleanUser = (username || '').trim().toLowerCase();
-            const cleanCode = (code || '').trim().toUpperCase();
-
-            const memberRows = await sql`SELECT username, stamps FROM royal_members WHERE LOWER(username) = ${cleanUser} LIMIT 1`;
-            if (memberRows.length === 0) {
-                return new Response(JSON.stringify({ error: 'Member tidak ditemukan' }), { status: 404, headers: corsHeaders });
-            }
-            if (memberRows[0].stamps >= 10) {
-                return new Response(JSON.stringify({ error: 'Lencana sudah penuh (10/10)! Klaim hadiah Anda terlebih dahulu.' }), { status: 400, headers: corsHeaders });
-            }
-
-            const codeRows = await sql`SELECT code, is_used FROM stamp_codes WHERE UPPER(code) = ${cleanCode} LIMIT 1`;
-            if (codeRows.length === 0) {
-                return new Response(JSON.stringify({ error: 'Kode redeem tidak valid!' }), { status: 404, headers: corsHeaders });
-            }
-            if (codeRows[0].is_used) {
-                return new Response(JSON.stringify({ error: 'Kode redeem ini sudah pernah digunakan!' }), { status: 400, headers: corsHeaders });
-            }
-
-            const newStamps = memberRows[0].stamps + 1;
-            await sql`UPDATE stamp_codes SET is_used = true, used_by = ${memberRows[0].username}, used_at = NOW() WHERE UPPER(code) = ${cleanCode}`;
-            await sql`UPDATE royal_members SET stamps = ${newStamps} WHERE LOWER(username) = ${cleanUser}`;
-
-            return new Response(JSON.stringify({ success: true, stamps: newStamps }), { status: 200, headers: corsHeaders });
-        }
-
-        if (action === 'redeem_reward' && request.method === 'POST') {
-            const { username } = await request.json();
-            const cleanUser = (username || '').trim().toLowerCase();
-            await sql`UPDATE royal_members SET stamps = 0 WHERE LOWER(username) = ${cleanUser}`;
-            return new Response(JSON.stringify({ success: true, stamps: 0 }), { status: 200, headers: corsHeaders });
-        }
-
-        // ==========================================
-        // B. KATALOG PRODUK CRUD ENDPOINTS
-        // ==========================================
-        if (request.method === 'GET') {
-            const products = await sql`SELECT * FROM products ORDER BY id ASC`;
-            return new Response(JSON.stringify(products), { status: 200, headers: corsHeaders });
-        }
-
-        if (request.method === 'POST') {
-            const body = await request.json();
+        if (req.method === 'POST') {
+            const { name, category, price, price_3d, price_7d, price_1m, stock, description, image } = req.body || {};
             const inserted = await sql`
-                INSERT INTO products (name, category, price, price_3d, price_7d, price_1m, stock, image, description)
-                VALUES (${body.name}, ${body.category}, ${body.price || 0}, ${body.price_3d || 0}, ${body.price_7d || 0}, ${body.price_1m || 0}, ${body.stock || 0}, ${body.image || ''}, ${body.description || ''})
+                INSERT INTO products (name, category, price, price_3d, price_7d, price_1m, stock, description, image)
+                VALUES (
+                    ${name},
+                    ${category},
+                    ${Number(price) || 0},
+                    ${Number(price_3d) || 0},
+                    ${Number(price_7d) || 0},
+                    ${Number(price_1m) || 0},
+                    ${Number(stock) || 0},
+                    ${description || ''},
+                    ${image || ''}
+                )
                 RETURNING *
             `;
-            return new Response(JSON.stringify(inserted), { status: 201, headers: corsHeaders });
+            return res.status(201).json(inserted);
         }
 
-        if (request.method === 'PATCH') {
-            const idParam = url.searchParams.get('id') || '';
-            const id = idParam.replace('eq.', '');
-            const body = await request.json();
+        if (req.method === 'PATCH' || req.method === 'PUT') {
+            const rawId = req.query.id ? String(req.query.id).replace('eq.', '') : (req.body && req.body.id);
+            if (!rawId) return res.status(400).json({ error: 'ID produk wajib disertakan' });
 
+            const { name, category, price, price_3d, price_7d, price_1m, stock, description, image } = req.body || {};
             const updated = await sql`
                 UPDATE products
                 SET
-                    name = COALESCE(${body.name ?? null}, name),
-                    category = COALESCE(${body.category ?? null}, category),
-                    price = COALESCE(${body.price ?? null}, price),
-                    price_3d = COALESCE(${body.price_3d ?? null}, price_3d),
-                    price_7d = COALESCE(${body.price_7d ?? null}, price_7d),
-                    price_1m = COALESCE(${body.price_1m ?? null}, price_1m),
-                    stock = COALESCE(${body.stock ?? null}, stock),
-                    image = COALESCE(${body.image ?? null}, image),
-                    description = COALESCE(${body.description ?? null}, description)
-                WHERE id = ${id}
+                    name = COALESCE(${name ?? null}, name),
+                    category = COALESCE(${category ?? null}, category),
+                    price = COALESCE(${price !== undefined ? Number(price) : null}, price),
+                    price_3d = COALESCE(${price_3d !== undefined ? Number(price_3d) : null}, price_3d),
+                    price_7d = COALESCE(${price_7d !== undefined ? Number(price_7d) : null}, price_7d),
+                    price_1m = COALESCE(${price_1m !== undefined ? Number(price_1m) : null}, price_1m),
+                    stock = COALESCE(${stock !== undefined ? Number(stock) : null}, stock),
+                    description = COALESCE(${description ?? null}, description),
+                    image = COALESCE(${image ?? null}, image)
+                WHERE id = ${Number(rawId)}
                 RETURNING *
             `;
-            return new Response(JSON.stringify(updated), { status: 200, headers: corsHeaders });
+            return res.status(200).json(updated);
         }
 
-        if (request.method === 'DELETE') {
-            const idParam = url.searchParams.get('id') || '';
-            const id = idParam.replace('eq.', '');
-            await sql`DELETE FROM products WHERE id = ${id}`;
-            return new Response(JSON.stringify({ deleted: true }), { status: 200, headers: corsHeaders });
+        if (req.method === 'DELETE') {
+            const rawId = req.query.id ? String(req.query.id).replace('eq.', '') : (req.body && req.body.id);
+            if (!rawId) return res.status(400).json({ error: 'ID produk wajib disertakan' });
+
+            await sql`DELETE FROM products WHERE id = ${Number(rawId)}`;
+            return res.status(200).json({ success: true });
         }
 
-        return new Response(JSON.stringify({ error: 'Method tidak didukung' }), { status: 405, headers: corsHeaders });
-    } catch (err) {
-        return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: corsHeaders });
+        return res.status(405).json({ error: 'Method tidak diizinkan' });
+    } catch (error) {
+        console.error('API Error:', error);
+        return res.status(500).json({ error: error.message || 'Terjadi kesalahan pada server' });
     }
 }
